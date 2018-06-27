@@ -1,19 +1,19 @@
 #==============================================================================
-# ■ Scene_File
+# ** Scene_File
 #------------------------------------------------------------------------------
-# 　セーブ画面およびロード画面のスーパークラスです。
+#  This is a superclass for the save screen and load screen.
 #==============================================================================
 
 class Scene_File
   #--------------------------------------------------------------------------
-  # ● オブジェクト初期化
-  #     help_text : ヘルプウィンドウに表示する文字列
+  # * Object Initialization
+  #     help_text : text string shown in the help window
   #--------------------------------------------------------------------------
   def initialize(help_text)
     @help_text = help_text
   end
   #--------------------------------------------------------------------------
-  # ● メイン処理
+  # * Main Processing
   #--------------------------------------------------------------------------
   def main
     # ウィンドウスキンの変更
@@ -24,10 +24,10 @@ class Scene_File
     #@menu_poze.pop_body
     #@menu_poze.check_clothes
 
-    # ヘルプウィンドウを作成
+    # Make help window
     @help_window = Window_Help.new
     @help_window.set_text(@help_text)
-    # セーブファイルウィンドウを作成
+    # Make save file window
     @savefile_windows = []
     #ページとセーブファイル最大数
     @page_max = 5
@@ -38,7 +38,7 @@ class Scene_File
     for i in 0..n
       @savefile_windows.push(Window_SaveFile.new(i, make_filename(i)))
     end
-    # 最後に操作したファイルを選択
+    # Select last file to be operated
     @file_index = $game_temp.last_file_index
     #@page = @file_index / 4
     @page = @file_index / @savefile_max
@@ -53,24 +53,24 @@ class Scene_File
       @savefile_windows[i].visible = true
     end
 
-    # トランジション実行
+    # Execute transition
     Graphics.transition
-    # メインループ
+    # Main loop
     loop do
-      # ゲーム画面を更新
+      # Update game screen
       Graphics.update
-      # 入力情報を更新
+      # Update input information
       Input.update
-      # フレーム更新
+      # Frame update
       update
-      # 画面が切り替わったらループを中断
+      # Abort loop if screen is changed
       if $scene != self
         break
       end
     end
-    # トランジション準備
+    # Prepare for transition
     Graphics.freeze
-    # ウィンドウを解放
+    # Dispose of windows
     @help_window.dispose
     for i in @savefile_windows
       i.dispose
@@ -82,35 +82,35 @@ class Scene_File
     #@menu_poze.all_clear
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新
+  # * Frame Update
   #--------------------------------------------------------------------------
   def update
-    # ウィンドウを更新
+    # Update windows
     @help_window.update
     for i in @savefile_windows
       i.update
     end
-    # C ボタンが押された場合
+    # If C button was pressed
     if Input.trigger?(Input::C)
-      # メソッド on_decision (継承先で定義) を呼ぶ
+      # Call method: on_decision (defined by the subclasses)
       on_decision(make_filename(@file_index))
       $game_temp.last_file_index = @file_index
       return
     end
-    # B ボタンが押された場合
+    # If B button was pressed
     if Input.trigger?(Input::B)
-      # メソッド on_cancel (継承先で定義) を呼ぶ
+      # Call method: on_cancel (defined by the subclasses)
       on_cancel
       return
     end
-    # 方向ボタンの下が押された場合
+    # If the down directional button was pressed
     if Input.repeat?(Input::DOWN)
-      # 方向ボタンの下の押下状態がリピートでない場合か、
-      # またはカーソル位置が 3 より前の場合
+      # If the down directional button pressed down is not a repeat,
+      # or cursor position is more in front than 3
       if Input.trigger?(Input::DOWN) or @file_index < (@savefile_max - 1) + @page * (@savefile_max)
-        # カーソル SE を演奏
+        # Play cursor SE
         $game_system.se_play($data_system.cursor_se)
-        # カーソルを下に移動
+        # Move cursor down
         @savefile_windows[@file_index].selected = false
         #@file_index = (@file_index + 1) % 4
         #@file_index = @page * 4 + (@file_index + 1) % 4
@@ -119,14 +119,13 @@ class Scene_File
         return
       end
     end
-    # 方向ボタンの上が押された場合
+    # If the up directional button was pressed
     if Input.repeat?(Input::UP)
-      # 方向ボタンの上の押下状態がリピートでない場合か、
-      # またはカーソル位置が 0 より後ろの場合
+      # If the up directional button pressed down is not a repeat、
+      # or cursor position is more in back than 0
       #if Input.trigger?(Input::UP) or @file_index > 0
       if Input.trigger?(Input::UP) or @file_index > @page * @savefile_max
-        # カーソル SE を演奏
-        # カーソル SE を演奏
+        # Play cursor SE
         $game_system.se_play($data_system.cursor_se)
         # カーソルを上に移動
         @savefile_windows[@file_index].selected = false
@@ -142,7 +141,7 @@ class Scene_File
       # 方向ボタンの右の押下状態がリピートでない場合か、
       # またはカーソル位置が 0 より後ろの場合
       if Input.trigger?(Input::RIGHT)
-        # カーソル SE を演奏
+        # Play cursor SE
         $game_system.se_play($data_system.cursor_se)
         # カーソルを上に移動
         @savefile_windows[@file_index].selected = false
@@ -158,9 +157,9 @@ class Scene_File
       # 方向ボタンの右の押下状態がリピートでない場合か、
       # またはカーソル位置が 0 より後ろの場合
       if Input.trigger?(Input::LEFT)
-        # カーソル SE を演奏
+        # Play cursor SE
         $game_system.se_play($data_system.cursor_se)
-        # カーソルを上に移動
+        # Move cursor up
         @savefile_windows[@file_index].selected = false
         #@file_index = (@file_index + 3) % 4
         #@file_index = @page * 4 + (@file_index + 3) % 4
@@ -171,7 +170,7 @@ class Scene_File
     end
     # Ｒが押された場合
     if Input.trigger?(Input::R)
-      # カーソル SE を演奏
+      # Play cursor SE
       $game_system.se_play($data_system.cursor_se)
       @savefile_windows[@file_index].selected = false
       for i in @savefile_windows
@@ -191,7 +190,7 @@ class Scene_File
     end
     # Ｌが押された場合
     if Input.trigger?(Input::L)
-      # カーソル SE を演奏
+      # Play cursor SE
       $game_system.se_play($data_system.cursor_se)
       # ページ切替
       @savefile_windows[@file_index].selected = false
@@ -213,8 +212,8 @@ class Scene_File
     end
   end
   #--------------------------------------------------------------------------
-  # ● ファイル名の作成
-  #     file_index : セーブファイルのインデックス (0～3)
+  # * Make File Name
+  #     file_index : save file index (0-3)
   #--------------------------------------------------------------------------
   def make_filename(file_index)
     return "Save#{file_index + 1}.rxdata"

@@ -1,97 +1,98 @@
 #==============================================================================
-# ■ Scene_Map
+# ** Scene_Map
 #------------------------------------------------------------------------------
-# 　マップ画面の処理を行うクラスです。
+#  This class performs map screen processing.
 #==============================================================================
 
 class Scene_Map
   #--------------------------------------------------------------------------
-  # ● メイン処理
+  # * Main Processing
   #--------------------------------------------------------------------------
   def main
-    # スプライトセットを作成
+    # Make sprite set
     @spriteset = Spriteset_Map.new
-    # メッセージウィンドウを作成
+    # Make message window
     @message_window = Window_Message.new
-    # トランジション実行
+    # Transition run
     Graphics.transition
-    # メインループ
+    # Main loop
     loop do
-      # ゲーム画面を更新
+      # Update game screen
       Graphics.update
-      # 入力情報を更新
+      # Update input information
       Input.update
-      # フレーム更新
+      # Frame update
       update
 
       # アニメフレーム更新追加
       anime_update
 
-      # 画面が切り替わったらループを中断
+      # Abort loop if screen is changed
       if $scene != self
         break
       end
     end
-    # トランジション準備
+    # Prepare for transition
     Graphics.freeze
-    # スプライトセットを解放
+    # Dispose of sprite set
     @spriteset.dispose
-    # メッセージウィンドウを解放
+    # Dispose of message window
     @message_window.dispose
-    # タイトル画面に切り替え中の場合
+    # If switching to title screen
     if $scene.is_a?(Scene_Title)
-      # 画面をフェードアウト
+      # Fade out screen
       Graphics.transition
       Graphics.freeze
     end
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新
+  # * Frame Update
   #--------------------------------------------------------------------------
   def update
-    # ループ
+    # Loop
     loop do
-      # マップ、インタプリタ、プレイヤーの順に更新
-      # (この更新順序は、イベントを実行する条件が満たされているときに
-      #  プレイヤーに一瞬移動する機会を与えないなどの理由で重要)
+      # Update map, interpreter, and player order
+      # (this update order is important for when conditions are fulfilled
+      # to run any event, and the player isn't provided the opportunity to
+      # move in an instant)
       $game_map.update
       $game_system.map_interpreter.update
       $game_player.update
-      # システム (タイマー)、画面を更新
+      # Update system (timer), screen
       $game_system.update
       $game_screen.update
-      # プレイヤーの場所移動中でなければループを中断
+      # Abort loop if player isn't place moving
       unless $game_temp.player_transferring
         break
       end
-      # 場所移動を実行
+      # Run place move
       transfer_player
-      # トランジション処理中の場合、ループを中断
+      # Abort loop if transition processing
       if $game_temp.transition_processing
         break
       end
     end
-    # スプライトセットを更新
+    # Update sprite set
     @spriteset.update
-    # メッセージウィンドウを更新
+    # Update message window
     @message_window.update
-    # ゲームオーバーの場合
+    # If game over
     if $game_temp.gameover
-      # ゲームオーバー画面に切り替え
+      # Switch to game over screen
       $scene = Scene_Gameover.new
       return
     end
-    # タイトル画面に戻す場合
+    # If returning to title screen
     if $game_temp.to_title
-      # タイトル画面に切り替え
+      # Change to title screen
       $scene = Scene_Title.new
       return
     end
-    # トランジション処理中の場合
+    # If transition processing
     if $game_temp.transition_processing
-      # トランジション処理中フラグをクリア
+      # Clear transition processing flag
       $game_temp.transition_processing = false
-      # トランジション実行
+      # Execute transition
       if $game_temp.transition_name == ""
         Graphics.transition(20)
       else
@@ -99,11 +100,11 @@ class Scene_Map
           $game_temp.transition_name)
       end
     end
-    # メッセージウィンドウ表示中の場合
+    # If showing message window
     if $game_temp.message_window_showing
       return
     end
-    # エンカウント カウントが 0 で、エンカウントリストが空ではない場合
+    # If encounter list isn't empty, and encounter count is 0
     if $game_player.encounter_count == 0 and $game_map.encounter_list != []
       if Input.press?(Input::B)
 
@@ -114,15 +115,15 @@ class Scene_Map
           return
         end
       end
-      # イベント実行中かエンカウント禁止中でなければ
+      # If event is running or encounter is not forbidden
       unless $game_system.map_interpreter.running? or
              $game_system.encounter_disabled
-        # トループを決定
+        # Confirm troop
         n = rand($game_map.encounter_list.size)
         troop_id = $game_map.encounter_list[n]
-        # トループが有効なら
+        # If troop is valid
         if $data_troops[troop_id] != nil
-          # バトル呼び出しフラグをセット
+          # Set battle calling flag
           $game_temp.battle_calling = true
           $game_temp.battle_troop_id = troop_id
           $game_temp.battle_can_escape = true
@@ -131,24 +132,24 @@ class Scene_Map
         end
       end
     end
-    # A ボタンが押された場合
+    # If A button was pressed
     if Input.trigger?(Input::A)
-      # イベント実行中かメニュー禁止中でなければ
+      # If event is running, or menu is not forbidden
       unless $game_system.map_interpreter.running? or
              $game_system.menu_disabled
-        # メニュー呼び出しフラグと SE 演奏フラグをセット
+        # Set menu calling flag or beep flag
         $game_temp.menu_calling = true
         $game_temp.menu_beep = true
       end
     end
-    # デバッグモードが ON かつ F9 キーが押されている場合
+    # If debug mode is ON and F9 key was pressed
     if $DEBUG and Input.press?(Input::F9)
-      # デバッグ呼び出しフラグをセット
+      # Set debug calling flag
       $game_temp.debug_calling = true
     end
-    # プレイヤーの移動中ではない場合
+    # If player is not moving
     unless $game_player.moving?
-      # 各種画面の呼び出しを実行
+      # Run calling of each screen
       if $game_temp.battle_calling
         call_battle
       elsif $game_temp.shop_calling
@@ -165,133 +166,133 @@ class Scene_Map
     end
   end
   #--------------------------------------------------------------------------
-  # ● バトルの呼び出し
+  # * Battle Call
   #--------------------------------------------------------------------------
   def call_battle
-    # バトル呼び出しフラグをクリア
+    # Clear battle calling flag
     $game_temp.battle_calling = false
-    # メニュー呼び出しフラグをクリア
+    # Clear menu calling flag
     $game_temp.menu_calling = false
     $game_temp.menu_beep = false
-    # エンカウント カウントを作成
+    # Make encounter count
     $game_player.make_encounter_count
-    # マップ BGM を記憶し、BGM を停止
+    # Memorize map BGM and stop BGM
     $game_temp.map_bgm = $game_system.playing_bgm
     $game_system.bgm_stop
-    # バトル開始 SE を演奏
+    # Play battle start SE
     $game_system.se_play($data_system.battle_start_se)
-    # バトル BGM を演奏
+    # Play battle BGM
     $game_system.bgm_play($game_system.battle_bgm)
-    # プレイヤーの姿勢を矯正
+    # Straighten player position
     $game_player.straighten
-    # バトル画面に切り替え
+    # Switch to battle screen
     $scene = Scene_Battle.new
   end
   #--------------------------------------------------------------------------
-  # ● ショップの呼び出し
+  # * Shop Call
   #--------------------------------------------------------------------------
   def call_shop
-    # ショップ呼び出しフラグをクリア
+    # Clear shop call flag
     $game_temp.shop_calling = false
-    # プレイヤーの姿勢を矯正
+    # Straighten player position
     $game_player.straighten
-    # ショップ画面に切り替え
+    # Switch to shop screen
     $scene = Scene_Shop.new
   end
   #--------------------------------------------------------------------------
-  # ● 名前入力の呼び出し
+  # * Name Input Call
   #--------------------------------------------------------------------------
   def call_name
-    # 名前入力呼び出しフラグをクリア
+    # Clear name input call flag
     $game_temp.name_calling = false
-    # プレイヤーの姿勢を矯正
+    # Straighten player position
     $game_player.straighten
-    # 名前入力画面に切り替え
+    # Switch to name input screen
     $scene = Scene_Name.new
   end
   #--------------------------------------------------------------------------
-  # ● メニューの呼び出し
+  # * Menu Call
   #--------------------------------------------------------------------------
   def call_menu
-    # メニュー呼び出しフラグをクリア
+    # Clear menu call flag
     $game_temp.menu_calling = false
-    # メニュー SE 演奏フラグがセットされている場合
+    # If menu beep flag is set
     if $game_temp.menu_beep
-      # 決定 SE を演奏
+      # Play decision SE
       $game_system.se_play($data_system.decision_se)
-      # メニュー SE 演奏フラグをクリア
+      # Clear menu beep flag
       $game_temp.menu_beep = false
     end
-    # プレイヤーの姿勢を矯正
+    # Straighten player position
     $game_player.straighten
-    # メニュー画面に切り替え
+    # Switch to menu screen
     $scene = Scene_Menu.new
   end
   #--------------------------------------------------------------------------
-  # ● セーブの呼び出し
+  # * Save Call
   #--------------------------------------------------------------------------
   def call_save
-    # プレイヤーの姿勢を矯正
+    # Straighten player position
     $game_player.straighten
-    # セーブ画面に切り替え
+    # Switch to save screen
     $scene = Scene_Save.new
   end
   #--------------------------------------------------------------------------
-  # ● デバッグの呼び出し
+  # * Debug Call
   #--------------------------------------------------------------------------
   def call_debug
-    # デバッグ呼び出しフラグをクリア
+    # Clear debug call flag
     $game_temp.debug_calling = false
-    # 決定 SE を演奏
+    # Play decision SE
     $game_system.se_play($data_system.decision_se)
-    # プレイヤーの姿勢を矯正
+    # Straighten player position
     $game_player.straighten
-    # デバッグ画面に切り替え
+    # Switch to debug screen
     $scene = Scene_Debug.new
   end
   #--------------------------------------------------------------------------
-  # ● プレイヤーの場所移動
+  # * Player Place Move
   #--------------------------------------------------------------------------
   def transfer_player
-    # プレイヤー場所移動フラグをクリア
+    # Clear player place move call flag
     $game_temp.player_transferring = false
-    # 移動先が現在のマップと異なる場合
+    # If move destination is different than current map
     if $game_map.map_id != $game_temp.player_new_map_id
-      # 新しいマップをセットアップ
+      # Set up a new map
       $game_map.setup($game_temp.player_new_map_id)
     end
-    # プレイヤーの位置を設定
+    # Set up player position
     $game_player.moveto($game_temp.player_new_x, $game_temp.player_new_y)
-    # プレイヤーの向きを設定
+    # Set player direction
     case $game_temp.player_new_direction
-    when 2  # 下
+    when 2  # down
       $game_player.turn_down
-    when 4  # 左
+    when 4  # left
       $game_player.turn_left
-    when 6  # 右
+    when 6  # right
       $game_player.turn_right
-    when 8  # 上
+    when 8  # up
       $game_player.turn_up
     end
-    # プレイヤーの姿勢を矯正
+    # Straighten player position
     $game_player.straighten
-    # マップを更新 (並列イベント実行)
+    # Update map (run parallel process event)
     $game_map.update
-    # スプライトセットを再作成
+    # Remake sprite set
     @spriteset.dispose
     @spriteset = Spriteset_Map.new
-    # トランジション処理中の場合
+    # If processing transition
     if $game_temp.transition_processing
-      # トランジション処理中フラグをクリア
+      # Clear transition processing flag
       $game_temp.transition_processing = false
-      # トランジション実行
+      # Execute transition
       Graphics.transition(20)
     end
-    # マップに設定されている BGM と BGS の自動切り替えを実行
+    # Run automatic change for BGM and BGS set on the map
     $game_map.autoplay
-    # フレームリセット
+    # Frame reset
     Graphics.frame_reset
-    # 入力情報を更新
+    # Update input information
     Input.update
   end
   #--------------------------------------------------------------------------

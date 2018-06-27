@@ -1,19 +1,19 @@
 #==============================================================================
-# ■ Scene_Menu
+# ** Scene_Menu
 #------------------------------------------------------------------------------
-# 　メニュー画面の処理を行うクラスです。
+#  This class performs menu screen processing.
 #==============================================================================
 
 class Scene_Menu
   #--------------------------------------------------------------------------
-  # ● オブジェクト初期化
-  #     menu_index : コマンドのカーソル初期位置
+  # * Object Initialization
+  #     menu_index : command cursor's initial position
   #--------------------------------------------------------------------------
   def initialize(menu_index = 0)
     @menu_index = menu_index
   end
   #--------------------------------------------------------------------------
-  # ● メイン処理
+  # * Main Processing
   #--------------------------------------------------------------------------
   def main
     # 画像の表示
@@ -90,30 +90,30 @@ class Scene_Menu
 
     # セーブ禁止の場合
     if $game_system.save_disabled
-      # セーブを無効にする
+      # Disable save
       @command_window.disable_item(4)
     end
     # トランジション実行
     Graphics.transition
-    # メインループ
+    # Main loop
     loop do
-      # ゲーム画面を更新
+      # Update game screen
       Graphics.update
-      # 入力情報を更新
+      # Update input information
       Input.update
-      # フレーム更新
+      # Frame update
       update
-      # 画面が切り替わったらループを中断
+      # Abort loop if screen is changed
       if $scene != self
         break
       end
     end
-    # トランジション準備
+    # Prepare for transition
     Graphics.freeze
     # 画像を開放
     @menuback.dispose
     $menu_pose.clear
-    # ウィンドウを解放
+    # Dispose of windows
     @status_window.dispose
     @info_window.dispose
     @command_window.dispose
@@ -131,7 +131,7 @@ class Scene_Menu
     end
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新
+  # * Frame Update
   #--------------------------------------------------------------------------
   def update
     # 情報ウィンドウの表示
@@ -144,13 +144,13 @@ class Scene_Menu
     else
       @info_window.visible = false
     end
-    # ウィンドウを更新
+    # Update windows
     @command_window.update
     @change_window.update
     @put_off_window.update
     @put_on_window.update
     @title_window.update
-    # コマンドウィンドウがアクティブの場合: update_command を呼ぶ
+    # If command window is active: call update_command
     if @command_window.active
       update_command
       return
@@ -177,29 +177,29 @@ class Scene_Menu
     end
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新 (コマンドウィンドウがアクティブの場合)
+  # * Frame Update (when command window is active)
   #--------------------------------------------------------------------------
   def update_command
-    # B ボタンが押された場合
+    # If B button was pressed
     if Input.trigger?(Input::B)
-      # キャンセル SE を演奏
+      # Play cancel SE
       $game_system.se_play($data_system.cancel_se)
-      # マップ画面に切り替え
+      # Switch to map screen
       $scene = Scene_Map.new
       return
     end
-    # C ボタンが押された場合
+    # If C button was pressed
     if Input.trigger?(Input::C)
-      # パーティ人数が 0 人で、セーブ、ゲーム終了以外のコマンドの場合
+      # If command other than save or end game, and party members = 0
       if $game_party.actors.size == 0 and @command_window.index < 4
-        # ブザー SE を演奏
+        # Play buzzer SE
         $game_system.se_play($data_system.buzzer_se)
         return
       end
-      # コマンドウィンドウのカーソル位置で分岐
+      # Branch by command window cursor position
       case @command_window.index
-      when 0  # 称号
-        # 決定  SE を演奏
+      when 0  # item
+        # Play decision SE
         $game_system.se_play($data_system.decision_se)
         @command_window.active = false
         @info_window.visible = false
@@ -207,7 +207,7 @@ class Scene_Menu
         @title_window.active = true
         @help_window.visible = true
       when 1  # アイテム
-        # 決定  SE を演奏
+        # Play decision SE
         $game_system.se_play($data_system.decision_se)
         # アイテム画面に切り替え
         $scene = Scene_Item.new
@@ -235,31 +235,32 @@ class Scene_Menu
       when 4  # セーブ
         # セーブ禁止の場合
         if $game_system.save_disabled
-          # ブザー SE を演奏
+          # Play buzzer SE
           $game_system.se_play($data_system.buzzer_se)
           return
         end
-        # 決定 SE を演奏
+        # Play decision SE
         $game_system.se_play($data_system.decision_se)
-        # セーブ画面に切り替え
+        # Switch to save screen
         $scene = Scene_Save.new
-      when 5  # ゲーム終了
-        # 決定 SE を演奏
+      when 5  # end game
+        # Play decision SE
         $game_system.se_play($data_system.decision_se)
-        # ゲーム終了画面に切り替え
+        # Switch to end game screen
         $scene = Scene_End.new
       end
       return
     end
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新 (着替えウィンドウがアクティブの場合)
+  # * Frame Update (when status window is active)
   #--------------------------------------------------------------------------
-  def update_change
-    # B ボタンが押された場合
+  def update_status
+    # If B button was pressed
     if Input.trigger?(Input::B)
-      # キャンセル SE を演奏
+      # Play cancel SE
       $game_system.se_play($data_system.cancel_se)
+      # Make command window active
       @change_window.active = false
       @change_window.visible = false
       @command_window.active = true
@@ -274,11 +275,11 @@ class Scene_Menu
       case @change_window.index
         when 0  # 脱ぐ
           if $game_switches[2] == true  #着替えコマンドが禁止の場合
-            # ブザー SE を演奏
+            # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
             return
           end
-          # 決定  SE を演奏
+          # Play decision SE
           $game_system.se_play($data_system.decision_se)
           @change_window.active = false
           @change_window.visible = false
@@ -291,11 +292,11 @@ class Scene_Menu
 
         when 1  # 着る
           if $game_switches[2] == true  #着替えコマンドが禁止の場合
-            # ブザー SE を演奏
+            # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
             return
           end
-          # 決定  SE を演奏
+          # Play decision SE
           $game_system.se_play($data_system.decision_se)
           @change_window.active = false
           @change_window.visible = false
@@ -307,7 +308,7 @@ class Scene_Menu
           #end
 
         when 2  # キャンセル
-          # キャンセル SE を演奏
+          # Play cancel SE
           $game_system.se_play($data_system.cancel_se)
           @change_window.active = false
           @change_window.visible = false
@@ -326,7 +327,7 @@ class Scene_Menu
     check_put_off #脱衣の変更
     # B ボタンが押された場合
     if Input.trigger?(Input::B)
-      # キャンセル SE を演奏
+      # Play cancel SE
       $game_system.se_play($data_system.cancel_se)
       @put_off_window.active = false
       @put_off_window.visible = false
@@ -339,52 +340,52 @@ class Scene_Menu
       $menu_pose = Menu_Pose.new("A", "01", 0)
       $menu_pose.pop
     end
-    # C ボタンが押された場合
+    # If C button was pressed
     if Input.trigger?(Input::C)
       # コマンドウィンドウのカーソル位置で分岐
       case @put_off_window.index
       when 0  # 上衣
         # 変更禁止の場合
         if @index_put_off_disable0 == 1
-          # ブザー SE を演奏
+          # Play buzzer SE
           $game_system.se_play($data_system.buzzer_se)
           return
         end
-        # 決定  SE を演奏
+        # Play decision SE
         $game_system.se_play($data_system.decision_se)
         change_put_off
       when 1  # キャミソール
         # 変更禁止の場合
         if @index_put_off_disable1 == 1
-          # ブザー SE を演奏
+          # Play buzzer SE
           $game_system.se_play($data_system.buzzer_se)
           return
         end
-        # 決定  SE を演奏
+        # Play decision SE
         $game_system.se_play($data_system.decision_se)
         change_put_off
       when 2  # スカート
         # 変更禁止の場合
         if @index_put_off_disable2 == 1
-          # ブザー SE を演奏
+          # Play buzzer SE
           $game_system.se_play($data_system.buzzer_se)
           return
         end
-        # 決定  SE を演奏
+        # Play decision SE
         $game_system.se_play($data_system.decision_se)
         change_put_off
       when 3  # パンティ
         # 変更禁止の場合
         if @index_put_off_disable3 == 1
-          # ブザー SE を演奏
+          # Play buzzer SE
           $game_system.se_play($data_system.buzzer_se)
           return
         end
-        # 決定  SE を演奏
+        # Play decision SE
         $game_system.se_play($data_system.decision_se)
         change_put_off
       when 4  # キャンセル
-        # キャンセル SE を演奏
+        # Play cancel SE
         $game_system.se_play($data_system.cancel_se)
         @put_off_window.active = false
         @put_off_window.visible = false
@@ -406,7 +407,7 @@ class Scene_Menu
     check_put_on #着衣の変更
     # B ボタンが押された場合
     if Input.trigger?(Input::B)
-      # キャンセル SE を演奏
+      # Play cancel SE
       $game_system.se_play($data_system.cancel_se)
       @put_on_window.active = false
       @put_on_window.visible = false
@@ -427,58 +428,58 @@ class Scene_Menu
         when 0  # 上衣
           # 変更禁止の場合
           if @index_put_on_disable0 == 1
-            # ブザー SE を演奏
+            # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
             return
           end
-          # 決定  SE を演奏
+          # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
         when 1  # キャミソール
           # 変更禁止の場合
           if @index_put_on_disable1 == 1
-            # ブザー SE を演奏
+            # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
             return
           end
-          # 決定  SE を演奏
+          # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
         when 2  # スカート
           # 変更禁止の場合
           if @index_put_on_disable2 == 1
-            # ブザー SE を演奏
+            # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
             return
           end
-          # 決定  SE を演奏
+          # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
         when 3  # パンティ
           # 変更禁止の場合
           if @index_put_on_disable3 == 1
-            # ブザー SE を演奏
+            # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
             return
           end
-          # 決定  SE を演奏
+          # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
           put_off_window_refresh  #脱ぐコマンドウィンドウの更新
         when 4  # 黒パンティ
           # 変更禁止の場合
           if @index_put_on_disable4 == 1
-            # ブザー SE を演奏
+            # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
             return
           end
-          # 決定  SE を演奏
+          # Play decision SE
           $game_system.se_play($data_system.decision_se)
           $game_switches[4] = true  #黒パンティ着用
           change_put_on
           put_off_window_refresh  #脱ぐコマンドウィンドウの更新
         when 5  # キャンセル
-          # キャンセル SE を演奏
+          # Play cancel SE
           $game_system.se_play($data_system.cancel_se)
           @put_on_window.active = false
           @put_on_window.visible = false
@@ -497,45 +498,45 @@ class Scene_Menu
         when 0  # 上衣
           # 変更禁止の場合
           if @index_put_on_disable0 == 1
-            # ブザー SE を演奏
+            # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
             return
           end
-          # 決定  SE を演奏
+          # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
         when 1  # キャミソール
           # 変更禁止の場合
           if @index_put_on_disable1 == 1
-            # ブザー SE を演奏
+            # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
             return
           end
-          # 決定  SE を演奏
+          # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
         when 2  # スカート
           # 変更禁止の場合
           if @index_put_on_disable2 == 1
-            # ブザー SE を演奏
+            # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
             return
           end
-          # 決定  SE を演奏
+          # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
         when 3  # パンティ
           # 変更禁止の場合
           if @index_put_on_disable3 == 1
-            # ブザー SE を演奏
+            # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
             return
           end
-          # 決定  SE を演奏
+          # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
         when 4  # キャンセル
-          # キャンセル SE を演奏
+          # Play cancel SE
           $game_system.se_play($data_system.cancel_se)
           @put_on_window.active = false
           @put_on_window.visible = false

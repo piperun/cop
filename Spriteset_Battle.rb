@@ -1,21 +1,21 @@
 #==============================================================================
-# ■ Spriteset_Battle
+# ** Spriteset_Battle
 #------------------------------------------------------------------------------
-# 　バトル画面のスプライトをまとめたクラスです。このクラスは Scene_Battle クラ
-# スの内部で使用されます。
+#  This class brings together battle screen sprites. It's used within
+#  the Scene_Battle class.
 #==============================================================================
 
 class Spriteset_Battle
   #--------------------------------------------------------------------------
-  # ● 公開インスタンス変数
+  # * Public Instance Variables
   #--------------------------------------------------------------------------
-  attr_reader   :viewport1                # エネミー側のビューポート
-  attr_reader   :viewport2                # アクター側のビューポート
+  attr_reader   :viewport1                # enemy viewport
+  attr_reader   :viewport2                # actor viewport
   #--------------------------------------------------------------------------
-  # ● オブジェクト初期化
+  # * Object Initialization
   #--------------------------------------------------------------------------
   def initialize
-    # ビューポートを作成
+    # Make viewports
     #@viewport1 = Viewport.new(0, 0, 640, 320)
     @viewport1 = Viewport.new(0, 0, 640, 480)
     @viewport2 = Viewport.new(0, 0, 640, 480)
@@ -24,80 +24,80 @@ class Spriteset_Battle
     @viewport2.z = 101
     @viewport3.z = 200
     @viewport4.z = 5000
-    # バトルバックスプライトを作成
+    # Make battleback sprite
     @battleback_sprite = Sprite.new(@viewport1)
-    # エネミースプライトを作成
+    # Make enemy sprites
     @enemy_sprites = []
     for enemy in $game_troop.enemies.reverse
       @enemy_sprites.push(Sprite_Battler.new(@viewport1, enemy))
     end
-    # アクタースプライトを作成
+    # Make actor sprites
     @actor_sprites = []
     @actor_sprites.push(Sprite_Battler.new(@viewport2))
     @actor_sprites.push(Sprite_Battler.new(@viewport2))
     @actor_sprites.push(Sprite_Battler.new(@viewport2))
     @actor_sprites.push(Sprite_Battler.new(@viewport2))
-    # 天候を作成
+    # Make weather
     @weather = RPG::Weather.new(@viewport1)
-    # ピクチャスプライトを作成
+    # Make picture sprites
     @picture_sprites = []
     for i in 51..100
       @picture_sprites.push(Sprite_Picture.new(@viewport3,
         $game_screen.pictures[i]))
     end
-    # タイマースプライトを作成
+    # Make timer sprite
     @timer_sprite = Sprite_Timer.new
-    # フレーム更新
+    # Frame update
     update
   end
   #--------------------------------------------------------------------------
-  # ● 解放
+  # * Dispose
   #--------------------------------------------------------------------------
   def dispose
-    # バトルバックビットマップが存在していたら解放
+    # If battleback bit map exists, dispose of it
     if @battleback_sprite.bitmap != nil
       @battleback_sprite.bitmap.dispose
     end
-    # バトルバックスプライトを解放
+    # Dispose of battleback sprite
     @battleback_sprite.dispose
-    # エネミースプライト、アクタースプライトを解放
+    # Dispose of enemy sprites and actor sprites
     for sprite in @enemy_sprites + @actor_sprites
       sprite.dispose
     end
-    # 天候を解放
+    # Dispose of weather
     @weather.dispose
-    # ピクチャスプライトを解放
+    # Dispose of picture sprites
     for sprite in @picture_sprites
       sprite.dispose
     end
-    # タイマースプライトを解放
+    # Dispose of timer sprite
     @timer_sprite.dispose
-    # ビューポートを解放
+    # Dispose of viewports
     @viewport1.dispose
     @viewport2.dispose
     @viewport3.dispose
     @viewport4.dispose
   end
   #--------------------------------------------------------------------------
-  # ● エフェクト表示中判定
+  # * Determine if Effects are Displayed
   #--------------------------------------------------------------------------
   def effect?
-    # エフェクトが一つでも表示中なら true を返す
+    # Return true if even 1 effect is being displayed
     for sprite in @enemy_sprites + @actor_sprites
       return true if sprite.effect?
     end
     return false
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新
+  # * Frame Update
   #--------------------------------------------------------------------------
   def update
-    # アクタースプライトの内容を更新 (アクターの入れ替えに対応)
+    # Update actor sprite contents (corresponds with actor switching)
     @actor_sprites[0].battler = $game_party.actors[0]
     @actor_sprites[1].battler = $game_party.actors[1]
     @actor_sprites[2].battler = $game_party.actors[2]
     @actor_sprites[3].battler = $game_party.actors[3]
-    # バトルバックのファイル名が現在のものと違う場合
+    # If battleback file name is different from current one
     if @battleback_name != $game_temp.battleback_name
       @battleback_name = $game_temp.battleback_name
       if @battleback_sprite.bitmap != nil
@@ -107,27 +107,27 @@ class Spriteset_Battle
       #@battleback_sprite.src_rect.set(0, 0, 640, 320)
       @battleback_sprite.src_rect.set(0, 0, 640, 480)
     end
-    # バトラースプライトを更新
+    # Update battler sprites
     #for sprite in @enemy_sprites + @actor_sprites
     for sprite in @enemy_sprites
       sprite.update
     end
-    # 天候グラフィックを更新
+    # Update weather graphic
     @weather.type = $game_screen.weather_type
     @weather.max = $game_screen.weather_max
     @weather.update
-    # ピクチャスプライトを更新
+    # Update picture sprites
     for sprite in @picture_sprites
       sprite.update
     end
-    # タイマースプライトを更新
+    # Update timer sprite
     @timer_sprite.update
-    # 画面の色調とシェイク位置を設定
+    # Set screen color tone and shake position
     @viewport1.tone = $game_screen.tone
     @viewport1.ox = $game_screen.shake
-    # 画面のフラッシュ色を設定
+    # Set screen flash color
     @viewport4.color = $game_screen.flash_color
-    # ビューポートを更新
+    # Update viewports
     @viewport1.update
     @viewport2.update
     @viewport4.update

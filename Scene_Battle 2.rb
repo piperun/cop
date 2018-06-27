@@ -1,19 +1,19 @@
 #==============================================================================
-# ■ Scene_Battle (分割定義 2)
+# ** Scene_Battle (part 2)
 #------------------------------------------------------------------------------
-# 　バトル画面の処理を行うクラスです。
+#  This class performs battle screen processing.
 #==============================================================================
 
 class Scene_Battle
   #--------------------------------------------------------------------------
-  # ● フェイズ1開始
+  # * Start Pre-Battle Phase
   #--------------------------------------------------------------------------
   def start_phase1
-    # フェーズ 1 に移行
+    # Shift to phase 1
     @phase = 1
   end
   #--------------------------------------------------------------------------
-  # ● フェイズ1更新 (バトルコマンドA移行)
+  # * Frame Update (pre-battle phase)
   #--------------------------------------------------------------------------
   def update_phase1
     # バトルコマンドAのズーム表示
@@ -31,7 +31,7 @@ class Scene_Battle
   # ● フェイズ2開始 (バトルコマンドA)
   #--------------------------------------------------------------------------
   def start_phase2
-    # フェーズ 2 に移行
+    # Shift to phase 2
     @phase = 2
   end
   #--------------------------------------------------------------------------
@@ -75,7 +75,7 @@ class Scene_Battle
       battle_commandA_pop
       @command_count_change = 0
     end
-    # C ボタンが押された場合
+    # If C button was pressed
     if Input.trigger?(Input::C)
       case @commandA_index
       when 1  #戦闘開始
@@ -87,13 +87,13 @@ class Scene_Battle
       when 2  #逃走
         # 逃走不可の場合
         if $game_temp.battle_can_escape == false
-          # ブザー SE を演奏
+          # Play buzzer SE
           $game_system.se_play($data_system.buzzer_se)
           return
         end
-        # 決定 SE を演奏
+        # Play decision SE
         $game_system.se_play($data_system.decision_se)
-        # 逃走処理
+        # Escape processing
         update_phase_escape
       end
     end
@@ -273,7 +273,7 @@ class Scene_Battle
   # ● フェイズ5開始 (攻撃・閃光斬り・スキル)
   #--------------------------------------------------------------------------
   def start_phase5
-    # フェーズ 5 に移行
+    # Shift to phase 5
     @phase = 5
   end
   #--------------------------------------------------------------------------
@@ -615,7 +615,7 @@ class Scene_Battle
       skill_command_clear #スキルコマンドの消去
       skill_command_pop   #スキルコマンドの表示
     end
-    # C ボタンが押された場合
+    # If C button was pressed
     if Input.trigger?(Input::C)
       case @skill_command_index
       when 1  #応急手当

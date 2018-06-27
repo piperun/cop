@@ -1,16 +1,16 @@
 #==============================================================================
-# ■ Window_Base
+# ** Window_Base
 #------------------------------------------------------------------------------
-# 　ゲーム中のすべてのウィンドウのスーパークラスです。
+#  This class is for all in-game windows.
 #==============================================================================
 
 class Window_Base < Window
   #--------------------------------------------------------------------------
-  # ● オブジェクト初期化
-  #     x      : ウィンドウの X 座標
-  #     y      : ウィンドウの Y 座標
-  #     width  : ウィンドウの幅
-  #     height : ウィンドウの高さ
+  # * Object Initialization
+  #     x      : window x-coordinate
+  #     y      : window y-coordinate
+  #     width  : window width
+  #     height : window height
   #--------------------------------------------------------------------------
   def initialize(x, y, width, height)
     super()
@@ -23,18 +23,18 @@ class Window_Base < Window
     self.z = 100
   end
   #--------------------------------------------------------------------------
-  # ● 解放
+  # * Dispose
   #--------------------------------------------------------------------------
   def dispose
-    # ウィンドウ内容のビットマップが設定されていれば解放
+    # Dispose if window contents bit map is set
     if self.contents != nil
       self.contents.dispose
     end
     super
   end
   #--------------------------------------------------------------------------
-  # ● 文字色取得
-  #     n : 文字色番号 (0～7)
+  # * Get Text Color
+  #     n : text color number (0-7)
   #--------------------------------------------------------------------------
   def text_color(n)
     case n
@@ -59,53 +59,53 @@ class Window_Base < Window
     end
   end
   #--------------------------------------------------------------------------
-  # ● 通常文字色の取得
+  # * Get Normal Text Color
   #--------------------------------------------------------------------------
   def normal_color
     return Color.new(255, 255, 255, 255)
   end
   #--------------------------------------------------------------------------
-  # ● 無効文字色の取得
+  # * Get Disabled Text Color
   #--------------------------------------------------------------------------
   def disabled_color
     return Color.new(255, 255, 255, 128)
   end
   #--------------------------------------------------------------------------
-  # ● システム文字色の取得
+  # * Get System Text Color
   #--------------------------------------------------------------------------
   def system_color
     #return Color.new(192, 224, 255, 255)
     return Color.new(255, 230, 90, 255)
   end
   #--------------------------------------------------------------------------
-  # ● ピンチ文字色の取得
+  # * Get Crisis Text Color
   #--------------------------------------------------------------------------
   def crisis_color
     #return Color.new(255, 255, 64, 255)
     return Color.new(200, 30, 30, 255)
   end
   #--------------------------------------------------------------------------
-  # ● 戦闘不能文字色の取得
+  # * Get Knockout Text Color
   #--------------------------------------------------------------------------
   def knockout_color
     return Color.new(255, 64, 0)
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新
+  # * Frame Update
   #--------------------------------------------------------------------------
   def update
     super
-    # ウィンドウスキンが変更された場合、再設定
+    # Reset if windowskin was changed
     if $game_system.windowskin_name != @windowskin_name
       @windowskin_name = $game_system.windowskin_name
       self.windowskin = RPG::Cache.windowskin(@windowskin_name)
     end
   end
   #--------------------------------------------------------------------------
-  # ● グラフィックの描画
-  #     actor : アクター
-  #     x     : 描画先 X 座標
-  #     y     : 描画先 Y 座標
+  # * Draw Graphic
+  #     actor : actor
+  #     x     : draw spot x-coordinate
+  #     y     : draw spot y-coordinate
   #--------------------------------------------------------------------------
   def draw_actor_graphic(actor, x, y)
     bitmap = RPG::Cache.character(actor.character_name, actor.character_hue)
@@ -115,30 +115,30 @@ class Window_Base < Window
     self.contents.blt(x - cw / 2, y - ch, bitmap, src_rect)
   end
   #--------------------------------------------------------------------------
-  # ● 名前の描画
-  #     actor : アクター
-  #     x     : 描画先 X 座標
-  #     y     : 描画先 Y 座標
+  # * Draw Name
+  #     actor : actor
+  #     x     : draw spot x-coordinate
+  #     y     : draw spot y-coordinate
   #--------------------------------------------------------------------------
   def draw_actor_name(actor, x, y)
     self.contents.font.color = normal_color
     self.contents.draw_text(x, y, 120, 32, actor.name)
   end
   #--------------------------------------------------------------------------
-  # ● クラスの描画
-  #     actor : アクター
-  #     x     : 描画先 X 座標
-  #     y     : 描画先 Y 座標
+  # * Draw Class
+  #     actor : actor
+  #     x     : draw spot x-coordinate
+  #     y     : draw spot y-coordinate
   #--------------------------------------------------------------------------
   def draw_actor_class(actor, x, y)
     self.contents.font.color = normal_color
     self.contents.draw_text(x, y, 236, 32, actor.class_name)
   end
   #--------------------------------------------------------------------------
-  # ● レベルの描画
-  #     actor : アクター
-  #     x     : 描画先 X 座標
-  #     y     : 描画先 Y 座標
+  # * Draw Level
+  #     actor : actor
+  #     x     : draw spot x-coordinate
+  #     y     : draw spot y-coordinate
   #--------------------------------------------------------------------------
   def draw_actor_level(actor, x, y)
     self.contents.font.color = system_color
@@ -147,15 +147,15 @@ class Window_Base < Window
     self.contents.draw_text(x + 32, y, 24, 32, actor.level.to_s, 2)
   end
   #--------------------------------------------------------------------------
-  # ● 描画用のステート文字列作成
-  #     actor       : アクター
-  #     width       : 描画先の幅
-  #     need_normal : [正常] が必要かどうか (true / false)
+  # * Make State Text String for Drawing
+  #     actor       : actor
+  #     width       : draw spot width
+  #     need_normal : Whether or not [normal] is needed (true / false)
   #--------------------------------------------------------------------------
   def make_battler_state_text(battler, width, need_normal)
-    # 括弧の幅を取得
+    # Get width of brackets
     brackets_width = self.contents.text_size("[]").width
-    # ステート名の文字列を作成
+    # Make text string for state names
     text = ""
     for i in battler.states
       if $data_states[i].rating >= 1
@@ -171,24 +171,24 @@ class Window_Base < Window
         end
       end
     end
-    # ステート名の文字列が空の場合は "[正常]" にする
+    # If text string for state names is empty, make it [normal]
     if text == ""
       if need_normal
         text = "[Normal]"
       end
     else
-      # 括弧をつける
+      # Attach brackets
       text = "[" + text + "]"
     end
-    # 完成した文字列を返す
+    # Return completed text string
     return text
   end
   #--------------------------------------------------------------------------
-  # ● ステートの描画
-  #     actor : アクター
-  #     x     : 描画先 X 座標
-  #     y     : 描画先 Y 座標
-  #     width : 描画先の幅
+  # * Draw State
+  #     actor : actor
+  #     x     : draw spot x-coordinate
+  #     y     : draw spot y-coordinate
+  #     width : draw spot width
   #--------------------------------------------------------------------------
   def draw_actor_state(actor, x, y, width = 120)
     text = make_battler_state_text(actor, width, true)
@@ -201,10 +201,10 @@ class Window_Base < Window
     self.contents.draw_text(x, y, width, 32, text)
   end
   #--------------------------------------------------------------------------
-  # ● EXP の描画
-  #     actor : アクター
-  #     x     : 描画先 X 座標
-  #     y     : 描画先 Y 座標
+  # * Draw EXP
+  #     actor : actor
+  #     x     : draw spot x-coordinate
+  #     y     : draw spot y-coordinate
   #--------------------------------------------------------------------------
   def draw_actor_exp(actor, x, y)
     self.contents.font.color = system_color
@@ -215,17 +215,17 @@ class Window_Base < Window
     self.contents.draw_text(x + 120, y, 84, 32, actor.next_exp_s)
   end
   #--------------------------------------------------------------------------
-  # ● HP の描画
-  #     actor : アクター
-  #     x     : 描画先 X 座標
-  #     y     : 描画先 Y 座標
-  #     width : 描画先の幅
+  # * Draw HP
+  #     actor : actor
+  #     x     : draw spot x-coordinate
+  #     y     : draw spot y-coordinate
+  #     width : draw spot width
   #--------------------------------------------------------------------------
   def draw_actor_hp(actor, x, y, width = 144)
-    # 文字列 "HP" を描画
+    # Draw "HP" text string
     self.contents.font.color = system_color
     self.contents.draw_text(x, y, 32, 32, $data_system.words.hp)
-    # MaxHP を描画するスペースがあるか計算
+    # Calculate if there is draw space for MaxHP
     if width - 32 >= 108
       hp_x = x + width - 108
       flag = true
@@ -233,7 +233,7 @@ class Window_Base < Window
       hp_x = x + width - 48
       flag = false
     end
-    # HP を描画
+    # Draw HP
     #self.contents.font.color = actor.hp == 0 ? knockout_color :
     #  actor.hp <= actor.maxhp / 4 ? crisis_color : normal_color
 
@@ -244,7 +244,7 @@ class Window_Base < Window
     end
 
     self.contents.draw_text(hp_x, y, 48, 32, actor.hp.to_s, 2)
-    # MaxHP を描画
+    # Draw MaxHP
     if flag
       self.contents.font.color = normal_color
       self.contents.draw_text(hp_x + 48, y, 12, 32, "/", 1)
@@ -252,17 +252,17 @@ class Window_Base < Window
     end
   end
   #--------------------------------------------------------------------------
-  # ● SP の描画
-  #     actor : アクター
-  #     x     : 描画先 X 座標
-  #     y     : 描画先 Y 座標
-  #     width : 描画先の幅
+  # * Draw SP
+  #     actor : actor
+  #     x     : draw spot x-coordinate
+  #     y     : draw spot y-coordinate
+  #     width : draw spot width
   #--------------------------------------------------------------------------
   def draw_actor_sp(actor, x, y, width = 144)
-    # 文字列 "SP" を描画
+    # Draw "SP" text string
     self.contents.font.color = system_color
     self.contents.draw_text(x, y, 32, 32, $data_system.words.sp)
-    # MaxSP を描画するスペースがあるか計算
+    # Calculate if there is draw space for MaxHP
     if width - 32 >= 108
       sp_x = x + width - 108
       flag = true
@@ -270,7 +270,7 @@ class Window_Base < Window
       sp_x = x + width - 48
       flag = false
     end
-    # SP を描画
+    # Draw SP
     #self.contents.font.color = actor.sp == 0 ? knockout_color :
     #  actor.sp <= actor.maxsp / 4 ? crisis_color : normal_color
 
@@ -281,7 +281,7 @@ class Window_Base < Window
     end
 
     self.contents.draw_text(sp_x, y, 48, 32, actor.sp.to_s, 2)
-    # MaxSP を描画
+    # Draw MaxSP
     if flag
       self.contents.font.color = normal_color
       self.contents.draw_text(sp_x + 48, y, 12, 32, "/", 1)
@@ -289,11 +289,11 @@ class Window_Base < Window
     end
   end
   #--------------------------------------------------------------------------
-  # ● パラメータの描画
-  #     actor : アクター
-  #     x     : 描画先 X 座標
-  #     y     : 描画先 Y 座標
-  #     type  : パラメータの種類 (0～6)
+  # * Draw Parameter
+  #     actor : actor
+  #     x     : draw spot x-coordinate
+  #     y     : draw spot y-coordinate
+  #     type  : parameter type (0-6)
   #--------------------------------------------------------------------------
   def draw_actor_parameter(actor, x, y, type)
     case type
@@ -326,10 +326,10 @@ class Window_Base < Window
     self.contents.draw_text(x + 92, y, 36, 32, parameter_value.to_s, 2)
   end
   #--------------------------------------------------------------------------
-  # ● アイテム名の描画
-  #     item : アイテム
-  #     x    : 描画先 X 座標
-  #     y    : 描画先 Y 座標
+  # * Draw Item Name
+  #     item : item
+  #     x    : draw spot x-coordinate
+  #     y    : draw spot y-coordinate
   #--------------------------------------------------------------------------
   def draw_item_name(item, x, y)
     if item == nil

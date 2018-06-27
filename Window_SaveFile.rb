@@ -1,19 +1,19 @@
 #==============================================================================
-# ■ Window_SaveFile
+# ** Window_SaveFile
 #------------------------------------------------------------------------------
-# 　セーブ画面およびロード画面で表示する、セーブファイルのウィンドウです。
+#  This window displays save files on the save and load screens.
 #==============================================================================
 
 class Window_SaveFile < Window_Base
   #--------------------------------------------------------------------------
-  # ● 公開インスタンス変数
+  # * Public Instance Variables
   #--------------------------------------------------------------------------
-  attr_reader   :filename                 # ファイル名
-  attr_reader   :selected                 # 選択状態
+  attr_reader   :filename                 # file name
+  attr_reader   :selected                 # selected
   #--------------------------------------------------------------------------
-  # ● オブジェクト初期化
-  #     file_index : セーブファイルのインデックス (0～3)
-  #     filename   : ファイル名
+  # * Object Initialization
+  #     file_index : save file index (0-3)
+  #     filename   : file name
   #--------------------------------------------------------------------------
   def initialize(file_index, filename)
     @file_index = file_index
@@ -45,11 +45,11 @@ class Window_SaveFile < Window_Base
     self.visible = false  #追加
   end
   #--------------------------------------------------------------------------
-  # ● リフレッシュ
+  # * Refresh
   #--------------------------------------------------------------------------
   def refresh
     self.contents.clear
-    # ファイル番号を描画
+    # Draw file number
 
     self.contents.font.color = system_color
     self.contents.font.italic = true
@@ -61,9 +61,9 @@ class Window_SaveFile < Window_Base
     self.contents.font.italic = false
     self.contents.draw_text(56, 0, 600, 32, "#{@file_index + 1}")
     @name_width = contents.text_size(name).width
-    # セーブファイルが存在する場合
+    # If save file exists
     if @file_exist
-      # キャラクターを描画
+      # Draw character
       #for i in 0...@characters.size
       #  bitmap = RPG::Cache.character(@characters[i][0], @characters[i][1])
       #  cw = bitmap.rect.width / 4
@@ -72,7 +72,7 @@ class Window_SaveFile < Window_Base
       #  x = 300 - @characters.size * 32 + i * 64 - cw / 2
       #  self.contents.blt(x, 68 - ch, bitmap, src_rect)
       #end
-      # プレイ時間を描画
+      # Draw play time
       hour = @total_sec / 60 / 60
       min = @total_sec / 60 % 60
       sec = @total_sec % 60
@@ -80,7 +80,7 @@ class Window_SaveFile < Window_Base
       self.contents.font.color = normal_color
       #self.contents.draw_text(4, 8, 600, 32, time_string, 2)
       self.contents.draw_text(4, 8, 280, 32, time_string, 2)
-      # タイムスタンプを描画
+      # Draw timestamp
       self.contents.font.color = normal_color
       time_string = @time_stamp.strftime("%Y/%m/%d %H:%M")
       #self.contents.draw_text(4, 40, 600, 32, time_string, 2)
@@ -88,15 +88,15 @@ class Window_SaveFile < Window_Base
     end
   end
   #--------------------------------------------------------------------------
-  # ● 選択状態の設定
-  #     selected : 新しい選択状態 (true=選択 false=非選択)
+  # * Set Selected
+  #     selected : new selected (true = selected, false = unselected)
   #--------------------------------------------------------------------------
   def selected=(selected)
     @selected = selected
     update_cursor_rect
   end
   #--------------------------------------------------------------------------
-  # ● カーソルの矩形更新
+  # * Cursor Rectangle Update
   #--------------------------------------------------------------------------
   def update_cursor_rect
     if @selected

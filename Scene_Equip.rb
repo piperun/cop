@@ -1,21 +1,21 @@
 #==============================================================================
-# ■ Scene_Equip
+# ** Scene_Equip
 #------------------------------------------------------------------------------
-# 　装備画面の処理を行うクラスです。
+#  This class performs equipment screen processing.
 #==============================================================================
 
 class Scene_Equip
   #--------------------------------------------------------------------------
-  # ● オブジェクト初期化
-  #     actor_index : アクターインデックス
-  #     equip_index : 装備インデックス
+  # * Object Initialization
+  #     actor_index : actor index
+  #     equip_index : equipment index
   #--------------------------------------------------------------------------
   def initialize(actor_index = 0, equip_index = 0)
     @actor_index = actor_index
     @equip_index = equip_index
   end
   #--------------------------------------------------------------------------
-  # ● メイン処理
+  # * Main Processing
   #--------------------------------------------------------------------------
   def main
     # ウィンドウスキンの変更
@@ -35,7 +35,7 @@ class Scene_Equip
     @command_window.y = 64
     @command_window.index = 2
     @command_window.active = false
-    # ウィンドウを作成
+    # Make windows
     @help_window = Window_Help.new
     #@left_window = Window_EquipLeft.new(@actor)
     @right_window = Window_EquipRight.new(@actor)
@@ -44,34 +44,34 @@ class Scene_Equip
     @item_window3 = Window_EquipItem.new(@actor, 2)
     @item_window4 = Window_EquipItem.new(@actor, 3)
     @item_window5 = Window_EquipItem.new(@actor, 4)
-    # ヘルプウィンドウを関連付け
+    # Associate help window
     @right_window.help_window = @help_window
     @item_window1.help_window = @help_window
     @item_window2.help_window = @help_window
     @item_window3.help_window = @help_window
     @item_window4.help_window = @help_window
     @item_window5.help_window = @help_window
-    # カーソル位置を設定
+    # Set cursor position
     @right_window.index = @equip_index
     refresh
-    # トランジション実行
+    # Execute transition
     Graphics.transition
-    # メインループ
+    # Main loop
     loop do
-      # ゲーム画面を更新
+      # Update game screen
       Graphics.update
-      # 入力情報を更新
+      # Update input information
       Input.update
-      # フレーム更新
+      # Frame update
       update
-      # 画面が切り替わったらループを中断
+      # Abort loop if screen is changed
       if $scene != self
         break
       end
     end
-    # トランジション準備
+    # Prepare for transition
     Graphics.freeze
-    # ウィンドウを解放
+    # Dispose of windows
     @help_window.dispose
     #@left_window.dispose
     @right_window.dispose
@@ -90,15 +90,15 @@ class Scene_Equip
   # ● リフレッシュ
   #--------------------------------------------------------------------------
   def refresh
-    # アイテムウィンドウの可視状態設定
+    # Set item window to visible
     @item_window1.visible = (@right_window.index == 0)
     @item_window2.visible = (@right_window.index == 1)
     @item_window3.visible = (@right_window.index == 2)
     @item_window4.visible = (@right_window.index == 3)
     @item_window5.visible = (@right_window.index == 4)
-    # 現在装備中のアイテムを取得
+    # Get currently equipped item
     item1 = @right_window.item
-    # 現在のアイテムウィンドウを @item_window に設定
+    # Set current item window to @item_window
     case @right_window.index
     when 0
       @item_window = @item_window1
@@ -111,24 +111,19 @@ class Scene_Equip
     when 4
       @item_window = @item_window5
     end
-    # ライトウィンドウがアクティブの場合
-    #if @right_window.active
-      # 装備変更後のパラメータを消去
-    #  @left_window.set_new_parameters(nil, nil, nil)
-    #end
-    # アイテムウィンドウがアクティブの場合
+    # If right window is active
     if @item_window.active
-      # 現在選択中のアイテムを取得
+      # Get currently selected item
       item2 = @item_window.item
-      # 装備を変更
+      # Change equipment
       last_hp = @actor.hp
       last_sp = @actor.sp
       @actor.equip(@right_window.index, item2 == nil ? 0 : item2.id)
-      # 装備変更後のパラメータを取得
+      # Get parameters for after equipment change
       new_atk = @actor.atk
       new_pdef = @actor.pdef
       new_mdef = @actor.mdef
-      # 装備を戻す
+      # Return equipment
       @actor.equip(@right_window.index, item1 == nil ? 0 : item1.id)
       @actor.hp = last_hp
       @actor.sp = last_sp
@@ -138,95 +133,94 @@ class Scene_Equip
     end
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新
+  # * Frame Update
   #--------------------------------------------------------------------------
   def update
-    # ウィンドウを更新
-    #@left_window.update
+    # Update windows
     @right_window.update
     @item_window.update
     refresh
-    # ライトウィンドウがアクティブの場合: update_right を呼ぶ
+    # If right window is active: call update_right
     if @right_window.active
       update_right
       return
     end
-    # アイテムウィンドウがアクティブの場合: update_item を呼ぶ
+    # If item window is active: call update_item
     if @item_window.active
       update_item
       return
     end
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新 (ライトウィンドウがアクティブの場合)
+  # * Frame Update (when right window is active)
   #--------------------------------------------------------------------------
   def update_right
-    # B ボタンが押された場合
+    # If B button was pressed
     if Input.trigger?(Input::B)
-      # キャンセル SE を演奏
+      # Play cancel SE
       $game_system.se_play($data_system.cancel_se)
-      # メニュー画面に切り替え
+      # Switch to menu screen
       $scene = Scene_Menu.new(2)
       return
     end
-    # C ボタンが押された場合
+    # If C button was pressed
     if Input.trigger?(Input::C)
-      # 装備固定の場合
+      # If equipment is fixed
       if @actor.equip_fix?(@right_window.index)
-        # ブザー SE を演奏
+        # Play buzzer SE
         $game_system.se_play($data_system.buzzer_se)
         return
       end
-      # 決定 SE を演奏
+      # Play decision SE
       $game_system.se_play($data_system.decision_se)
-      # アイテムウィンドウをアクティブ化
+      # Activate item window
       @right_window.active = false
       @item_window.active = true
       @item_window.index = 0
       return
     end
-    # R ボタンが押された場合
+    # If R button was pressed
     if Input.trigger?(Input::R)
-      # カーソル SE を演奏
+      # Play cursor SE
       $game_system.se_play($data_system.cursor_se)
-      # 次のアクターへ
+      # To next actor
       @actor_index += 1
       @actor_index %= $game_party.actors.size
-      # 別の装備画面に切り替え
+      # Switch to different equipment screen
       $scene = Scene_Equip.new(@actor_index, @right_window.index)
       return
     end
-    # L ボタンが押された場合
+    # If L button was pressed
     if Input.trigger?(Input::L)
-      # カーソル SE を演奏
+      # Play cursor SE
       $game_system.se_play($data_system.cursor_se)
-      # 前のアクターへ
+      # To previous actor
       @actor_index += $game_party.actors.size - 1
       @actor_index %= $game_party.actors.size
-      # 別の装備画面に切り替え
+      # Switch to different equipment screen
       $scene = Scene_Equip.new(@actor_index, @right_window.index)
       return
     end
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新 (アイテムウィンドウがアクティブの場合)
+  # * Frame Update (when item window is active)
   #--------------------------------------------------------------------------
   def update_item
-    # B ボタンが押された場合
+    # If B button was pressed
     if Input.trigger?(Input::B)
-      # キャンセル SE を演奏
+      # Play cancel SE
       $game_system.se_play($data_system.cancel_se)
-      # ライトウィンドウをアクティブ化
+      # Activate right window
       @right_window.active = true
       @item_window.active = false
       @item_window.index = -1
       return
     end
-    # C ボタンが押された場合
+    # If C button was pressed
     if Input.trigger?(Input::C)
-      # 装備 SE を演奏
+      # Play equip SE
       $game_system.se_play($data_system.equip_se)
-      # アイテムウィンドウで現在選択されているデータを取得
+      # Get currently selected data on the item window
       item = @item_window.item
 
       if @right_window.index == 0 #武器は外せない
@@ -239,11 +233,11 @@ class Scene_Equip
         @actor.equip(@right_window.index, item == nil ? 0 : item.id)
       end
 
-      # ライトウィンドウをアクティブ化
+      # Activate right window
       @right_window.active = true
       @item_window.active = false
       @item_window.index = -1
-      # ライトウィンドウ、アイテムウィンドウの内容を再作成
+      # Remake right window and item window contents
       @right_window.refresh
       @item_window.refresh
 

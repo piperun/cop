@@ -1,12 +1,12 @@
 #==============================================================================
-# ■ Scene_End
+# ** Scene_End
 #------------------------------------------------------------------------------
-# 　ゲーム終了画面の処理を行うクラスです。
+#  This class performs game end screen processing.
 #==============================================================================
 
 class Scene_End
   #--------------------------------------------------------------------------
-  # ● メイン処理
+  # * Main Processing
   #--------------------------------------------------------------------------
   def main
     # 画像の表示
@@ -15,31 +15,31 @@ class Scene_End
     $menu_pose.pop
     # ウィンドウスキンの変更
     $game_system.windowskin_name = "skin04"
-    # コマンドウィンドウを作成
+    # Make command window
     s1 = "To Title"
     s2 = "Shutdown"
     s3 = "Cancel"
     @command_window = Window_Command.new(192, [s1, s2, s3])
     @command_window.x = 320 - @command_window.width / 2
     @command_window.y = 240 - @command_window.height / 2
-    # トランジション実行
+    # Execute transition
     Graphics.transition
-    # メインループ
+    # Main loop
     loop do
-      # ゲーム画面を更新
+      # Update game screen
       Graphics.update
-      # 入力情報を更新
+      # Update input information
       Input.update
-      # フレーム更新
+      # Frame Update
       update
-      # 画面が切り替わったらループを中断
+      # Abort loop if screen is changed
       if $scene != self
         break
       end
     end
-    # トランジション準備
+    # Prepare for transition
     Graphics.freeze
-    # ウィンドウを解放
+    # Dispose of window
     @command_window.dispose
     # 画像を開放
     @menuback.dispose
@@ -47,74 +47,74 @@ class Scene_End
     # ウィンドウスキンの変更
     $game_system.windowskin_name = "skin01"
 
-    # タイトル画面に切り替え中の場合
+    # If switching to title screen
     if $scene.is_a?(Scene_Title)
-      # 画面をフェードアウト
+      # Fade out screen
       Graphics.transition
       Graphics.freeze
     end
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新
+  # * Frame Update
   #--------------------------------------------------------------------------
   def update
-    # コマンドウィンドウを更新
+    # Update command window
     @command_window.update
-    # B ボタンが押された場合
+    # If B button was pressed
     if Input.trigger?(Input::B)
-      # キャンセル SE を演奏
+      # Play cancel SE
       $game_system.se_play($data_system.cancel_se)
-      # メニュー画面に切り替え
+      # Switch to menu screen
       $scene = Scene_Menu.new(5)
       return
     end
-    # C ボタンが押された場合
+    # If C button was pressed
     if Input.trigger?(Input::C)
-      # コマンドウィンドウのカーソル位置で分岐
+      # Branch by command window cursor position
       case @command_window.index
-      when 0  # タイトルへ
+      when 0  # to title
         command_to_title
-      when 1  # シャットダウン
+      when 1  # shutdown
         command_shutdown
-      when 2  # やめる
+      when 2  # quit
         command_cancel
       end
       return
     end
   end
   #--------------------------------------------------------------------------
-  # ● コマンド [タイトルへ] 選択時の処理
+  # * Process When Choosing [To Title] Command
   #--------------------------------------------------------------------------
   def command_to_title
-    # 決定 SE を演奏
+    # Play decision SE
     $game_system.se_play($data_system.decision_se)
-    # BGM、BGS、ME をフェードアウト
+    # Fade out BGM, BGS, and ME
     Audio.bgm_fade(800)
     Audio.bgs_fade(800)
     Audio.me_fade(800)
-    # タイトル画面に切り替え
+    # Switch to title screen
     $scene = Scene_Title.new
   end
   #--------------------------------------------------------------------------
-  # ● コマンド [シャットダウン] 選択時の処理
+  # * Process When Choosing [Shutdown] Command
   #--------------------------------------------------------------------------
   def command_shutdown
-    # 決定 SE を演奏
+    # Play decision SE
     $game_system.se_play($data_system.decision_se)
-    # BGM、BGS、ME をフェードアウト
+    # Fade out BGM, BGS, and ME
     Audio.bgm_fade(800)
     Audio.bgs_fade(800)
     Audio.me_fade(800)
-    # シャットダウン
+    # Shutdown
     $scene = nil
   end
   #--------------------------------------------------------------------------
-  # ● コマンド [やめる] 選択時の処理
+  # *  Process When Choosing [Cancel] Command
   #--------------------------------------------------------------------------
   def command_cancel
-    # 決定 SE を演奏
+    # Play decision SE
     $game_system.se_play($data_system.decision_se)
-    # メニュー画面に切り替え
+    # Switch to menu screen
     $scene = Scene_Menu.new(5)
   end
   #--------------------------------------------------------------------------

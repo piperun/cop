@@ -1,12 +1,12 @@
 #==============================================================================
-# ■ Window_Item
+# ** Window_Item
 #------------------------------------------------------------------------------
-# 　アイテム画面、バトル画面で、所持アイテムの一覧を表示するウィンドウです。
+#  This window displays items in possession on the item and battle screens.
 #==============================================================================
 
 class Window_Item < Window_Selectable
   #--------------------------------------------------------------------------
-  # ● オブジェクト初期化
+  # * Object Initialization
   #--------------------------------------------------------------------------
   def initialize
     #super(0, 64, 640, 416)
@@ -15,7 +15,8 @@ class Window_Item < Window_Selectable
     #@column_max = 1
     refresh
     self.index = 0
-    # 戦闘中の場合はウィンドウを画面中央へ移動し、半透明にする
+    # If in battle, move window to center of screen
+    # and make it semi-transparent
     if $game_temp.in_battle
       self.y = 64
       self.height = 256
@@ -23,13 +24,13 @@ class Window_Item < Window_Selectable
     end
   end
   #--------------------------------------------------------------------------
-  # ● アイテムの取得
+  # * Get Item
   #--------------------------------------------------------------------------
   def item
     return @data[self.index]
   end
   #--------------------------------------------------------------------------
-  # ● リフレッシュ
+  # * Refresh
   #--------------------------------------------------------------------------
   def refresh
     if self.contents != nil
@@ -37,13 +38,13 @@ class Window_Item < Window_Selectable
       self.contents = nil
     end
     @data = []
-    # アイテムを追加
+    # Add item
     for i in 1...$data_items.size
       if $game_party.item_number(i) > 0
         @data.push($data_items[i])
       end
     end
-    # 戦闘中以外なら武器と防具も追加
+    # Also add weapons and items if outside of battle
     unless $game_temp.in_battle
       for i in 1...$data_weapons.size
         if $game_party.weapon_number(i) > 0
@@ -56,7 +57,7 @@ class Window_Item < Window_Selectable
         end
       end
     end
-    # 項目数が 0 でなければビットマップを作成し、全項目を描画
+    # If item count is not 0, make a bit map and draw all items
     @item_max = @data.size
     if @item_max > 0
       self.contents = Bitmap.new(width - 32, row_max * 32)
@@ -66,8 +67,8 @@ class Window_Item < Window_Selectable
     end
   end
   #--------------------------------------------------------------------------
-  # ● 項目の描画
-  #     index : 項目番号
+  # * Draw Item
+  #     index : item number
   #--------------------------------------------------------------------------
   def draw_item(index)
     item = @data[index]
@@ -103,7 +104,7 @@ class Window_Item < Window_Selectable
     self.contents.draw_text(x + 176, y, 24, 32, number.to_s, 2)
   end
   #--------------------------------------------------------------------------
-  # ● ヘルプテキスト更新
+  # * Help Text Update
   #--------------------------------------------------------------------------
   def update_help
     @help_window.set_text(self.item == nil ? "" : self.item.description)

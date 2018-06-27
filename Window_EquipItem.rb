@@ -1,14 +1,15 @@
 #==============================================================================
-# ■ Window_EquipItem
+# ** Window_EquipItem
 #------------------------------------------------------------------------------
-# 　装備画面で、装備変更の候補となるアイテムの一覧を表示するウィンドウです。
+#  This window displays choices when opting to change equipment on the
+#  equipment screen.
 #==============================================================================
 
 class Window_EquipItem < Window_Selectable
   #--------------------------------------------------------------------------
-  # ● オブジェクト初期化
-  #     actor      : アクター
-  #     equip_type : 装備部位 (0～3)
+  # * Object Initialization
+  #     actor      : actor
+  #     equip_type : equip region (0-3)
   #--------------------------------------------------------------------------
   def initialize(actor, equip_type)
     #super(0, 256, 640, 224)
@@ -21,13 +22,13 @@ class Window_EquipItem < Window_Selectable
     self.index = -1
   end
   #--------------------------------------------------------------------------
-  # ● アイテムの取得
+  # * Item Acquisition
   #--------------------------------------------------------------------------
   def item
     return @data[self.index]
   end
   #--------------------------------------------------------------------------
-  # ● リフレッシュ
+  # * Refresh
   #--------------------------------------------------------------------------
   def refresh
     if self.contents != nil
@@ -35,7 +36,7 @@ class Window_EquipItem < Window_Selectable
       self.contents = nil
     end
     @data = []
-    # 装備可能な武器を追加
+    # Add equippable weapons
     if @equip_type == 0
       weapon_set = $data_classes[@actor.class_id].weapon_set
       for i in 1...$data_weapons.size
@@ -44,7 +45,7 @@ class Window_EquipItem < Window_Selectable
         end
       end
     end
-    # 装備可能な防具を追加
+    # Add equippable armor
     if @equip_type != 0
       armor_set = $data_classes[@actor.class_id].armor_set
       for i in 1...$data_armors.size
@@ -55,9 +56,9 @@ class Window_EquipItem < Window_Selectable
         end
       end
     end
-    # 空白を追加
+    # Add blank page
     @data.push(nil)
-    # ビットマップを作成し、全項目を描画
+    # Make a bit map and draw all items
     @item_max = @data.size
     self.contents = Bitmap.new(width - 32, row_max * 32)
     for i in 0...@item_max-1
@@ -65,8 +66,8 @@ class Window_EquipItem < Window_Selectable
     end
   end
   #--------------------------------------------------------------------------
-  # ● 項目の描画
-  #     index : 項目番号
+  # * Draw Item
+  #     index : item number
   #--------------------------------------------------------------------------
   def draw_item(index)
     item = @data[index]
@@ -91,7 +92,7 @@ class Window_EquipItem < Window_Selectable
     self.contents.draw_text(x + 176, y, 24, 32, number.to_s, 2)
   end
   #--------------------------------------------------------------------------
-  # ● ヘルプテキスト更新
+  # * Help Text Update
   #--------------------------------------------------------------------------
   def update_help
     @help_window.set_text(self.item == nil ? "" : self.item.description)

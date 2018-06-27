@@ -1,62 +1,62 @@
 #==============================================================================
-# ■ Scene_Shop
+# ** Scene_Shop
 #------------------------------------------------------------------------------
-# 　ショップ画面の処理を行うクラスです。
+#  This class performs shop screen processing.
 #==============================================================================
 
 class Scene_Shop
   #--------------------------------------------------------------------------
-  # ● メイン処理
+  # * Main Processing
   #--------------------------------------------------------------------------
   def main
     # ウィンドウスキンの変更
     $game_system.windowskin_name = "skin02"
 
-    # ヘルプウィンドウを作成
+    # Make help window
     @help_window = Window_Help.new
-    # コマンドウィンドウを作成
+    # Make command window
     @command_window = Window_ShopCommand.new
-    # ゴールドウィンドウを作成
+    # Make gold window
     @gold_window = Window_Gold.new
     @gold_window.x = 480
     @gold_window.y = 64
-    # ダミーウィンドウを作成
+    # Make dummy window
     @dummy_window = Window_Base.new(0, 128, 640, 352)
-    # 購入ウィンドウを作成
+    # Make buy window
     @buy_window = Window_ShopBuy.new($game_temp.shop_goods)
     @buy_window.active = false
     @buy_window.visible = false
     @buy_window.help_window = @help_window
-    # 売却ウィンドウを作成
+    # Make sell window
     @sell_window = Window_ShopSell.new
     @sell_window.active = false
     @sell_window.visible = false
     @sell_window.help_window = @help_window
-    # 個数入力ウィンドウを作成
+    # Make quantity input window
     @number_window = Window_ShopNumber.new
     @number_window.active = false
     @number_window.visible = false
-    # ステータスウィンドウを作成
+    # Make status window
     @status_window = Window_ShopStatus.new
     @status_window.visible = false
-    # トランジション実行
+    # Execute transition
     Graphics.transition
-    # メインループ
+    # Main loop
     loop do
-      # ゲーム画面を更新
+      # Update game screen
       Graphics.update
-      # 入力情報を更新
+      # Update input information
       Input.update
-      # フレーム更新
+      # Frame update
       update
-      # 画面が切り替わったらループを中断
+      # Abort loop if screen is changed
       if $scene != self
         break
       end
     end
-    # トランジション準備
+    # Prepare for transition
     Graphics.freeze
-    # ウィンドウを解放
+    # Dispose of windows
     @help_window.dispose
     @command_window.dispose
     @gold_window.dispose
@@ -70,10 +70,10 @@ class Scene_Shop
     $game_system.windowskin_name = "skin01"
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新
+  # * Frame Update
   #--------------------------------------------------------------------------
   def update
-    # ウィンドウを更新
+    # Update windows
     @help_window.update
     @command_window.update
     @gold_window.update
@@ -82,103 +82,103 @@ class Scene_Shop
     @sell_window.update
     @number_window.update
     @status_window.update
-    # コマンドウィンドウがアクティブの場合: update_command を呼ぶ
+    # If command window is active: call update_command
     if @command_window.active
       update_command
       return
     end
-    # 購入ウィンドウがアクティブの場合: update_buy を呼ぶ
+    # If buy window is active: call update_buy
     if @buy_window.active
       update_buy
       return
     end
-    # 売却ウィンドウがアクティブの場合: update_sell を呼ぶ
+    # If sell window is active: call update_sell
     if @sell_window.active
       update_sell
       return
     end
-    # 個数入力ウィンドウがアクティブの場合: update_number を呼ぶ
+    # If quantity input window is active: call update_number
     if @number_window.active
       update_number
       return
     end
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新 (コマンドウィンドウがアクティブの場合)
+  # * Frame Update (when command window is active)
   #--------------------------------------------------------------------------
   def update_command
-    # B ボタンが押された場合
+    # If B button was pressed
     if Input.trigger?(Input::B)
-      # キャンセル SE を演奏
+      # Play cancel SE
       $game_system.se_play($data_system.cancel_se)
-      # マップ画面に切り替え
+      # Switch to map screen
       $scene = Scene_Map.new
       return
     end
-    # C ボタンが押された場合
+    # If C button was pressed
     if Input.trigger?(Input::C)
-      # コマンドウィンドウのカーソル位置で分岐
+      # Branch by command window cursor position
       case @command_window.index
-      when 0  # 購入する
-        # 決定 SE を演奏
+      when 0  # buy
+        # Play decision SE
         $game_system.se_play($data_system.decision_se)
-        # ウィンドウの状態を購入モードへ
+        # Change windows to buy mode
         @command_window.active = false
         @dummy_window.visible = false
         @buy_window.active = true
         @buy_window.visible = true
         @buy_window.refresh
         @status_window.visible = true
-      when 1  # 売却する
-        # 決定 SE を演奏
+      when 1  # sell
+        # Play decision SE
         $game_system.se_play($data_system.decision_se)
-        # ウィンドウの状態を売却モードへ
+        # Change windows to sell mode
         @command_window.active = false
         @dummy_window.visible = false
         @sell_window.active = true
         @sell_window.visible = true
         @sell_window.refresh
-      when 2  # やめる
-        # 決定 SE を演奏
+      when 2  # quit
+        # Play decision SE
         $game_system.se_play($data_system.decision_se)
-        # マップ画面に切り替え
+        # Switch to map screen
         $scene = Scene_Map.new
       end
       return
     end
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新 (購入ウィンドウがアクティブの場合)
+  # * Frame Update (when buy window is active)
   #--------------------------------------------------------------------------
   def update_buy
-    # ステータスウィンドウのアイテムを設定
+    # Set status window item
     @status_window.item = @buy_window.item
-    # B ボタンが押された場合
+    # If B button was pressed
     if Input.trigger?(Input::B)
-      # キャンセル SE を演奏
+      # Play cancel SE
       $game_system.se_play($data_system.cancel_se)
-      # ウィンドウの状態を初期モードへ
+      # Change windows to initial mode
       @command_window.active = true
       @dummy_window.visible = true
       @buy_window.active = false
       @buy_window.visible = false
       @status_window.visible = false
       @status_window.item = nil
-      # ヘルプテキストを消去
+      # Erase help text
       @help_window.set_text("")
       return
     end
-    # C ボタンが押された場合
+    # If C button was pressed
     if Input.trigger?(Input::C)
-      # アイテムを取得
+      # Get item
       @item = @buy_window.item
-      # アイテムが無効の場合、または価格が所持金より上の場合
+      # If item is invalid, or price is higher than money possessed
       if @item == nil or @item.price > $game_party.gold
-        # ブザー SE を演奏
+        # Play buzzer SE
         $game_system.se_play($data_system.buzzer_se)
         return
       end
-      # アイテムの所持数を取得
+      # Get items in possession count
       case @item
       when RPG::Item
         number = $game_party.item_number(@item.id)
@@ -187,18 +187,18 @@ class Scene_Shop
       when RPG::Armor
         number = $game_party.armor_number(@item.id)
       end
-      # すでに 99 個所持している場合
+      # If 99 items are already in possession
       if number == 99
-        # ブザー SE を演奏
+        # Play buzzer SE
         $game_system.se_play($data_system.buzzer_se)
         return
       end
-      # 決定 SE を演奏
+      # Play decision SE
       $game_system.se_play($data_system.decision_se)
-      # 最大購入可能個数を計算
+      # Calculate maximum amount possible to buy
       max = @item.price == 0 ? 99 : $game_party.gold / @item.price
       max = [max, 99 - number].min
-      # ウィンドウの状態を個数入力モードへ
+      # Change windows to quantity input mode
       @buy_window.active = false
       @buy_window.visible = false
       @number_window.set(@item, max, @item.price)
@@ -207,38 +207,38 @@ class Scene_Shop
     end
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新 (売却ウィンドウがアクティブの場合)
+  # * Frame Update (when sell window is active)
   #--------------------------------------------------------------------------
   def update_sell
-    # B ボタンが押された場合
+    # If B button was pressed
     if Input.trigger?(Input::B)
-      # キャンセル SE を演奏
+      # Play cancel SE
       $game_system.se_play($data_system.cancel_se)
-      # ウィンドウの状態を初期モードへ
+      # Change windows to initial mode
       @command_window.active = true
       @dummy_window.visible = true
       @sell_window.active = false
       @sell_window.visible = false
       @status_window.item = nil
-      # ヘルプテキストを消去
+      # Erase help text
       @help_window.set_text("")
       return
     end
-    # C ボタンが押された場合
+    # If C button was pressed
     if Input.trigger?(Input::C)
-      # アイテムを取得
+      # Get item
       @item = @sell_window.item
-      # ステータスウィンドウのアイテムを設定
+      # Set status window item
       @status_window.item = @item
-      # アイテムが無効の場合、または価格が 0 (売却不可) の場合
+      # If item is invalid, or item price is 0 (unable to sell)
       if @item == nil or @item.price == 0
-        # ブザー SE を演奏
+        # Play buzzer SE
         $game_system.se_play($data_system.buzzer_se)
         return
       end
-      # 決定 SE を演奏
+      # Play decision SE
       $game_system.se_play($data_system.decision_se)
-      # アイテムの所持数を取得
+      # Get items in possession count
       case @item
       when RPG::Item
         number = $game_party.item_number(@item.id)
@@ -247,9 +247,9 @@ class Scene_Shop
       when RPG::Armor
         number = $game_party.armor_number(@item.id)
       end
-      # 最大売却個数 = アイテムの所持数
+      # Maximum quanitity to sell = number of items in possession
       max = number
-      # ウィンドウの状態を個数入力モードへ
+      # Change windows to quantity input mode
       @sell_window.active = false
       @sell_window.visible = false
       @number_window.set(@item, max, @item.price / 2)
@@ -259,41 +259,41 @@ class Scene_Shop
     end
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新 (個数入力ウィンドウがアクティブの場合)
+  # * Frame Update (when quantity input window is active)
   #--------------------------------------------------------------------------
   def update_number
-    # B ボタンが押された場合
+    # If B button was pressed
     if Input.trigger?(Input::B)
-      # キャンセル SE を演奏
+      # Play cancel SE
       $game_system.se_play($data_system.cancel_se)
-      # 個数入力ウィンドウを非アクティブ・不可視に設定
+      # Set quantity input window to inactive / invisible
       @number_window.active = false
       @number_window.visible = false
-      # コマンドウィンドウのカーソル位置で分岐
+      # Branch by command window cursor position
       case @command_window.index
-      when 0  # 購入する
-        # ウィンドウの状態を購入モードへ
+      when 0  # buy
+        # Change windows to buy mode
         @buy_window.active = true
         @buy_window.visible = true
-      when 1  # 売却する
-        # ウィンドウの状態を売却モードへ
+      when 1  # sell
+        # Change windows to sell mode
         @sell_window.active = true
         @sell_window.visible = true
         @status_window.visible = false
       end
       return
     end
-    # C ボタンが押された場合
+    # If C button was pressed
     if Input.trigger?(Input::C)
-      # ショップ SE を演奏
+      # Play shop SE
       $game_system.se_play($data_system.shop_se)
-      # 個数入力ウィンドウを非アクティブ・不可視に設定
+      # Set quantity input window to inactive / invisible
       @number_window.active = false
       @number_window.visible = false
-      # コマンドウィンドウのカーソル位置で分岐
+      # Branch by command window cursor position
       case @command_window.index
-      when 0  # 購入する
-        # 購入処理
+      when 0  # buy
+        # Buy process
         $game_party.lose_gold(@number_window.number * @item.price)
         case @item
         when RPG::Item
@@ -303,15 +303,15 @@ class Scene_Shop
         when RPG::Armor
           $game_party.gain_armor(@item.id, @number_window.number)
         end
-        # 各ウィンドウをリフレッシュ
+        # Refresh each window
         @gold_window.refresh
         @buy_window.refresh
         @status_window.refresh
-        # ウィンドウの状態を購入モードへ
+        # Change windows to buy mode
         @buy_window.active = true
         @buy_window.visible = true
-      when 1  # 売却する
-        # 売却処理
+      when 1  # sell
+        # Sell process
         $game_party.gain_gold(@number_window.number * (@item.price / 2))
         case @item
         when RPG::Item
@@ -321,11 +321,11 @@ class Scene_Shop
         when RPG::Armor
           $game_party.lose_armor(@item.id, @number_window.number)
         end
-        # 各ウィンドウをリフレッシュ
+        # Refresh each window
         @gold_window.refresh
         @sell_window.refresh
         @status_window.refresh
-        # ウィンドウの状態を売却モードへ
+        # Change windows to sell mode
         @sell_window.active = true
         @sell_window.visible = true
         @status_window.visible = false

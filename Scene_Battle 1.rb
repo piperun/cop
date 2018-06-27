@@ -1,15 +1,15 @@
 #==============================================================================
-# ■ Scene_Battle (分割定義 1)
+# ** Scene_Battle (part 1)
 #------------------------------------------------------------------------------
-# 　バトル画面の処理を行うクラスです。
+#  This class performs battle screen processing.
 #==============================================================================
 
 class Scene_Battle
   #--------------------------------------------------------------------------
-  # ● メイン処理
+  # * Main Processing
   #--------------------------------------------------------------------------
   def main
-    # 戦闘用の各種一時データを初期化
+    # Initialize each kind of temporary battle data
     $game_temp.in_battle = true
     $game_temp.battle_turn = 0
     $game_temp.battle_event_flags.clear
@@ -17,12 +17,12 @@ class Scene_Battle
     $game_temp.battle_main_phase = false
     $game_temp.battleback_name = $game_map.battleback_name
     $game_temp.forcing_battler = nil
-    # バトルイベント用インタプリタを初期化
+    # Initialize battle event interpreter
     $game_system.battle_interpreter.setup(nil, 0)
-    # トループを準備
+    # Prepare troop
     @troop_id = $game_temp.battle_troop_id
     $game_troop.setup(@troop_id)
-    # スプライトセットを作成
+    # Make actor command window
     @spriteset = Spriteset_Battle.new
 
     #変数の初期化
@@ -160,36 +160,36 @@ class Scene_Battle
     @pose = Battle_Pose.new
     @pose.pop("A",face)
 
-    # トランジション実行
+    # Execute transition
     if $data_system.battle_transition == ""
       Graphics.transition(20)
     else
       Graphics.transition(40, "Graphics/Transitions/" +
         $data_system.battle_transition)
     end
-    # プレバトルフェーズ開始
+    # Start pre-battle phase
     start_phase1
-    # メインループ
+    # Main loop
     loop do
-      # ゲーム画面を更新
+      # Update game screen
       Graphics.update
-      # 入力情報を更新
+      # Update input information
       Input.update
-      # フレーム更新
+      # Frame update
       update
 
       update_player_anime #プレイヤーのアニメ
 
-      # 画面が切り替わったらループを中断
+      # Abort loop if screen is changed
       if $scene != self
         break
       end
     end
-    # マップをリフレッシュ
+    # Refresh map
     $game_map.refresh
-    # トランジション準備
+    # Prepare for transition
     Graphics.freeze
-    # ウィンドウを解放
+    # Dispose of windows
     @battle_frame_black.dispose # 黒枠
     @battle_frame.dispose       # 枠
     @battle_frame_turn.dispose  # ターン枠
@@ -207,102 +207,102 @@ class Scene_Battle
     if @result_window != nil
       @result_window.dispose
     end
-    # スプライトセットを解放
+    # Dispose of sprite set
     @spriteset.dispose
-    # タイトル画面に切り替え中の場合
+    # If switching to title screen
     if $scene.is_a?(Scene_Title)
-      # 画面をフェードアウト
+      # Fade out screen
       Graphics.transition
       Graphics.freeze
     end
-    # 戦闘テストからゲームオーバー画面以外に切り替え中の場合
+    # If switching from battle test to any screen other than game over screen
     if $BTEST and not $scene.is_a?(Scene_Gameover)
       $scene = nil
     end
   end
   #--------------------------------------------------------------------------
-  # ● 勝敗判定
+  # * Determine Battle Win/Loss Results
   #--------------------------------------------------------------------------
   def judge
-    # 全滅判定が真、またはパーティ人数が 0 人の場合
+    # If all dead determinant is true, or number of members in party is 0
     if $game_party.all_dead? or $game_party.actors.size == 0
-      # 敗北可能の場合
+      # If possible to lose
       if $game_temp.battle_can_lose
-        # バトル開始前の BGM に戻す
+        # Return to BGM before battle starts
         $game_system.bgm_play($game_temp.map_bgm)
 
         #@player.sp = 0  #VITが無くなる
         @player.hp = 1
 
-        # バトル終了
+        # Battle ends
         battle_end(2)
-        # true を返す
+        # Return true
         return true
       end
-      # ゲームオーバーフラグをセット
+      # Set game over flag
       $game_temp.gameover = true
-      # true を返す
+      # Return true
       return true
     end
-    # エネミーが 1 体でも存在すれば false を返す
+    # Return false if even 1 enemy exists
     for enemy in $game_troop.enemies
       if enemy.exist?
         return false
       end
     end
-    # アフターバトルフェーズ開始 (勝利)
+    # Start after battle phase (win)
     start_phase9
-    # true を返す
+    # Return true
     return true
   end
   #--------------------------------------------------------------------------
-  # ● バトル終了
-  #     result : 結果 (0:勝利 1:逃走 2:敗北)
+  # * Battle Ends
+  #     result : results (0:win 1:lose 2:escape)
   #--------------------------------------------------------------------------
   def battle_end(result)
-    # 戦闘中フラグをクリア
+    # Clear in battle flag
     $game_temp.in_battle = false
-    # パーティ全員のアクションをクリア
+    # Clear entire party actions flag
     $game_party.clear_actions
-    # バトル用ステートを解除
+    # Remove battle states
     for actor in $game_party.actors
       actor.remove_states_battle
     end
-    # エネミーをクリア
+    # Clear enemies
     $game_troop.enemies.clear
-    # バトル コールバックを呼ぶ
+    # Call battle callback
     if $game_temp.battle_proc != nil
       $game_temp.battle_proc.call(result)
       $game_temp.battle_proc = nil
     end
-    # マップ画面に切り替え
+    # Switch to map screen
     $scene = Scene_Map.new
   end
   #--------------------------------------------------------------------------
-  # ● フレーム更新
+  # * Battle Event Setup
   #--------------------------------------------------------------------------
   def update
-    # システム (タイマー)、画面を更新
+    # Update system (timer) and screen
     $game_system.update
     $game_screen.update
-    # タイマーが 0 になった場合
+    # If timer has reached 0
     if $game_system.timer_working and $game_system.timer == 0
-      # バトル中断
+      # Abort battle
       $game_temp.battle_abort = true
     end
-    # ウィンドウを更新
     #@help_window.update
     #@party_command_window.update
     #@actor_command_window.update
     #@status_window.update
     #@message_window.update
-    # スプライトセットを更新
+    # Update windows
+    # Update sprite set
     @spriteset.update
-    # トランジション処理中の場合
+    # If transition is processing
     if $game_temp.transition_processing
-      # トランジション処理中フラグをクリア
+      # Clear transition processing flag
       $game_temp.transition_processing = false
-      # トランジション実行
+      # Execute transition
       if $game_temp.transition_name == ""
         Graphics.transition(20)
       else
@@ -310,42 +310,42 @@ class Scene_Battle
           $game_temp.transition_name)
       end
     end
-    # メッセージウィンドウ表示中の場合
+    # If message window is showing
     if $game_temp.message_window_showing
       return
     end
-    # エフェクト表示中の場合
+    # If effect is showing
     if @spriteset.effect?
       return
     end
-    # ゲームオーバーの場合
+    # If game over
     if $game_temp.gameover
-      # ゲームオーバー画面に切り替え
+      # Switch to game over screen
       $scene = Scene_Gameover.new
       return
     end
-    # タイトル画面に戻す場合
+    # If returning to title screen
     if $game_temp.to_title
-      # タイトル画面に切り替え
+      # Switch to title screen
       $scene = Scene_Title.new
       return
     end
-    # バトル中断の場合
+    # If battle is aborted
     if $game_temp.battle_abort
-      # バトル開始前の BGM に戻す
+      # Return to BGM used before battle started
       $game_system.bgm_play($game_temp.map_bgm)
-      # バトル終了
+      # Battle ends
       battle_end(1)
       return
     end
-    # アクションを強制されているバトラーが存在せず、
-    # かつバトルイベントが実行中の場合
+    # If battler forcing an action doesn't exist,
+    # and battle event is running
     if $game_temp.forcing_battler == nil and
        $game_system.battle_interpreter.running?
       return
     end
 
-    # フェーズによって分岐
+    # Branch according to phase
     case @phase
     when 1  # バトルコマンドA移行
       update_phase1
