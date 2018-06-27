@@ -1305,8 +1305,6 @@ class Bust_Anime < Sprite
     @redface.dispose if @redface != nil
     @hand1.dispose if @hand1 != nil
     @massage_hand.dispose if @massage_hand != nil
-
-    #@shower.dispose if @shower != nil
   end
   #--------------------------------------------------------------------------
   # ● 各画像の準備
@@ -1629,7 +1627,6 @@ class Bust_Anime < Sprite
     @shower.z = 100
 
     @shower.opacity = 100
-    #@shower.blend_type = 1
   end
   def shower2  #シャワー
     @shower2 = Sprite.new

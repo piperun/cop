@@ -1481,15 +1481,7 @@ class Scene_Battle
   #--------------------------------------------------------------------------
   def ap_enemy_reduce
     if @enemy_ap < @ap_cost_enemy  #エネミーAPが足りなければ
-      #@dex_enemy_reduce = 0  #各項目のAP減少フラグ
-      #@str_enemy_reduce = 0
-      #@agi_enemy_reduce = 0
-      #@def_enemy_reduce = 0
       a = @ap_cost_enemy - @enemy_ap #減らすAP消費ポイント
-      #@dex_enemy_reduce = 1 if @ap_cost_dex_enemy > 0
-      #@str_enemy_reduce = 1 if @ap_cost_str_enemy > 0
-      #@agi_enemy_reduce = 1 if @ap_cost_agi_enemy > 0
-      #@def_enemy_reduce = 1 if @ap_cost_def_enemy > 0
       i = 0
       loop do
         case dice(4)

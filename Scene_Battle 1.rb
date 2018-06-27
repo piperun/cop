@@ -231,7 +231,6 @@ class Scene_Battle
         # Return to BGM before battle starts
         $game_system.bgm_play($game_temp.map_bgm)
 
-        #@player.sp = 0  #VITが無くなる
         @player.hp = 1
 
         # Battle ends
@@ -290,12 +289,6 @@ class Scene_Battle
       # Abort battle
       $game_temp.battle_abort = true
     end
-    #@help_window.update
-    #@party_command_window.update
-    #@actor_command_window.update
-    #@status_window.update
-    #@message_window.update
-    # Update windows
     # Update sprite set
     @spriteset.update
     # If transition is processing

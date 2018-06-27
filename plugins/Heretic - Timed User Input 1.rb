@@ -504,7 +504,6 @@ end
 module Input
   unless $input_class_defined
     $input_class_defined = true
-    #class << self
     class << Input
 
 

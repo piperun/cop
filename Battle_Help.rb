@@ -10,7 +10,6 @@ class Battle_Help < Window_Base
   #     actor : アクター
   #--------------------------------------------------------------------------
   def initialize
-    #super(354, 384, 336, 112)
     super(254, 384, 386, 112)
     self.contents = Bitmap.new(width - 32, height - 32)
     self.contents.font.size = 16

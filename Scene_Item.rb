@@ -116,19 +116,7 @@ class Scene_Item
       $game_system.se_play($data_system.decision_se)
       # If effect scope is an ally
       if @item.scope >= 3
-        # Activate target window
-        #@item_window.active = false
-        #@target_window.x = (@item_window.index + 1) % 2 * 304
-        #@target_window.visible = true
-        #@target_window.active = true
-        # Set cursor position to effect scope (single / all)
-        #if @item.scope == 4 || @item.scope == 6
-        #  @target_window.index = -1
-        #else
-        #  @target_window.index = 0
-        #end
         use_item
-
       # If effect scope is other than an ally
       else
         # If command event ID is valid
@@ -262,8 +250,6 @@ class Scene_Item
         @item_window.draw_item(@item_window.index)
       end
 
-      #hp_recovery_item #回復アイテム使用時のＨＰとＶＩＴ回復処理
-
       # ステータスウィンドウの内容を再作成
       @status_window.refresh
     # 全滅の場合
@@ -283,8 +269,6 @@ class Scene_Item
     end
     # アイテムを使わなかった場合
     unless used
-      # ブザー SE を演奏
-      #$game_system.se_play($data_system.buzzer_se)
     end
     return
   end

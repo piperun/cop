@@ -19,7 +19,6 @@ class Scene_Load < Scene_File
     @page_max = 5
     @savefile_max = 8
     n = @page_max * @savefile_max - 1
-    #for i in 0..3
     for i in 0..n
       filename = make_filename(i)
       if FileTest.exist?(filename)
@@ -31,7 +30,6 @@ class Scene_Load < Scene_File
         file.close
       end
     end
-    #super("どのファイルをロードしますか？")
     super("Select File to Load　　　(L/R switches pages)")
   end
   #--------------------------------------------------------------------------

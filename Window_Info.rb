@@ -10,7 +10,6 @@ class Window_Info < Window_Base
   #     actor : アクター
   #--------------------------------------------------------------------------
   def initialize
-    #super(400, 64, 240, 248)
     super(400, 64, 240, 380)
     self.contents = Bitmap.new(width - 32, height - 32)
 

@@ -5,8 +5,6 @@
 #==============================================================================
 
 begin
-  #Font change
-  #Font.default_name = ["Arial"]
   # Set the FPS to 60
   Graphics.frame_rate = 50
   # Prepare for transition

@@ -9,10 +9,8 @@ class Window_Item < Window_Selectable
   # * Object Initialization
   #--------------------------------------------------------------------------
   def initialize
-    #super(0, 64, 640, 416)
     super(160, 64, 480, 416)
     @column_max = 2
-    #@column_max = 1
     refresh
     self.index = 0
     # If in battle, move window to center of screen
@@ -86,19 +84,12 @@ class Window_Item < Window_Selectable
     else
       self.contents.font.color = disabled_color
     end
-    #x = 4 + index % 2 * (288 + 32)
     x = 4 + index % 2 * (240)
-    #x = 4
     y = index / 2 * 32
-    #y = index  * 32
     rect = Rect.new(x, y, self.width / @column_max - 32, 32)
     self.contents.fill_rect(rect, Color.new(0, 0, 0, 0))
     bitmap = RPG::Cache.icon(item.icon_name)
     opacity = self.contents.font.color == normal_color ? 255 : 128
-    #self.contents.blt(x, y + 4, bitmap, Rect.new(0, 0, 24, 24), opacity)
-    #self.contents.draw_text(x + 28, y, 212, 32, item.name, 0)
-    #self.contents.draw_text(x + 240, y, 16, 32, ":", 1)
-    #self.contents.draw_text(x + 256, y, 24, 32, number.to_s, 2)
     self.contents.draw_text(x , y, 160, 32, item.name, 0)
     self.contents.draw_text(x + 160, y, 16, 32, ":", 1)
     self.contents.draw_text(x + 176, y, 24, 32, number.to_s, 2)

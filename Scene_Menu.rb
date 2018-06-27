@@ -219,8 +219,6 @@ class Scene_Menu
       when 3  # 衣服
         # 決定 SE を演奏
         $game_system.se_play($data_system.decision_se)
-        # 乳が揺れる
-        #$menu_pose.shake
         # 衣服ウィンドウをアクティブにする
         @command_window.active = false
         @command_window.visible = false
@@ -266,8 +264,6 @@ class Scene_Menu
       @command_window.active = true
       @command_window.visible = true
       @status_window.visible = true
-      # 乳が揺れる
-      #$menu_pose.shake
     end
     # C ボタンが押された場合
     if Input.trigger?(Input::C)
@@ -287,8 +283,6 @@ class Scene_Menu
           @put_off_window.visible = true
 
           disable_put_off
-            #make_put_off_window
-          #end
 
         when 1  # 着る
           if $game_switches[2] == true  #着替えコマンドが禁止の場合
@@ -304,8 +298,6 @@ class Scene_Menu
           @put_on_window.visible = true
 
           disable_put_on
-            #make_put_on_window
-          #end
 
         when 2  # キャンセル
           # Play cancel SE

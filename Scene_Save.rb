@@ -9,7 +9,6 @@ class Scene_Save < Scene_File
   # * Object Initialization
   #--------------------------------------------------------------------------
   def initialize
-    #super("どのファイルにセーブしますか？")
     super("Select Save Position　　　(L/R switches pages)")
   end
   #--------------------------------------------------------------------------

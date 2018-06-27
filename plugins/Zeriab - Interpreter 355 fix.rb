@@ -32,14 +32,6 @@ class Interpreter
     end
     # Evaluation
     result = eval(script)
-    # If return value is false
-    #if result == false
-      # End
-      # Returning False causes Interpreter Index to not advance, infinite hang
-      # This will happen if you run a script like $foo = true, it still
-      # will eval to false here, which will cause the hang
-      #return false
-    #end
     # Continue
     return true
   end

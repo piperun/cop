@@ -24,7 +24,7 @@ class Scene_Battle
     when 1  #攻撃
       case @attack_command_index
       when 1  #腕力
-        #@test_window.contents.draw_text(0, 0, 160, 10, "#{}")
+
       when 2  #器用さ
 
       when 3  #守り

@@ -13,11 +13,6 @@ class Cg_Mode
     @back = Sprite.new
     @back.bitmap = RPG::Cache.picture("cgmode_back")
 
-    #@sd_kate = Sprite.new
-    #@sd_kate.bitmap = RPG::Cache.picture("sd_kate")
-    #@sd_kate.x = 550
-    #@sd_kate.y = 360
-
     #イベント画像の差分数の設定
     setup_sabun
 

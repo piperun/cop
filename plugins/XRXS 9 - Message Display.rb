@@ -542,7 +542,6 @@ class Window_Message < Window_Selectable
         self.back_opacity       = 0
         self.contents_opacity   = 0
         self.pause = false
-        #@pause.visible = false
         @toumei = 1
       end
     end
@@ -789,7 +788,6 @@ class Window_Message < Window_Selectable
             if @toumei != 1 #自分で追加
             self.pause = true
             end     #
-          #@pause.visible = true
           end
         end
 
@@ -892,7 +890,6 @@ class Window_Message < Window_Selectable
       #
       case ($game_temp.in_battle ? 0 : $game_system.message_position)
       when 0  # 上 (戦闘中は上扱い)
-        #self.y = [16, -XRXS9::NAME_WINDOW_OFFSET_Y + 4].max
         self.y = 321
         self.opacity = 0
         self.back_opacity = 0

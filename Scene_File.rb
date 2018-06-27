@@ -18,12 +18,6 @@ class Scene_File
   def main
     # ウィンドウスキンの変更
     $game_system.windowskin_name = "skin04"
-    # 画像の表示
-    #menuback
-    #@menu_poze = Menu_Pose.new(1, 1)
-    #@menu_poze.pop_body
-    #@menu_poze.check_clothes
-
     # Make help window
     @help_window = Window_Help.new
     @help_window.set_text(@help_text)
@@ -34,13 +28,11 @@ class Scene_File
     @savefile_max = 8
     n = @page_max * @savefile_max - 1
 
-    #for i in 0..@page_max * @savefile_max - 1
     for i in 0..n
       @savefile_windows.push(Window_SaveFile.new(i, make_filename(i)))
     end
     # Select last file to be operated
     @file_index = $game_temp.last_file_index
-    #@page = @file_index / 4
     @page = @file_index / @savefile_max
     @savefile_windows[@file_index].selected = true
     # 選択ページを可視
@@ -48,7 +40,6 @@ class Scene_File
 
 
     n = @page * @savefile_max
-    #for i in n..n+3
     for i in n..n+7
       @savefile_windows[i].visible = true
     end
@@ -77,9 +68,6 @@ class Scene_File
     end
     # ウィンドウスキンの変更
     $game_system.windowskin_name = "skin01"
-    # 画像を開放
-    #@menuback.dispose
-    #@menu_poze.all_clear
   end
   #--------------------------------------------------------------------------
   # * Frame Update
@@ -112,8 +100,6 @@ class Scene_File
         $game_system.se_play($data_system.cursor_se)
         # Move cursor down
         @savefile_windows[@file_index].selected = false
-        #@file_index = (@file_index + 1) % 4
-        #@file_index = @page * 4 + (@file_index + 1) % 4
         @file_index = @page * @savefile_max + (@file_index + 1) % @savefile_max
         @savefile_windows[@file_index].selected = true
         return
@@ -123,14 +109,11 @@ class Scene_File
     if Input.repeat?(Input::UP)
       # If the up directional button pressed down is not a repeat、
       # or cursor position is more in back than 0
-      #if Input.trigger?(Input::UP) or @file_index > 0
       if Input.trigger?(Input::UP) or @file_index > @page * @savefile_max
         # Play cursor SE
         $game_system.se_play($data_system.cursor_se)
         # カーソルを上に移動
         @savefile_windows[@file_index].selected = false
-        #@file_index = (@file_index + 3) % 4
-        #@file_index = @page * 4 + (@file_index + 3) % 4
         @file_index = @page * @savefile_max + (@file_index + (@savefile_max - 1)) % @savefile_max
         @savefile_windows[@file_index].selected = true
         return
@@ -145,8 +128,6 @@ class Scene_File
         $game_system.se_play($data_system.cursor_se)
         # カーソルを上に移動
         @savefile_windows[@file_index].selected = false
-        #@file_index = (@file_index + 3) % 4
-        #@file_index = @page * 4 + (@file_index + 3) % 4
         @file_index = @page * @savefile_max + (@file_index + (@savefile_max / 2)) % @savefile_max
         @savefile_windows[@file_index].selected = true
         return
@@ -161,8 +142,6 @@ class Scene_File
         $game_system.se_play($data_system.cursor_se)
         # Move cursor up
         @savefile_windows[@file_index].selected = false
-        #@file_index = (@file_index + 3) % 4
-        #@file_index = @page * 4 + (@file_index + 3) % 4
         @file_index = @page * @savefile_max + (@file_index - (@savefile_max / 2)) % @savefile_max
         @savefile_windows[@file_index].selected = true
         return
@@ -176,11 +155,9 @@ class Scene_File
       for i in @savefile_windows
         i.visible = false
       end
-      #@page = ( @page + 1 ) % 4
       @page = @page + 1
       @file_index -= @savefile_max * (@page_max - 1) if @page > (@page_max - 1)
       @page = 0 if @page > (@page_max - 1)
-      #@file_index = ( @page * 8 ) + ( @file_index % 8 )
       @file_index = ( @page * @savefile_max ) + (@file_index % @savefile_max)
       for i in (@page * @savefile_max)..(@page * @savefile_max + (@savefile_max-1))
         @savefile_windows[i].visible = true
@@ -197,12 +174,10 @@ class Scene_File
       for i in @savefile_windows
         i.visible = false
       end
-      #@page = ( @page + 3 ) % 4
       @page = @page - 1
 
       @file_index += @savefile_max * (@page_max - 1) if @page < 0
       @page = @page_max - 1 if @page < 0
-      #@file_index = ( @page * 4 ) + ( @file_index % 4 )
       @file_index = ( @page * @savefile_max ) + (@file_index % @savefile_max)
       for i in (@page * @savefile_max)..(@page * @savefile_max + (@savefile_max-1))
         @savefile_windows[i].visible = true

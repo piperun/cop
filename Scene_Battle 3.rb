@@ -24,8 +24,6 @@ class Scene_Battle
     if @zoom_end == 1
       @zoom_end = 0
 
-      #@help_window.refresh("commandB#{@commandB_index}") # ヘルプメッセージウィンドウを更新
-
       @old_hit = @hit
       @old_enemy_damage = @enemy_damage
       @old_avoid = @avoid
@@ -385,7 +383,6 @@ class Scene_Battle
 
         actor.exp += exp
         if actor.level > last_level #レベルアップ
-          #@status_window.level_up(i)
           d = "LVUP"
         else
           d = ""

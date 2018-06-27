@@ -16,7 +16,6 @@ class Spriteset_Battle
   #--------------------------------------------------------------------------
   def initialize
     # Make viewports
-    #@viewport1 = Viewport.new(0, 0, 640, 320)
     @viewport1 = Viewport.new(0, 0, 640, 480)
     @viewport2 = Viewport.new(0, 0, 640, 480)
     @viewport3 = Viewport.new(0, 0, 640, 480)
@@ -104,11 +103,9 @@ class Spriteset_Battle
         @battleback_sprite.bitmap.dispose
       end
       @battleback_sprite.bitmap = RPG::Cache.battleback(@battleback_name)
-      #@battleback_sprite.src_rect.set(0, 0, 640, 320)
       @battleback_sprite.src_rect.set(0, 0, 640, 480)
     end
     # Update battler sprites
-    #for sprite in @enemy_sprites + @actor_sprites
     for sprite in @enemy_sprites
       sprite.update
     end

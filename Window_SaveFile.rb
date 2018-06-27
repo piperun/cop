@@ -17,14 +17,9 @@ class Window_SaveFile < Window_Base
   #--------------------------------------------------------------------------
   def initialize(file_index, filename)
     @file_index = file_index
-    #super(0, 64 + file_index % 4 * 104, 640, 104)
-    #x = file_index % 2 * 320
-    #y = file_index % 2 * 104
     decide_y
-    #super(0, 64 + file_index % 4 * 104, 320, 104)
     super(@x , 64 + @y, 320, 104)
     self.contents = Bitmap.new(width - 32, height - 32)
-    #@file_index = file_index
     @filename = "Save#{@file_index + 1}.rxdata"
     @time_stamp = Time.at(0)
     @file_exist = FileTest.exist?(@filename)
@@ -53,7 +48,6 @@ class Window_SaveFile < Window_Base
 
     self.contents.font.color = system_color
     self.contents.font.italic = true
-    #name = "ファイル #{@file_index + 1}"
     name = "File　　　　"
     self.contents.draw_text(4, 0, 600, 32, name)
 
@@ -63,27 +57,16 @@ class Window_SaveFile < Window_Base
     @name_width = contents.text_size(name).width
     # If save file exists
     if @file_exist
-      # Draw character
-      #for i in 0...@characters.size
-      #  bitmap = RPG::Cache.character(@characters[i][0], @characters[i][1])
-      #  cw = bitmap.rect.width / 4
-      #  ch = bitmap.rect.height / 4
-      #  src_rect = Rect.new(0, 0, cw, ch)
-      #  x = 300 - @characters.size * 32 + i * 64 - cw / 2
-      #  self.contents.blt(x, 68 - ch, bitmap, src_rect)
-      #end
       # Draw play time
       hour = @total_sec / 60 / 60
       min = @total_sec / 60 % 60
       sec = @total_sec % 60
       time_string = sprintf("%02d:%02d:%02d", hour, min, sec)
       self.contents.font.color = normal_color
-      #self.contents.draw_text(4, 8, 600, 32, time_string, 2)
       self.contents.draw_text(4, 8, 280, 32, time_string, 2)
       # Draw timestamp
       self.contents.font.color = normal_color
       time_string = @time_stamp.strftime("%Y/%m/%d %H:%M")
-      #self.contents.draw_text(4, 40, 600, 32, time_string, 2)
       self.contents.draw_text(4, 40, 280, 32, time_string, 2)
     end
   end

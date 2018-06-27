@@ -215,14 +215,12 @@ class Game_Enemy < Game_Battler
   # * Get Battle Screen Y-Coordinate
   #--------------------------------------------------------------------------
   def screen_y
-    #return $data_troops[@troop_id].members[@member_index].y
     return $data_troops[@troop_id].members[@member_index].y + 160
   end
   #--------------------------------------------------------------------------
   # * Get Battle Screen Z-Coordinate
   #--------------------------------------------------------------------------
   def screen_z
-    #return screen_y
     return 10
   end
   #--------------------------------------------------------------------------

@@ -37,7 +37,6 @@ class Scene_Equip
     @command_window.active = false
     # Make windows
     @help_window = Window_Help.new
-    #@left_window = Window_EquipLeft.new(@actor)
     @right_window = Window_EquipRight.new(@actor)
     @item_window1 = Window_EquipItem.new(@actor, 0)
     @item_window2 = Window_EquipItem.new(@actor, 1)
@@ -73,7 +72,6 @@ class Scene_Equip
     Graphics.freeze
     # Dispose of windows
     @help_window.dispose
-    #@left_window.dispose
     @right_window.dispose
     @item_window1.dispose
     @item_window2.dispose
@@ -127,9 +125,6 @@ class Scene_Equip
       @actor.equip(@right_window.index, item1 == nil ? 0 : item1.id)
       @actor.hp = last_hp
       @actor.sp = last_sp
-      # レフトウィンドウに描画
-      #@left_window.set_new_parameters(new_atk, new_pdef, new_mdef)
-
     end
   end
   #--------------------------------------------------------------------------

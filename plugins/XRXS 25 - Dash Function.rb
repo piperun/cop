@@ -62,8 +62,6 @@ class Game_Player < Game_Character
     # メッセージウィンドウ表示中、
     # ダッシュボタン挿下中、のいずれでもない場合
     unless moving? or $game_temp.message_window_showing
-    #unless moving? or $game_system.map_interpreter.running? or
-    #       @move_route_forcing or $game_temp.message_window_showing
       # 速度の変更
       if Input.press?(XRXS_Dash::BUTTON) or $game_switches[5] == true
         case $game_variables[3]

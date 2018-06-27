@@ -43,9 +43,7 @@ class Scene_Title
     s3 = "Shutdown"
     @command_window = Window_Command.new(192, [s1, s2, s3])
     @command_window.back_opacity = 160
-    #@command_window.x = 320 - @command_window.width / 2 - 150
     @command_window.x = 50
-    #@command_window.y = 288
     @command_window.y = 50
     # Continue enabled determinant
     # Check if at least one save file exists

@@ -500,8 +500,6 @@ class Scene_Battle
     num_enemy_damage  #与ダメージ
     num_avoid #回避率
     num_player_damage  #被ダメージ
-
-    #test_window_refresh #テストウインドウの更新
   end
 
   def ap_refresh #apの更新

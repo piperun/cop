@@ -68,16 +68,12 @@ class Kiss_Anime < Sprite
     @hair.x += @move_x if @hair != nil
     @hair_back.x += @move_x if @hair_back != nil
     @head.x += @move_x if @head != nil
-    #@eye.x += @move_x if @eye != nil
-    #@tongue.x += @move_x if @tongue != nil
     @namida.x += @move_x if @namida_check == 1 and @sub_type == "B"
     @yodare.x += @move_x if @yodare_check == 1
-    #@daeki.x += @move_x if @daeki != nil
     @camisole.x += @move_x if @camisole != nil
     @jacket.x += @move_x if @jacket != nil
 
     @man_head.x += @move_x if @man_head != nil
-    #@man_tongue.x += @move_x if @man_tongue != nil
     @man_chin.x += @move_x if @man_chin != nil
     @man_jacket.x += @move_x if @man_jacket != nil
     @man_shakehand.x += @move_x if @hand_type == 2

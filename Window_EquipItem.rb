@@ -12,7 +12,6 @@ class Window_EquipItem < Window_Selectable
   #     equip_type : equip region (0-3)
   #--------------------------------------------------------------------------
   def initialize(actor, equip_type)
-    #super(0, 256, 640, 224)
     super(160, 224, 480, 256)
     @actor = actor
     @equip_type = equip_type
@@ -71,8 +70,6 @@ class Window_EquipItem < Window_Selectable
   #--------------------------------------------------------------------------
   def draw_item(index)
     item = @data[index]
-    #x = 4 + index % 2 * (288 + 32)
-    #y = index / 2 * 32
     x = 4 + index % 2 * (240)
     y = index / 2 * 32
     case item
@@ -84,9 +81,6 @@ class Window_EquipItem < Window_Selectable
     bitmap = RPG::Cache.icon(item.icon_name)
     self.contents.blt(x, y + 4, bitmap, Rect.new(0, 0, 24, 24))
     self.contents.font.color = normal_color
-    #self.contents.draw_text(x + 28, y, 212, 32, item.name, 0)
-    #self.contents.draw_text(x + 240, y, 16, 32, ":", 1)
-    #self.contents.draw_text(x + 256, y, 24, 32, number.to_s, 2)
     self.contents.draw_text(x , y, 160, 32, item.name, 0)
     self.contents.draw_text(x + 160, y, 16, 32, ":", 1)
     self.contents.draw_text(x + 176, y, 24, 32, number.to_s, 2)

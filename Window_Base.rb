@@ -74,14 +74,12 @@ class Window_Base < Window
   # * Get System Text Color
   #--------------------------------------------------------------------------
   def system_color
-    #return Color.new(192, 224, 255, 255)
     return Color.new(255, 230, 90, 255)
   end
   #--------------------------------------------------------------------------
   # * Get Crisis Text Color
   #--------------------------------------------------------------------------
   def crisis_color
-    #return Color.new(255, 255, 64, 255)
     return Color.new(200, 30, 30, 255)
   end
   #--------------------------------------------------------------------------
@@ -234,10 +232,6 @@ class Window_Base < Window
       flag = false
     end
     # Draw HP
-    #self.contents.font.color = actor.hp == 0 ? knockout_color :
-    #  actor.hp <= actor.maxhp / 4 ? crisis_color : normal_color
-
-    #追加
     self.contents.font.color = normal_color
     if actor.hp == actor.maxhp
       self.contents.font.color.set(30, 200, 30)
@@ -271,10 +265,6 @@ class Window_Base < Window
       flag = false
     end
     # Draw SP
-    #self.contents.font.color = actor.sp == 0 ? knockout_color :
-    #  actor.sp <= actor.maxsp / 4 ? crisis_color : normal_color
-
-    #追加
     self.contents.font.color = normal_color
     if actor.sp == actor.maxsp
       self.contents.font.color.set(30, 200, 30)
@@ -322,7 +312,6 @@ class Window_Base < Window
     self.contents.font.color = system_color
     self.contents.draw_text(x, y, 120, 32, parameter_name)
     self.contents.font.color = normal_color
-    #self.contents.draw_text(x + 120, y, 36, 32, parameter_value.to_s, 2)
     self.contents.draw_text(x + 92, y, 36, 32, parameter_value.to_s, 2)
   end
   #--------------------------------------------------------------------------

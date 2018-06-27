@@ -8,14 +8,11 @@ module XRXS_BreakActs
   # 接尾ファイル名
   SUFFIX = "_Act"
   # 待機時間[単位:F]
-  #WCOUNT = 100
   WCOUNT = 1
   #
   def character_name
     filename = super
     if @breakacting
-      #new_name = filename + SUFFIX
-      #filename = new_name if RPG_FileTest.character_exist?(new_name)
       case $game_variables[3]
       when 1
         filename = "Pl_stand01"
@@ -74,8 +71,6 @@ class Game_Player < Game_Character
   def controllable?
     # 移動中、イベント実行中、移動ルート強制中、
     # メッセージウィンドウ表示中のいずれでもない場合
-    #return !(moving? or $game_system.map_interpreter.running? or
-    #         @move_route_forcing or $game_temp.message_window_showing)
     return !(moving? or @move_route_forcing )
   end
 end
