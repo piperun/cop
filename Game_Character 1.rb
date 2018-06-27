@@ -1,32 +1,32 @@
 #==============================================================================
-# ** Game_Character (part 1)
+# ■ Game_Character (分割定義 1)
 #------------------------------------------------------------------------------
-#  This class deals with characters. It's used as a superclass for the
-#  Game_Player and Game_Event classes.
+# 　キャラクターを扱うクラスです。このクラスは Game_Player クラスと Game_Event
+# クラスのスーパークラスとして使用されます。
 #==============================================================================
 
 class Game_Character
   #--------------------------------------------------------------------------
-  # * Public Instance Variables
+  # ● 公開インスタンス変数
   #--------------------------------------------------------------------------
   attr_reader   :id                       # ID
-  attr_reader   :x                        # map x-coordinate (logical)
-  attr_reader   :y                        # map y-coordinate (logical)
-  attr_reader   :real_x                   # map x-coordinate (real * 128)
-  attr_reader   :real_y                   # map y-coordinate (real * 128)
-  attr_reader   :tile_id                  # tile ID (invalid if 0)
-  attr_reader   :character_name           # character file name
-  attr_reader   :character_hue            # character hue
-  attr_reader   :opacity                  # opacity level
-  attr_reader   :blend_type               # blending method
-  attr_reader   :direction                # direction
-  attr_reader   :pattern                  # pattern
-  attr_reader   :move_route_forcing       # forced move route flag
-  attr_reader   :through                  # through
-  attr_accessor :animation_id             # animation ID
-  attr_accessor :transparent              # transparent flag
+  attr_reader   :x                        # マップ X 座標 (論理座標)
+  attr_reader   :y                        # マップ Y 座標 (論理座標)
+  attr_reader   :real_x                   # マップ X 座標 (実座標 * 128)
+  attr_reader   :real_y                   # マップ Y 座標 (実座標 * 128)
+  attr_reader   :tile_id                  # タイル ID  (0 なら無効)
+  attr_reader   :character_name           # キャラクター ファイル名
+  attr_reader   :character_hue            # キャラクター 色相
+  attr_reader   :opacity                  # 不透明度
+  attr_reader   :blend_type               # 合成方法
+  attr_reader   :direction                # 向き
+  attr_reader   :pattern                  # パターン
+  attr_reader   :move_route_forcing       # 移動ルート強制フラグ
+  attr_reader   :through                  # すり抜け
+  attr_accessor :animation_id             # アニメーション ID
+  attr_accessor :transparent              # 透明状態
   #--------------------------------------------------------------------------
-  # * Object Initialization
+  # ● オブジェクト初期化
   #--------------------------------------------------------------------------
   def initialize
     @id = 0
@@ -48,7 +48,7 @@ class Game_Character
     @original_direction = 2
     @original_pattern = 0
     @move_type = 0
-    @move_speed = 4
+    @move_speed = 4.0
     @move_frequency = 6
     @move_route = nil
     @move_route_index = 0
@@ -67,166 +67,164 @@ class Game_Character
     @prelock_direction = 0
   end
   #--------------------------------------------------------------------------
-  # * Determine if Moving
+  # ● 移動中判定
   #--------------------------------------------------------------------------
   def moving?
-    # If logical coordinates differ from real coordinates,
-    # movement is occurring.
+    # 論理座標と実座標が違っていれば移動中
     return (@real_x != @x * 128 or @real_y != @y * 128)
   end
   #--------------------------------------------------------------------------
-  # * Determine if Jumping
+  # ● ジャンプ中判定
   #--------------------------------------------------------------------------
   def jumping?
-    # A jump is occurring if jump count is larger than 0
+    # ジャンプカウントが 0 より大きければジャンプ中
     return @jump_count > 0
   end
   #--------------------------------------------------------------------------
-  # * Straighten Position
+  # ● 姿勢の矯正
   #--------------------------------------------------------------------------
   def straighten
-    # If moving animation or stop animation is ON
+    # 移動時アニメまたは停止時アニメが ON の場合
     if @walk_anime or @step_anime
-      # Set pattern to 0
+      # パターンを 0 に設定
       @pattern = 0
     end
-    # Clear animation count
+    # アニメカウントをクリア
     @anime_count = 0
-    # Clear prelock direction
+    # ロック前の向きをクリア
     @prelock_direction = 0
   end
   #--------------------------------------------------------------------------
-  # * Force Move Route
-  #     move_route : new move route
+  # ● 移動ルートの強制
+  #     move_route : 新しい移動ルート
   #--------------------------------------------------------------------------
   def force_move_route(move_route)
-    # Save original move route
+    # オリジナルの移動ルートを保存
     if @original_move_route == nil
       @original_move_route = @move_route
       @original_move_route_index = @move_route_index
     end
-    # Change move route
+    # 移動ルートを変更
     @move_route = move_route
     @move_route_index = 0
-    # Set forced move route flag
+    # 移動ルート強制フラグをセット
     @move_route_forcing = true
-    # Clear prelock direction
+    # ロック前の向きをクリア
     @prelock_direction = 0
-    # Clear wait count
+    # ウェイトカウントをクリア
     @wait_count = 0
-    # Move cutsom
+    # カスタム移動
     move_type_custom
   end
   #--------------------------------------------------------------------------
-  # * Determine if Passable
-  #     x : x-coordinate
-  #     y : y-coordinate
-  #     d : direction (0,2,4,6,8)
-  #         * 0 = Determines if all directions are impassable (for jumping)
+  # ● 通行可能判定
+  #     x : X 座標
+  #     y : Y 座標
+  #     d : 方向 (0,2,4,6,8)  ※ 0 = 全方向通行不可の場合を判定 (ジャンプ用)
   #--------------------------------------------------------------------------
   def passable?(x, y, d)
-    # Get new coordinates
+    # 新しい座標を求める
     new_x = x + (d == 6 ? 1 : d == 4 ? -1 : 0)
     new_y = y + (d == 2 ? 1 : d == 8 ? -1 : 0)
-    # If coordinates are outside of map
+    # 座標がマップ外の場合
     unless $game_map.valid?(new_x, new_y)
-      # impassable
+      # 通行不可
       return false
     end
-    # If through is ON
+    # すり抜け ON の場合
     if @through
-      # passable
+      # 通行可
       return true
     end
-    # If unable to leave first move tile in designated direction
+    # 移動元のタイルから指定方向に出られない場合
     unless $game_map.passable?(x, y, d, self)
-      # impassable
+      # 通行不可
       return false
     end
-    # If unable to enter move tile in designated direction
+    # 移動先のタイルに指定方向から入れない場合
     unless $game_map.passable?(new_x, new_y, 10 - d)
-      # impassable
+      # 通行不可
       return false
     end
-    # Loop all events
+    # 全イベントのループ
     for event in $game_map.events.values
-      # If event coordinates are consistent with move destination
+      # イベントの座標が移動先と一致した場合
       if event.x == new_x and event.y == new_y
-        # If through is OFF
+        # すり抜け OFF なら
         unless event.through
-          # If self is event
+          # 自分がイベントの場合
           if self != $game_player
-            # impassable
+            # 通行不可
             return false
           end
-          # With self as the player and partner graphic as character
+          # 自分がプレイヤーで、相手のグラフィックがキャラクターの場合
           if event.character_name != ""
-            # impassable
+            # 通行不可
             return false
           end
         end
       end
     end
-    # If player coordinates are consistent with move destination
+    # プレイヤーの座標が移動先と一致した場合
     if $game_player.x == new_x and $game_player.y == new_y
-      # If through is OFF
+      # すり抜け OFF なら
       unless $game_player.through
-        # If your own graphic is the character
+        # 自分のグラフィックがキャラクターの場合
         if @character_name != ""
-          # impassable
+          # 通行不可
           return false
         end
       end
     end
-    # passable
+    # 通行可
     return true
   end
   #--------------------------------------------------------------------------
-  # * Lock
+  # ● ロック
   #--------------------------------------------------------------------------
   def lock
-    # If already locked
+    # すでにロックされている場合
     if @locked
-      # End method
+      # メソッド終了
       return
     end
-    # Save prelock direction
+    # ロック前の向きを保存
     @prelock_direction = @direction
-    # Turn toward player
+    # プレイヤーの方を向く
     turn_toward_player
-    # Set locked flag
+    # ロック中フラグをセット
     @locked = true
   end
   #--------------------------------------------------------------------------
-  # * Determine if Locked
+  # ● ロック中判定
   #--------------------------------------------------------------------------
   def lock?
     return @locked
   end
   #--------------------------------------------------------------------------
-  # * Unlock
+  # ● ロック解除
   #--------------------------------------------------------------------------
   def unlock
-    # If not locked
+    # ロックされていない場合
     unless @locked
-      # End method
+      # メソッド終了
       return
     end
-    # Clear locked flag
+    # ロック中フラグをクリア
     @locked = false
-    # If direction is not fixed
+    # 向き固定でない場合
     unless @direction_fix
-      # If prelock direction is saved
+      # ロック前の向きが保存されていれば
       if @prelock_direction != 0
-        # Restore prelock direction
+        # ロック前の向きを復帰
         @direction = @prelock_direction
       end
     end
   end
   #--------------------------------------------------------------------------
-  # * Move to Designated Position
-  #     x : x-coordinate
-  #     y : y-coordinate
+  # ● 指定位置に移動
+  #     x : X 座標
+  #     y : Y 座標
   #--------------------------------------------------------------------------
   def moveto(x, y)
     @x = x % $game_map.width
@@ -236,19 +234,19 @@ class Game_Character
     @prelock_direction = 0
   end
   #--------------------------------------------------------------------------
-  # * Get Screen X-Coordinates
+  # ● 画面 X 座標の取得
   #--------------------------------------------------------------------------
   def screen_x
-    # Get screen coordinates from real coordinates and map display position
+    # 実座標とマップの表示位置から画面座標を求める
     return (@real_x - $game_map.display_x + 3) / 4 + 16
   end
   #--------------------------------------------------------------------------
-  # * Get Screen Y-Coordinates
+  # ● 画面 Y 座標の取得
   #--------------------------------------------------------------------------
   def screen_y
-    # Get screen coordinates from real coordinates and map display position
+    # 実座標とマップの表示位置から画面座標を求める
     y = (@real_y - $game_map.display_y + 3) / 4 + 32
-    # Make y-coordinate smaller via jump count
+    # ジャンプカウントに応じて Y 座標を小さくする
     if @jump_count >= @jump_peak
       n = @jump_count - @jump_peak
     else
@@ -257,36 +255,36 @@ class Game_Character
     return y - (@jump_peak * @jump_peak - n * n) / 2
   end
   #--------------------------------------------------------------------------
-  # * Get Screen Z-Coordinates
-  #     height : character height
+  # ● 画面 Z 座標の取得
+  #     height : キャラクターの高さ
   #--------------------------------------------------------------------------
   def screen_z(height = 0)
-    # If display flag on closest surface is ON
+    # 最前面に表示フラグが ON の場合
     if @always_on_top
-      # 999, unconditional
+      # 無条件に 999
       return 999
     end
-    # Get screen coordinates from real coordinates and map display position
+    # 実座標とマップの表示位置から画面座標を求める
     z = (@real_y - $game_map.display_y + 3) / 4 + 32
-    # If tile
+    # タイルの場合
     if @tile_id > 0
-      # Add tile priority * 32
+      # タイルのプライオリティ * 32 を足す
       return z + $game_map.priorities[@tile_id] * 32
-    # If character
+    # キャラクターの場合
     else
-      # If height exceeds 32, then add 31
+      # 高さが 32 を超えていれば 31 を足す
       return z + ((height > 32) ? 31 : 0)
     end
   end
   #--------------------------------------------------------------------------
-  # * Get Thicket Depth
+  # ● 茂み深さの取得
   #--------------------------------------------------------------------------
   def bush_depth
-    # If tile, or if display flag on the closest surface is ON
+    # タイルの場合、または最前面に表示フラグが ON の場合
     if @tile_id > 0 or @always_on_top
       return 0
     end
-    # If element tile other than jumping, then 12; anything else = 0
+    # ジャンプ中以外で茂み属性のタイルなら 12、それ以外なら 0
     if @jump_count == 0 and $game_map.bush?(@x, @y)
       return 12
     else
@@ -294,7 +292,7 @@ class Game_Character
     end
   end
   #--------------------------------------------------------------------------
-  # * Get Terrain Tag
+  # ● 地形タグの取得
   #--------------------------------------------------------------------------
   def terrain_tag
     return $game_map.terrain_tag(@x, @y)

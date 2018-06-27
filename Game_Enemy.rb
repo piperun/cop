@@ -1,15 +1,15 @@
 #==============================================================================
-# ** Game_Enemy
+# ■ Game_Enemy
 #------------------------------------------------------------------------------
-#  This class handles enemies. It's used within the Game_Troop class
-#  ($game_troop).
+# 　エネミーを扱うクラスです。このクラスは Game_Troop クラス ($game_troop) の
+# 内部で使用されます。
 #==============================================================================
 
 class Game_Enemy < Game_Battler
   #--------------------------------------------------------------------------
-  # * Object Initialization
-  #     troop_id     : troop ID
-  #     member_index : troop member index
+  # ● オブジェクト初期化
+  #     troop_id     : トループ ID
+  #     member_index : トループメンバーのインデックス
   #--------------------------------------------------------------------------
   def initialize(troop_id, member_index)
     super()
@@ -26,241 +26,243 @@ class Game_Enemy < Game_Battler
     @immortal = troop.members[@member_index].immortal
   end
   #--------------------------------------------------------------------------
-  # * Get Enemy ID
+  # ● エネミー ID 取得
   #--------------------------------------------------------------------------
   def id
     return @enemy_id
   end
   #--------------------------------------------------------------------------
-  # * Get Index
+  # ● インデックス取得
   #--------------------------------------------------------------------------
   def index
     return @member_index
   end
   #--------------------------------------------------------------------------
-  # * Get Name
+  # ● 名前の取得
   #--------------------------------------------------------------------------
   def name
     return $data_enemies[@enemy_id].name
   end
   #--------------------------------------------------------------------------
-  # * Get Basic Maximum HP
+  # ● 基本 MaxHP の取得
   #--------------------------------------------------------------------------
   def base_maxhp
     return $data_enemies[@enemy_id].maxhp
   end
   #--------------------------------------------------------------------------
-  # * Get Basic Maximum SP
+  # ● 基本 MaxSP の取得
   #--------------------------------------------------------------------------
   def base_maxsp
     return $data_enemies[@enemy_id].maxsp
   end
   #--------------------------------------------------------------------------
-  # * Get Basic Strength
+  # ● 基本腕力の取得
   #--------------------------------------------------------------------------
   def base_str
     return $data_enemies[@enemy_id].str
   end
   #--------------------------------------------------------------------------
-  # * Get Basic Dexterity
+  # ● 基本器用さの取得
   #--------------------------------------------------------------------------
   def base_dex
     return $data_enemies[@enemy_id].dex
   end
   #--------------------------------------------------------------------------
-  # * Get Basic Agility
+  # ● 基本素早さの取得
   #--------------------------------------------------------------------------
   def base_agi
     return $data_enemies[@enemy_id].agi
   end
   #--------------------------------------------------------------------------
-  # * Get Basic Intelligence
+  # ● 基本魔力の取得
   #--------------------------------------------------------------------------
   def base_int
     return $data_enemies[@enemy_id].int
   end
   #--------------------------------------------------------------------------
-  # * Get Basic Attack Power
+  # ● 基本攻撃力の取得
   #--------------------------------------------------------------------------
   def base_atk
     return $data_enemies[@enemy_id].atk
   end
   #--------------------------------------------------------------------------
-  # * Get Basic Physical Defense
+  # ● 基本物理防御の取得
   #--------------------------------------------------------------------------
   def base_pdef
     return $data_enemies[@enemy_id].pdef
   end
   #--------------------------------------------------------------------------
-  # * Get Basic Magic Defense
+  # ● 基本魔法防御の取得
   #--------------------------------------------------------------------------
   def base_mdef
     return $data_enemies[@enemy_id].mdef
   end
   #--------------------------------------------------------------------------
-  # * Get Basic Evasion
+  # ● 基本回避修正の取得
   #--------------------------------------------------------------------------
   def base_eva
     return $data_enemies[@enemy_id].eva
   end
   #--------------------------------------------------------------------------
-  # * Get Offensive Animation ID for Normal Attack
+  # ● 通常攻撃 攻撃側アニメーション ID の取得
   #--------------------------------------------------------------------------
   def animation1_id
     return $data_enemies[@enemy_id].animation1_id
   end
   #--------------------------------------------------------------------------
-  # * Get Target Animation ID for Normal Attack
+  # ● 通常攻撃 対象側アニメーション ID の取得
   #--------------------------------------------------------------------------
   def animation2_id
     return $data_enemies[@enemy_id].animation2_id
   end
   #--------------------------------------------------------------------------
-  # * Get Element Revision Value
-  #     element_id : Element ID
+  # ● 属性補正値の取得
+  #     element_id : 属性 ID
   #--------------------------------------------------------------------------
   def element_rate(element_id)
-    # Get a numerical value corresponding to element effectiveness
+    # 属性有効度に対応する数値を取得
     table = [0,200,150,100,50,0,-100]
     result = table[$data_enemies[@enemy_id].element_ranks[element_id]]
-    # If protected by state, this element is reduced by half
+    # ステートでこの属性が防御されている場合は半減
     for i in @states
       if $data_states[i].guard_element_set.include?(element_id)
         result /= 2
       end
     end
-    # End Method
+    # メソッド終了
     return result
   end
   #--------------------------------------------------------------------------
-  # * Get State Effectiveness
+  # ● ステート有効度の取得
   #--------------------------------------------------------------------------
   def state_ranks
     return $data_enemies[@enemy_id].state_ranks
   end
   #--------------------------------------------------------------------------
-  # * Determine State Guard
-  #     state_id : state ID
+  # ● ステート防御判定
+  #     state_id : ステート ID
   #--------------------------------------------------------------------------
   def state_guard?(state_id)
     return false
   end
   #--------------------------------------------------------------------------
-  # * Get Normal Attack Element
+  # ● 通常攻撃の属性取得
   #--------------------------------------------------------------------------
   def element_set
     return []
   end
   #--------------------------------------------------------------------------
-  # * Get Normal Attack State Change (+)
+  # ● 通常攻撃のステート変化 (+) 取得
   #--------------------------------------------------------------------------
   def plus_state_set
     return []
   end
   #--------------------------------------------------------------------------
-  # * Get Normal Attack State Change (-)
+  # ● 通常攻撃のステート変化 (-) 取得
   #--------------------------------------------------------------------------
   def minus_state_set
     return []
   end
   #--------------------------------------------------------------------------
-  # * Aquire Actions
+  # ● アクションの取得
   #--------------------------------------------------------------------------
   def actions
     return $data_enemies[@enemy_id].actions
   end
   #--------------------------------------------------------------------------
-  # * Get EXP
+  # ● EXP の取得
   #--------------------------------------------------------------------------
   def exp
     return $data_enemies[@enemy_id].exp
   end
   #--------------------------------------------------------------------------
-  # * Get Gold
+  # ● ゴールドの取得
   #--------------------------------------------------------------------------
   def gold
     return $data_enemies[@enemy_id].gold
   end
   #--------------------------------------------------------------------------
-  # * Get Item ID
+  # ● アイテム ID の取得
   #--------------------------------------------------------------------------
   def item_id
     return $data_enemies[@enemy_id].item_id
   end
   #--------------------------------------------------------------------------
-  # * Get Weapon ID
+  # ● 武器 ID の取得
   #--------------------------------------------------------------------------
   def weapon_id
     return $data_enemies[@enemy_id].weapon_id
   end
   #--------------------------------------------------------------------------
-  # * Get Armor ID
+  # ● 防具 ID の取得
   #--------------------------------------------------------------------------
   def armor_id
     return $data_enemies[@enemy_id].armor_id
   end
   #--------------------------------------------------------------------------
-  # * Get Treasure Appearance Probability
+  # ● トレジャー出現率の取得
   #--------------------------------------------------------------------------
   def treasure_prob
     return $data_enemies[@enemy_id].treasure_prob
   end
   #--------------------------------------------------------------------------
-  # * Get Battle Screen X-Coordinate
+  # ● バトル画面 X 座標の取得
   #--------------------------------------------------------------------------
   def screen_x
     return $data_troops[@troop_id].members[@member_index].x
   end
   #--------------------------------------------------------------------------
-  # * Get Battle Screen Y-Coordinate
+  # ● バトル画面 Y 座標の取得
   #--------------------------------------------------------------------------
   def screen_y
-    return $data_troops[@troop_id].members[@member_index].y
+    #return $data_troops[@troop_id].members[@member_index].y
+    return $data_troops[@troop_id].members[@member_index].y + 160
   end
   #--------------------------------------------------------------------------
-  # * Get Battle Screen Z-Coordinate
+  # ● バトル画面 Z 座標の取得
   #--------------------------------------------------------------------------
   def screen_z
-    return screen_y
+    #return screen_y
+    return 10
   end
   #--------------------------------------------------------------------------
-  # * Escape
+  # ● 逃げる
   #--------------------------------------------------------------------------
   def escape
-    # Set hidden flag
+    # ヒドゥンフラグをセット
     @hidden = true
-    # Clear current action
+    # カレントアクションをクリア
     self.current_action.clear
   end
   #--------------------------------------------------------------------------
-  # * Transform
-  #     enemy_id : ID of enemy to be transformed
+  # ● 変身
+  #     enemy_id : 変身先のエネミー ID
   #--------------------------------------------------------------------------
   def transform(enemy_id)
-    # Change enemy ID
+    # エネミー ID を変更
     @enemy_id = enemy_id
-    # Change battler graphics
+    # バトラー グラフィックを変更
     @battler_name = $data_enemies[@enemy_id].battler_name
     @battler_hue = $data_enemies[@enemy_id].battler_hue
-    # Remake action
+    # アクション再作成
     make_action
   end
   #--------------------------------------------------------------------------
-  # * Make Action
+  # ● アクション作成
   #--------------------------------------------------------------------------
   def make_action
-    # Clear current action
+    # カレントアクションをクリア
     self.current_action.clear
-    # If unable to move
+    # 動けない場合
     unless self.movable?
-      # End Method
+      # メソッド終了
       return
     end
-    # Extract current effective actions
+    # 現在有効なアクションを抽出
     available_actions = []
     rating_max = 0
     for action in self.actions
-      # Confirm turn conditions
+      # ターン 条件確認
       n = $game_temp.battle_turn
       a = action.condition_turn_a
       b = action.condition_turn_b
@@ -268,37 +270,37 @@ class Game_Enemy < Game_Battler
          (b > 0 and (n < 1 or n < a or n % b != a % b))
         next
       end
-      # Confirm HP conditions
+      # HP 条件確認
       if self.hp * 100.0 / self.maxhp > action.condition_hp
         next
       end
-      # Confirm level conditions
+      # レベル 条件確認
       if $game_party.max_level < action.condition_level
         next
       end
-      # Confirm switch conditions
+      # スイッチ 条件確認
       switch_id = action.condition_switch_id
       if switch_id > 0 and $game_switches[switch_id] == false
         next
       end
-      # Add this action to applicable conditions
+      # 条件に該当 : このアクションを追加
       available_actions.push(action)
       if action.rating > rating_max
         rating_max = action.rating
       end
     end
-    # Calculate total with max rating value at 3 (exclude 0 or less)
+    # 最大のレーティング値を 3 として合計を計算 (0 以下は除外)
     ratings_total = 0
     for action in available_actions
       if action.rating > rating_max - 3
         ratings_total += action.rating - (rating_max - 3)
       end
     end
-    # If ratings total isn't 0
+    # レーティングの合計が 0 ではない場合
     if ratings_total > 0
-      # Create random numbers
+      # 乱数を作成
       value = rand(ratings_total)
-      # Set things that correspond to created random numbers as current action
+      # 作成した乱数に対応するものをカレントアクションに設定
       for action in available_actions
         if action.rating > rating_max - 3
           if value < action.rating - (rating_max - 3)

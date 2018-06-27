@@ -1,111 +1,229 @@
 #==============================================================================
-# ** Scene_File
+# ■ Scene_File
 #------------------------------------------------------------------------------
-#  This is a superclass for the save screen and load screen.
+# 　セーブ画面およびロード画面のスーパークラスです。
 #==============================================================================
 
 class Scene_File
   #--------------------------------------------------------------------------
-  # * Object Initialization
-  #     help_text : text string shown in the help window
+  # ● オブジェクト初期化
+  #     help_text : ヘルプウィンドウに表示する文字列
   #--------------------------------------------------------------------------
   def initialize(help_text)
     @help_text = help_text
   end
   #--------------------------------------------------------------------------
-  # * Main Processing
+  # ● メイン処理
   #--------------------------------------------------------------------------
   def main
-    # Make help window
+    # ウィンドウスキンの変更
+    $game_system.windowskin_name = "skin04"
+    # 画像の表示
+    #menuback
+    #@menu_poze = Menu_Pose.new(1, 1)
+    #@menu_poze.pop_body
+    #@menu_poze.check_clothes
+
+    # ヘルプウィンドウを作成
     @help_window = Window_Help.new
     @help_window.set_text(@help_text)
-    # Make save file window
+    # セーブファイルウィンドウを作成
     @savefile_windows = []
-    for i in 0..3
+    #ページとセーブファイル最大数
+    @page_max = 5
+    @savefile_max = 8
+    n = @page_max * @savefile_max - 1
+
+    #for i in 0..@page_max * @savefile_max - 1
+    for i in 0..n
       @savefile_windows.push(Window_SaveFile.new(i, make_filename(i)))
     end
-    # Select last file to be operated
+    # 最後に操作したファイルを選択
     @file_index = $game_temp.last_file_index
+    #@page = @file_index / 4
+    @page = @file_index / @savefile_max
     @savefile_windows[@file_index].selected = true
-    # Execute transition
+    # 選択ページを可視
+
+
+
+    n = @page * @savefile_max
+    #for i in n..n+3
+    for i in n..n+7
+      @savefile_windows[i].visible = true
+    end
+
+    # トランジション実行
     Graphics.transition
-    # Main loop
+    # メインループ
     loop do
-      # Update game screen
+      # ゲーム画面を更新
       Graphics.update
-      # Update input information
+      # 入力情報を更新
       Input.update
-      # Frame update
+      # フレーム更新
       update
-      # Abort loop if screen is changed
+      # 画面が切り替わったらループを中断
       if $scene != self
         break
       end
     end
-    # Prepare for transition
+    # トランジション準備
     Graphics.freeze
-    # Dispose of windows
+    # ウィンドウを解放
     @help_window.dispose
     for i in @savefile_windows
       i.dispose
     end
+    # ウィンドウスキンの変更
+    $game_system.windowskin_name = "skin01"
+    # 画像を開放
+    #@menuback.dispose
+    #@menu_poze.all_clear
   end
   #--------------------------------------------------------------------------
-  # * Frame Update
+  # ● フレーム更新
   #--------------------------------------------------------------------------
   def update
-    # Update windows
+    # ウィンドウを更新
     @help_window.update
     for i in @savefile_windows
       i.update
     end
-    # If C button was pressed
+    # C ボタンが押された場合
     if Input.trigger?(Input::C)
-      # Call method: on_decision (defined by the subclasses)
+      # メソッド on_decision (継承先で定義) を呼ぶ
       on_decision(make_filename(@file_index))
       $game_temp.last_file_index = @file_index
       return
     end
-    # If B button was pressed
+    # B ボタンが押された場合
     if Input.trigger?(Input::B)
-      # Call method: on_cancel (defined by the subclasses)
+      # メソッド on_cancel (継承先で定義) を呼ぶ
       on_cancel
       return
     end
-    # If the down directional button was pressed
+    # 方向ボタンの下が押された場合
     if Input.repeat?(Input::DOWN)
-      # If the down directional button pressed down is not a repeat,
-      # or cursor position is more in front than 3
-      if Input.trigger?(Input::DOWN) or @file_index < 3
-        # Play cursor SE
+      # 方向ボタンの下の押下状態がリピートでない場合か、
+      # またはカーソル位置が 3 より前の場合
+      if Input.trigger?(Input::DOWN) or @file_index < (@savefile_max - 1) + @page * (@savefile_max)
+        # カーソル SE を演奏
         $game_system.se_play($data_system.cursor_se)
-        # Move cursor down
+        # カーソルを下に移動
         @savefile_windows[@file_index].selected = false
-        @file_index = (@file_index + 1) % 4
+        #@file_index = (@file_index + 1) % 4
+        #@file_index = @page * 4 + (@file_index + 1) % 4
+        @file_index = @page * @savefile_max + (@file_index + 1) % @savefile_max
         @savefile_windows[@file_index].selected = true
         return
       end
     end
-    # If the up directional button was pressed
+    # 方向ボタンの上が押された場合
     if Input.repeat?(Input::UP)
-      # If the up directional button pressed down is not a repeat、
-      # or cursor position is more in back than 0
-      if Input.trigger?(Input::UP) or @file_index > 0
-        # Play cursor SE
+      # 方向ボタンの上の押下状態がリピートでない場合か、
+      # またはカーソル位置が 0 より後ろの場合
+      #if Input.trigger?(Input::UP) or @file_index > 0
+      if Input.trigger?(Input::UP) or @file_index > @page * @savefile_max
+        # カーソル SE を演奏
+        # カーソル SE を演奏
         $game_system.se_play($data_system.cursor_se)
-        # Move cursor up
+        # カーソルを上に移動
         @savefile_windows[@file_index].selected = false
-        @file_index = (@file_index + 3) % 4
+        #@file_index = (@file_index + 3) % 4
+        #@file_index = @page * 4 + (@file_index + 3) % 4
+        @file_index = @page * @savefile_max + (@file_index + (@savefile_max - 1)) % @savefile_max
         @savefile_windows[@file_index].selected = true
         return
       end
+    end
+    # 方向ボタンの右が押された場合
+    if Input.repeat?(Input::RIGHT)
+      # 方向ボタンの右の押下状態がリピートでない場合か、
+      # またはカーソル位置が 0 より後ろの場合
+      if Input.trigger?(Input::RIGHT)
+        # カーソル SE を演奏
+        $game_system.se_play($data_system.cursor_se)
+        # カーソルを上に移動
+        @savefile_windows[@file_index].selected = false
+        #@file_index = (@file_index + 3) % 4
+        #@file_index = @page * 4 + (@file_index + 3) % 4
+        @file_index = @page * @savefile_max + (@file_index + (@savefile_max / 2)) % @savefile_max
+        @savefile_windows[@file_index].selected = true
+        return
+      end
+    end
+    # 方向ボタンの左が押された場合
+    if Input.repeat?(Input::LEFT)
+      # 方向ボタンの右の押下状態がリピートでない場合か、
+      # またはカーソル位置が 0 より後ろの場合
+      if Input.trigger?(Input::LEFT)
+        # カーソル SE を演奏
+        $game_system.se_play($data_system.cursor_se)
+        # カーソルを上に移動
+        @savefile_windows[@file_index].selected = false
+        #@file_index = (@file_index + 3) % 4
+        #@file_index = @page * 4 + (@file_index + 3) % 4
+        @file_index = @page * @savefile_max + (@file_index - (@savefile_max / 2)) % @savefile_max
+        @savefile_windows[@file_index].selected = true
+        return
+      end
+    end
+    # Ｒが押された場合
+    if Input.trigger?(Input::R)
+      # カーソル SE を演奏
+      $game_system.se_play($data_system.cursor_se)
+      @savefile_windows[@file_index].selected = false
+      for i in @savefile_windows
+        i.visible = false
+      end
+      #@page = ( @page + 1 ) % 4
+      @page = @page + 1
+      @file_index -= @savefile_max * (@page_max - 1) if @page > (@page_max - 1)
+      @page = 0 if @page > (@page_max - 1)
+      #@file_index = ( @page * 8 ) + ( @file_index % 8 )
+      @file_index = ( @page * @savefile_max ) + (@file_index % @savefile_max)
+      for i in (@page * @savefile_max)..(@page * @savefile_max + (@savefile_max-1))
+        @savefile_windows[i].visible = true
+      end
+      @savefile_windows[@file_index].selected = true
+      return
+    end
+    # Ｌが押された場合
+    if Input.trigger?(Input::L)
+      # カーソル SE を演奏
+      $game_system.se_play($data_system.cursor_se)
+      # ページ切替
+      @savefile_windows[@file_index].selected = false
+      for i in @savefile_windows
+        i.visible = false
+      end
+      #@page = ( @page + 3 ) % 4
+      @page = @page - 1
+
+      @file_index += @savefile_max * (@page_max - 1) if @page < 0
+      @page = @page_max - 1 if @page < 0
+      #@file_index = ( @page * 4 ) + ( @file_index % 4 )
+      @file_index = ( @page * @savefile_max ) + (@file_index % @savefile_max)
+      for i in (@page * @savefile_max)..(@page * @savefile_max + (@savefile_max-1))
+        @savefile_windows[i].visible = true
+      end
+      @savefile_windows[@file_index].selected = true
+      return
     end
   end
   #--------------------------------------------------------------------------
-  # * Make File Name
-  #     file_index : save file index (0-3)
+  # ● ファイル名の作成
+  #     file_index : セーブファイルのインデックス (0～3)
   #--------------------------------------------------------------------------
   def make_filename(file_index)
     return "Save#{file_index + 1}.rxdata"
+  end
+  #--------------------------------------------------------------------------
+  # ● 背景画像の表示
+  #--------------------------------------------------------------------------
+  def menuback
+    @menuback = Sprite.new
+    @menuback.bitmap = RPG::Cache.picture("menuback")
   end
 end

@@ -1,84 +1,104 @@
 #==============================================================================
-# ** Scene_Equip
+# ■ Scene_Equip
 #------------------------------------------------------------------------------
-#  This class performs equipment screen processing.
+# 　装備画面の処理を行うクラスです。
 #==============================================================================
 
 class Scene_Equip
   #--------------------------------------------------------------------------
-  # * Object Initialization
-  #     actor_index : actor index
-  #     equip_index : equipment index
+  # ● オブジェクト初期化
+  #     actor_index : アクターインデックス
+  #     equip_index : 装備インデックス
   #--------------------------------------------------------------------------
   def initialize(actor_index = 0, equip_index = 0)
     @actor_index = actor_index
     @equip_index = equip_index
   end
   #--------------------------------------------------------------------------
-  # * Main Processing
+  # ● メイン処理
   #--------------------------------------------------------------------------
   def main
-    # Get actor
-    @actor = $game_party.actors[@actor_index]
-    # Make windows
+    # ウィンドウスキンの変更
+    $game_system.windowskin_name = "skin04"
+    # アクターを取得
+    @actor = $game_party.actors[0]
+    # ステータスウィンドウを作成
+    @status_window = Window_Status.new(@actor, 2)
+    # コマンドウィンドウを作成
+    s1 = "Title"
+    s2 = "Item"
+    s3 = "Equipment"
+    s4 = "Clothes"
+    s5 = "Save"
+    s6 = "Quit"
+    @command_window = Window_Command.new(160, [s1, s2, s3, s4, s5, s6])
+    @command_window.y = 64
+    @command_window.index = 2
+    @command_window.active = false
+    # ウィンドウを作成
     @help_window = Window_Help.new
-    @left_window = Window_EquipLeft.new(@actor)
+    #@left_window = Window_EquipLeft.new(@actor)
     @right_window = Window_EquipRight.new(@actor)
     @item_window1 = Window_EquipItem.new(@actor, 0)
     @item_window2 = Window_EquipItem.new(@actor, 1)
     @item_window3 = Window_EquipItem.new(@actor, 2)
     @item_window4 = Window_EquipItem.new(@actor, 3)
     @item_window5 = Window_EquipItem.new(@actor, 4)
-    # Associate help window
+    # ヘルプウィンドウを関連付け
     @right_window.help_window = @help_window
     @item_window1.help_window = @help_window
     @item_window2.help_window = @help_window
     @item_window3.help_window = @help_window
     @item_window4.help_window = @help_window
     @item_window5.help_window = @help_window
-    # Set cursor position
+    # カーソル位置を設定
     @right_window.index = @equip_index
     refresh
-    # Execute transition
+    # トランジション実行
     Graphics.transition
-    # Main loop
+    # メインループ
     loop do
-      # Update game screen
+      # ゲーム画面を更新
       Graphics.update
-      # Update input information
+      # 入力情報を更新
       Input.update
-      # Frame update
+      # フレーム更新
       update
-      # Abort loop if screen is changed
+      # 画面が切り替わったらループを中断
       if $scene != self
         break
       end
     end
-    # Prepare for transition
+    # トランジション準備
     Graphics.freeze
-    # Dispose of windows
+    # ウィンドウを解放
     @help_window.dispose
-    @left_window.dispose
+    #@left_window.dispose
     @right_window.dispose
     @item_window1.dispose
     @item_window2.dispose
     @item_window3.dispose
     @item_window4.dispose
     @item_window5.dispose
+
+    @status_window.dispose
+    @command_window.dispose
+    # ウィンドウスキンの変更
+    $game_system.windowskin_name = "skin01"
   end
   #--------------------------------------------------------------------------
-  # * Refresh
+  # ● リフレッシュ
   #--------------------------------------------------------------------------
   def refresh
-    # Set item window to visible
+    # アイテムウィンドウの可視状態設定
     @item_window1.visible = (@right_window.index == 0)
     @item_window2.visible = (@right_window.index == 1)
     @item_window3.visible = (@right_window.index == 2)
     @item_window4.visible = (@right_window.index == 3)
     @item_window5.visible = (@right_window.index == 4)
-    # Get currently equipped item
+    # 現在装備中のアイテムを取得
     item1 = @right_window.item
-    # Set current item window to @item_window
+    # 現在のアイテムウィンドウを @item_window に設定
     case @right_window.index
     when 0
       @item_window = @item_window1
@@ -91,132 +111,152 @@ class Scene_Equip
     when 4
       @item_window = @item_window5
     end
-    # If right window is active
-    if @right_window.active
-      # Erase parameters for after equipment change
-      @left_window.set_new_parameters(nil, nil, nil)
-    end
-    # If item window is active
+    # ライトウィンドウがアクティブの場合
+    #if @right_window.active
+      # 装備変更後のパラメータを消去
+    #  @left_window.set_new_parameters(nil, nil, nil)
+    #end
+    # アイテムウィンドウがアクティブの場合
     if @item_window.active
-      # Get currently selected item
+      # 現在選択中のアイテムを取得
       item2 = @item_window.item
-      # Change equipment
+      # 装備を変更
       last_hp = @actor.hp
       last_sp = @actor.sp
       @actor.equip(@right_window.index, item2 == nil ? 0 : item2.id)
-      # Get parameters for after equipment change
+      # 装備変更後のパラメータを取得
       new_atk = @actor.atk
       new_pdef = @actor.pdef
       new_mdef = @actor.mdef
-      # Return equipment
+      # 装備を戻す
       @actor.equip(@right_window.index, item1 == nil ? 0 : item1.id)
       @actor.hp = last_hp
       @actor.sp = last_sp
-      # Draw in left window
-      @left_window.set_new_parameters(new_atk, new_pdef, new_mdef)
+      # レフトウィンドウに描画
+      #@left_window.set_new_parameters(new_atk, new_pdef, new_mdef)
+
     end
   end
   #--------------------------------------------------------------------------
-  # * Frame Update
+  # ● フレーム更新
   #--------------------------------------------------------------------------
   def update
-    # Update windows
-    @left_window.update
+    # ウィンドウを更新
+    #@left_window.update
     @right_window.update
     @item_window.update
     refresh
-    # If right window is active: call update_right
+    # ライトウィンドウがアクティブの場合: update_right を呼ぶ
     if @right_window.active
       update_right
       return
     end
-    # If item window is active: call update_item
+    # アイテムウィンドウがアクティブの場合: update_item を呼ぶ
     if @item_window.active
       update_item
       return
     end
   end
   #--------------------------------------------------------------------------
-  # * Frame Update (when right window is active)
+  # ● フレーム更新 (ライトウィンドウがアクティブの場合)
   #--------------------------------------------------------------------------
   def update_right
-    # If B button was pressed
+    # B ボタンが押された場合
     if Input.trigger?(Input::B)
-      # Play cancel SE
+      # キャンセル SE を演奏
       $game_system.se_play($data_system.cancel_se)
-      # Switch to menu screen
+      # メニュー画面に切り替え
       $scene = Scene_Menu.new(2)
       return
     end
-    # If C button was pressed
+    # C ボタンが押された場合
     if Input.trigger?(Input::C)
-      # If equipment is fixed
+      # 装備固定の場合
       if @actor.equip_fix?(@right_window.index)
-        # Play buzzer SE
+        # ブザー SE を演奏
         $game_system.se_play($data_system.buzzer_se)
         return
       end
-      # Play decision SE
+      # 決定 SE を演奏
       $game_system.se_play($data_system.decision_se)
-      # Activate item window
+      # アイテムウィンドウをアクティブ化
       @right_window.active = false
       @item_window.active = true
       @item_window.index = 0
       return
     end
-    # If R button was pressed
+    # R ボタンが押された場合
     if Input.trigger?(Input::R)
-      # Play cursor SE
+      # カーソル SE を演奏
       $game_system.se_play($data_system.cursor_se)
-      # To next actor
+      # 次のアクターへ
       @actor_index += 1
       @actor_index %= $game_party.actors.size
-      # Switch to different equipment screen
+      # 別の装備画面に切り替え
       $scene = Scene_Equip.new(@actor_index, @right_window.index)
       return
     end
-    # If L button was pressed
+    # L ボタンが押された場合
     if Input.trigger?(Input::L)
-      # Play cursor SE
+      # カーソル SE を演奏
       $game_system.se_play($data_system.cursor_se)
-      # To previous actor
+      # 前のアクターへ
       @actor_index += $game_party.actors.size - 1
       @actor_index %= $game_party.actors.size
-      # Switch to different equipment screen
+      # 別の装備画面に切り替え
       $scene = Scene_Equip.new(@actor_index, @right_window.index)
       return
     end
   end
   #--------------------------------------------------------------------------
-  # * Frame Update (when item window is active)
+  # ● フレーム更新 (アイテムウィンドウがアクティブの場合)
   #--------------------------------------------------------------------------
   def update_item
-    # If B button was pressed
+    # B ボタンが押された場合
     if Input.trigger?(Input::B)
-      # Play cancel SE
+      # キャンセル SE を演奏
       $game_system.se_play($data_system.cancel_se)
-      # Activate right window
+      # ライトウィンドウをアクティブ化
       @right_window.active = true
       @item_window.active = false
       @item_window.index = -1
       return
     end
-    # If C button was pressed
+    # C ボタンが押された場合
     if Input.trigger?(Input::C)
-      # Play equip SE
+      # 装備 SE を演奏
       $game_system.se_play($data_system.equip_se)
-      # Get currently selected data on the item window
+      # アイテムウィンドウで現在選択されているデータを取得
       item = @item_window.item
-      # Change equipment
-      @actor.equip(@right_window.index, item == nil ? 0 : item.id)
-      # Activate right window
+
+      if @right_window.index == 0 #武器は外せない
+        if item != nil
+          # 装備を変更
+          @actor.equip(@right_window.index, item == nil ? 0 : item.id)
+        end
+      else
+        # 装備を変更
+        @actor.equip(@right_window.index, item == nil ? 0 : item.id)
+      end
+
+      # ライトウィンドウをアクティブ化
       @right_window.active = true
       @item_window.active = false
       @item_window.index = -1
-      # Remake right window and item window contents
+      # ライトウィンドウ、アイテムウィンドウの内容を再作成
       @right_window.refresh
       @item_window.refresh
+
+      # ステータスウィンドウの内容を再作成
+      @status_window.refresh
       return
     end
+  end
+  #--------------------------------------------------------------------------
+  # ● 背景画像の表示
+  #--------------------------------------------------------------------------
+  def menuback
+    @menuback = Sprite.new
+    @menuback.bitmap = RPG::Cache.picture("menuback")
   end
 end

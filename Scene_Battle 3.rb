@@ -1,427 +1,500 @@
 #==============================================================================
-# ** Scene_Battle (part 3)
+# ■ Scene_Battle (分割定義 3)
 #------------------------------------------------------------------------------
-#  This class performs battle screen processing.
+# 　バトル画面の処理を行うクラスです。
 #==============================================================================
 
 class Scene_Battle
   #--------------------------------------------------------------------------
-  # * Start Actor Command Phase
+  # ● フェイズ6開始 (戦闘処理に移行)
   #--------------------------------------------------------------------------
-  def start_phase3
-    # Shift to phase 3
-    @phase = 3
-    # Set actor as unselectable
-    @actor_index = -1
-    @active_battler = nil
-    # Go to command input for next actor
-    phase3_next_actor
+  def start_phase6
+    # フェーズ 6 に移行
+    @phase = 6
   end
   #--------------------------------------------------------------------------
-  # * Go to Command Input for Next Actor
+  # ● フェイズ6更新 (戦闘処理に移行)
   #--------------------------------------------------------------------------
-  def phase3_next_actor
-    # Loop
-    begin
-      # Actor blink effect OFF
-      if @active_battler != nil
-        @active_battler.blink = false
+  def update_phase6
+    attack_command_clear #攻撃コマンドの消去
+    flash_command_clear #閃光斬りコマンドの消去
+    # バトルコマンドBの消去
+      battle_commandB_zoom(2)
+
+    if @zoom_end == 1
+      @zoom_end = 0
+
+      #@help_window.refresh("commandB#{@commandB_index}") # ヘルプメッセージウィンドウを更新
+
+      @old_hit = @hit
+      @old_enemy_damage = @enemy_damage
+      @old_avoid = @avoid
+      @old_player_damage = @player_damage
+      #先攻時にエネミーの思考ルーチンが変化フラグ
+      if @battle_order == 1
+        if @enemy_pattern_change == "ON"
+          enemy_data(3)  #エネミーの思考ルーチン
+
+          parameter_refresh #パラメータの更新
+        end
       end
-      # If last actor
-      if @actor_index == $game_party.actors.size-1
-        # Start main phase
-        start_phase4
-        return
-      end
-      # Advance actor index
-      @actor_index += 1
-      @active_battler = $game_party.actors[@actor_index]
-      @active_battler.blink = true
-    # Once more if actor refuses command input
-    end until @active_battler.inputable?
-    # Set up actor command window
-    phase3_setup_command_window
-  end
-  #--------------------------------------------------------------------------
-  # * Go to Command Input of Previous Actor
-  #--------------------------------------------------------------------------
-  def phase3_prior_actor
-    # Loop
-    begin
-      # Actor blink effect OFF
-      if @active_battler != nil
-        @active_battler.blink = false
-      end
-      # If first actor
-      if @actor_index == 0
-        # Start party command phase
-        start_phase2
-        return
-      end
-      # Return to actor index
-      @actor_index -= 1
-      @active_battler = $game_party.actors[@actor_index]
-      @active_battler.blink = true
-    # Once more if actor refuses command input
-    end until @active_battler.inputable?
-    # Set up actor command window
-    phase3_setup_command_window
-  end
-  #--------------------------------------------------------------------------
-  # * Actor Command Window Setup
-  #--------------------------------------------------------------------------
-  def phase3_setup_command_window
-    # Disable party command window
-    @party_command_window.active = false
-    @party_command_window.visible = false
-    # Enable actor command window
-    @actor_command_window.active = true
-    @actor_command_window.visible = true
-    # Set actor command window position
-    @actor_command_window.x = @actor_index * 160
-    # Set index to 0
-    @actor_command_window.index = 0
-  end
-  #--------------------------------------------------------------------------
-  # * Frame Update (actor command phase)
-  #--------------------------------------------------------------------------
-  def update_phase3
-    # If enemy arrow is enabled
-    if @enemy_arrow != nil
-      update_phase3_enemy_select
-    # If actor arrow is enabled
-    elsif @actor_arrow != nil
-      update_phase3_actor_select
-    # If skill window is enabled
-    elsif @skill_window != nil
-      update_phase3_skill_select
-    # If item window is enabled
-    elsif @item_window != nil
-      update_phase3_item_select
-    # If actor command window is enabled
-    elsif @actor_command_window.active
-      update_phase3_basic_command
+
+      @enemy_ap -= @ap_cost_enemy #エネミーのAP消費
+      ap_refresh #apの更新
+
+      @shake_count_change = 0 #カウント初期化
+      start_phase7  # フェーズ 7 に移行
+
     end
   end
   #--------------------------------------------------------------------------
-  # * Frame Update (actor command phase : basic command)
+  # ● フェイズ7開始 (パラメータの更新)
   #--------------------------------------------------------------------------
-  def update_phase3_basic_command
-    # If B button was pressed
-    if Input.trigger?(Input::B)
-      # Play cancel SE
-      $game_system.se_play($data_system.cancel_se)
-      # Go to command input for previous actor
-      phase3_prior_actor
-      return
-    end
-    # If C button was pressed
-    if Input.trigger?(Input::C)
-      # Branch by actor command window cursor position
-      case @actor_command_window.index
-      when 0  # attack
-        # Play decision SE
-        $game_system.se_play($data_system.decision_se)
-        # Set action
-        @active_battler.current_action.kind = 0
-        @active_battler.current_action.basic = 0
-        # Start enemy selection
-        start_enemy_select
-      when 1  # skill
-        # Play decision SE
-        $game_system.se_play($data_system.decision_se)
-        # Set action
-        @active_battler.current_action.kind = 1
-        # Start skill selection
-        start_skill_select
-      when 2  # guard
-        # Play decision SE
-        $game_system.se_play($data_system.decision_se)
-        # Set action
-        @active_battler.current_action.kind = 0
-        @active_battler.current_action.basic = 1
-        # Go to command input for next actor
-        phase3_next_actor
-      when 3  # item
-        # Play decision SE
-        $game_system.se_play($data_system.decision_se)
-        # Set action
-        @active_battler.current_action.kind = 2
-        # Start item selection
-        start_item_select
-      end
-      return
+  def start_phase7
+    # フェーズ 7 に移行
+    @phase = 7
+  end
+  #--------------------------------------------------------------------------
+  # ● フェイズ7更新 (パラメータの更新)
+  #--------------------------------------------------------------------------
+  def update_phase7
+    shake_count
+    case @shake_count
+    when 0
+      @num_color_change_hit = "P" if @old_hit != @hit
+      @num_color_change_enemy_damage = "P" if @old_enemy_damage != @enemy_damage
+      @num_color_change_avoid = "P" if @old_avoid != @avoid
+      @num_color_change_player_damage = "P" if @old_player_damage != @player_damage
+
+      num_parameter_clear #パラメータの消去
+      num_hit #命中率
+      num_enemy_damage  #与ダメージ
+      num_avoid #回避率
+      num_player_damage  #被ダメージ
+
+      @num_color_change_hit = 0             #命中率の色を変えるフラグ
+      @num_color_change_enemy_damage = 0    #与ダメージの色を変えるフラグ
+      @num_color_change_avoid = 0           #回避率の色を変えるフラグ
+      @num_color_change_player_damage = 0   #被ダメージの色を変えるフラグ
+    when 1
+      num_hit_shake("y",3)            #命中率のシェイク
+      num_enemy_damage_shake("y",3)   #与ダメージのシェイク
+      num_avoid_shake("y",3)          #回避率のシェイク
+      num_player_damage_shake("y",3)  #被ダメージのシェイク
+    when 4
+      num_hit_shake("x",-3)            #命中率のシェイク
+      num_enemy_damage_shake("x",-3)   #与ダメージのシェイク
+      num_avoid_shake("x",-3)          #回避率のシェイク
+      num_player_damage_shake("x",-3)  #被ダメージのシェイク
+    when 7
+      num_hit_shake("y",-3)            #命中率のシェイク
+      num_enemy_damage_shake("y",-3)   #与ダメージのシェイク
+      num_avoid_shake("y",-3)          #回避率のシェイク
+      num_player_damage_shake("y",-3)  #被ダメージのシェイク
+    when 10
+      num_hit_shake("x",3)            #命中率のシェイク
+      num_enemy_damage_shake("x",3)   #与ダメージのシェイク
+      num_avoid_shake("x",3)          #回避率のシェイク
+      num_player_damage_shake("x",3)  #被ダメージのシェイク
+    when 40
+      num_parameter_clear #パラメータの消去
+      num_hit #命中率
+      num_enemy_damage  #与ダメージ
+      num_avoid #回避率
+      num_player_damage  #被ダメージ
+
+      @shake_count_change = 0 #カウント初期化
+      start_battle_phase  # バトルフェーズ に移行
     end
   end
   #--------------------------------------------------------------------------
-  # * Frame Update (actor command phase : skill selection)
+  # ● バトルフェイズ開始 (戦闘)
   #--------------------------------------------------------------------------
-  def update_phase3_skill_select
-    # Make skill window visible
-    @skill_window.visible = true
-    # Update skill window
-    @skill_window.update
-    # If B button was pressed
-    if Input.trigger?(Input::B)
-      # Play cancel SE
-      $game_system.se_play($data_system.cancel_se)
-      # End skill selection
-      end_skill_select
-      return
+  def start_battle_phase
+    case @battle_order
+    when 1 #先攻
+      # プレイヤーの攻撃フェイズ に移行
+      @phase = "player_attack"
+    when 2 #後攻
+      # エネミーの攻撃フェイズ に移行
+      @phase = "enemy_attack"
     end
-    # If C button was pressed
-    if Input.trigger?(Input::C)
-      # Get currently selected data on the skill window
-      @skill = @skill_window.skill
-      # If it can't be used
-      if @skill == nil or not @active_battler.skill_can_use?(@skill.id)
-        # Play buzzer SE
-        $game_system.se_play($data_system.buzzer_se)
-        return
+
+  end
+  #--------------------------------------------------------------------------
+  # ● プレイヤーの攻撃フェイズ更新 (戦闘)
+  #--------------------------------------------------------------------------
+  def update_player_attack
+    #プレイヤー画像の更新
+    if @commandB_index == 2  #閃光斬り
+      @player_action = "senko" #プレイヤーの行動
+      @pose.pop("D",face)
+      @player_count_change = 0
+    else
+      @player_action = "kogeki" #プレイヤーの行動
+      @pose.pop("C",face)
+      @player_count_change = 0
+    end
+
+    if dice(100) <= @hit  #命中
+      @enemy.animation_hit = true
+      @enemy.hp -= @enemy_damage  #与ダメージ
+      if @enemy_damage > 0 #与ダメージが1以上ならば
+        @num_color_change = "R"
       end
-      # Play decision SE
-      $game_system.se_play($data_system.decision_se)
-      # Set action
-      @active_battler.current_action.skill_id = @skill.id
-      # Make skill window invisible
-      @skill_window.visible = false
-      # If effect scope is single enemy
-      if @skill.scope == 1
-        # Start enemy selection
-        start_enemy_select
-      # If effect scope is single ally
-      elsif @skill.scope == 3 or @skill.scope == 5
-        # Start actor selection
-        start_actor_select
-      # If effect scope is not single
+      @help_hit = "true"
+    else  #ミス
+      @enemy.animation_hit = false
+      @help_hit = "false"
+    end
+
+    if @commandB_index == 2  #閃光斬り
+        @enemy.animation_id = 103
+    else
+      if dice(2) == 1
+        @enemy.animation_id = 101
       else
-        # End skill selection
-        end_skill_select
-        # Go to command input for next actor
-        phase3_next_actor
+        @enemy.animation_id = 102
       end
-      return
     end
+
+    @help_window.battle_data(@help_hit, @hit, @enemy_damage)
+    if @commandB_index == 2  #閃光斬り
+      @help_window.refresh("player_attack2") # ヘルプメッセージウィンドウを更新
+    else
+      @help_window.refresh("player_attack1") # ヘルプメッセージウィンドウを更新
+    end
+
+    @shake_count_change = 0 #カウント初期化
+    # エネミーやられ中の画像処理 に移行
+    @phase = "enemy_damage"
   end
-  #--------------------------------------------------------------------------
-  # * Frame Update (actor command phase : item selection)
-  #--------------------------------------------------------------------------
-  def update_phase3_item_select
-    # Make item window visible
-    @item_window.visible = true
-    # Update item window
-    @item_window.update
-    # If B button was pressed
-    if Input.trigger?(Input::B)
-      # Play cancel SE
-      $game_system.se_play($data_system.cancel_se)
-      # End item selection
-      end_item_select
-      return
-    end
-    # If C button was pressed
-    if Input.trigger?(Input::C)
-      # Get currently selected data on the item window
-      @item = @item_window.item
-      # If it can't be used
-      unless $game_party.item_can_use?(@item.id)
-        # Play buzzer SE
-        $game_system.se_play($data_system.buzzer_se)
+  def update_enemy_damage # エネミーやられ中の画像処理
+    enemy_damage_shake # エネミーのダメージ数字のシェイク
+  end
+  def enemy_damage_shake # エネミーのダメージ数字のシェイク
+    shake_count
+    case @shake_count
+    when 0
+      num_enemy_hp_clear #エネミーのHPの消去
+      num_enemy_hp  #エネミーのHP
+    when 1
+      num_enemy_hp_shake("y",3)  #エネミーのHPのシェイク
+    when 4
+      num_enemy_hp_shake("x",-3)  #エネミーのHPのシェイク
+    when 7
+      num_enemy_hp_shake("y",-3)  #エネミーのHPのシェイク
+    when 10
+      num_enemy_hp_shake("x",3)  #エネミーのHPのシェイク
+    when 40
+      num_enemy_hp_clear #エネミーのHPの消去
+      @num_color_change = 0
+      num_enemy_hp  #エネミーのHP
+
+      @shake_count_change = 0 #カウント初期化
+
+      # 勝敗判定
+      if judge
         return
       end
-      # Play decision SE
-      $game_system.se_play($data_system.decision_se)
-      # Set action
-      @active_battler.current_action.item_id = @item.id
-      # Make item window invisible
-      @item_window.visible = false
-      # If effect scope is single enemy
-      if @item.scope == 1
-        # Start enemy selection
-        start_enemy_select
-      # If effect scope is single ally
-      elsif @item.scope == 3 or @item.scope == 5
-        # Start actor selection
-        start_actor_select
-      # If effect scope is not single
+
+      case @battle_order
+      when 1 #先攻
+        # エネミーの攻撃フェイズ に移行
+        @phase = "enemy_attack"
+      when 2 #後攻
+        start_phase8  # フェーズ 8 に移行
+      end
+    end
+  end
+  #--------------------------------------------------------------------------
+  # ● エネミーの攻撃フェイズ更新 (戦闘)
+  #--------------------------------------------------------------------------
+  def update_enemy_attack
+    enemy_attack_se #エネミーの攻撃音
+
+    if dice(100) <= @avoid  #回避
+      Audio.se_play("Audio/SE/063-Swing02",  80, 100)
+      @help_hit = "false"
+
+      #プレイヤー画像の更新
+      @player_action = "kaihi" #プレイヤーの行動
+      @pose.pop("B",face)
+      @player_count_change = 0
+    else  #回避失敗
+      @player.hp -= @player_damage  #被ダメージ
+      if @player_damage > 0 #被ダメージが1以上ならば
+        @num_color_change = "R"
       else
-        # End item selection
-        end_item_select
-        # Go to command input for next actor
-        phase3_next_actor
+        Audio.se_play("Audio/SE/097-Attack09",  80, 100)
       end
-      return
+      @help_hit = "true"
+
+      #プレイヤー画像の更新
+      @player_action = "bogyo" #プレイヤーの行動
+      @pose.pop("A",face)
+      @player_count_change = 0
+    end
+
+    @help_window.battle_data(@help_hit, @avoid, @player_damage)
+    @help_window.refresh("enemy_attack") # ヘルプメッセージウィンドウを更新
+
+    @shake_count_change = 0 #カウント初期化
+    # プレイヤーやられ中の画像処理 に移行
+    @phase = "player_damage"
+  end
+  def update_player_damage # プレイヤーやられ中の画像処理
+    player_damage_shake # プレイヤーのダメージ数字のシェイク
+  end
+  def player_damage_shake # プレイヤーのダメージ数字のシェイク
+    shake_count
+    case @shake_count
+    when 0
+      num_player_hp_clear #プレイヤーのHPの消去
+      num_player_hp  #プレイヤーのHP
+    when 1
+      num_player_hp_shake("y",3)  #プレイヤーのHPのシェイク
+    when 4
+      num_player_hp_shake("x",-3)  #プレイヤーのHPのシェイク
+    when 7
+      num_player_hp_shake("y",-3)  #プレイヤーのHPのシェイク
+    when 10
+      num_player_hp_shake("x",3)  #プレイヤーのHPのシェイク
+    when 40
+      num_player_hp_clear #プレイヤーのHPの消去
+      @num_color_change = 0
+      num_player_hp  #プレイヤーのHP
+
+      @shake_count_change = 0 #カウント初期化
+
+      # 勝敗判定
+      if judge
+        return
+      end
+
+      case @battle_order
+      when 1 #先攻
+        start_phase8  # フェーズ 8 に移行
+      when 2 #後攻
+        # プレイヤーの攻撃フェイズ に移行
+        @phase = "player_attack"
+      end
     end
   end
   #--------------------------------------------------------------------------
-  # * Frame Updat (actor command phase : enemy selection)
+  # ● フェイズ8開始 (バトルコマンドB移行)
   #--------------------------------------------------------------------------
-  def update_phase3_enemy_select
-    # Update enemy arrow
-    @enemy_arrow.update
-    # If B button was pressed
-    if Input.trigger?(Input::B)
-      # Play cancel SE
-      $game_system.se_play($data_system.cancel_se)
-      # End enemy selection
-      end_enemy_select
-      return
+  def start_phase8
+
+    @player_action = "kamae" #プレイヤーの行動
+    @pose.pop("A",face)
+    @player_count_change = 0
+
+    @command_count_change = 0
+    @command_type = 1 #コマンドアニメ一枚目
+
+    # フェーズ 8 に移行
+    @phase = 8
+  end
+  #--------------------------------------------------------------------------
+  # ● フェイズ8更新 (バトルコマンドB移行)
+  #--------------------------------------------------------------------------
+  def update_phase8
+    # バトルコマンドBの表示
+      battle_commandB_zoom(1)
+
+    # バトルコマンドB開始
+    if @zoom_end == 1
+      @zoom_end = 0
+
+      @turn += 1 #ターン数
+      battle_frame_turn_refresh #ターン枠の更新
+
+      ap_recoveryturn #AP回復ターンの処理
+
+      enemy_data(2)  #エネミーの思考ルーチン
+      parameter_refresh #パラメータの更新
+      ap_refresh #apの更新
+
+      @skill1_used = 0  #応急手当を使用可能にする
+
+      if @commandB_index == 2  #閃光斬り
+        @battle_order = @old_battle_order #先攻・後攻を戻す
+        battle_frame_turn_refresh #ターン枠の更新
+      end
+
+      @help_window.refresh("commandB#{@commandB_index}") # ヘルプメッセージウィンドウを更新
+      start_phase4  # フェーズ 4 に移行
     end
-    # If C button was pressed
+  end
+  #--------------------------------------------------------------------------
+  # ● フェイズ9開始 (戦闘結果)
+  #--------------------------------------------------------------------------
+  def start_phase9
+    @player_action = "kamae" #プレイヤーの行動
+    @pose.pop("A",face)
+    @player_count_change = 0
+
+    # バトル終了 ME を演奏
+    $game_system.me_play($game_system.battle_end_me)
+    # バトル開始前の BGM に戻す
+    $game_system.bgm_play($game_temp.map_bgm)
+    # EXP、ゴールド、トレジャーを初期化
+    exp = 0
+    gold = 0
+    treasures = []
+    # ループ
+    for enemy in $game_troop.enemies
+      # エネミーが隠れ状態でない場合
+      unless enemy.hidden
+        # 獲得 EXP、ゴールドを追加
+        exp += enemy.exp
+        gold += enemy.gold
+        # トレジャー出現判定
+        if rand(100) < enemy.treasure_prob
+          if enemy.item_id > 0
+            treasures.push($data_items[enemy.item_id])
+          end
+          if enemy.weapon_id > 0
+            treasures.push($data_weapons[enemy.weapon_id])
+          end
+          if enemy.armor_id > 0
+            treasures.push($data_armors[enemy.armor_id])
+          end
+        end
+      end
+    end
+    # トレジャーの数を 6 個までに限定
+    treasures = treasures[0..5]
+    # EXP 獲得
+    for i in 0...$game_party.actors.size
+      actor = $game_party.actors[i]
+      if actor.cant_get_exp? == false
+        last_level = actor.level
+
+        if @player.level > @enemy_level #プレイヤーLVがエネミーLV以上ならば
+          s = @player.level - @enemy_level
+          if s == 1  #差が1レベル分
+            exp = exp * 0.5
+            exp = exp.round #四捨五入
+          else
+            exp = exp * 0.2
+            exp = exp.round #四捨五入
+          end
+        end
+
+        actor.exp += exp
+        if actor.level > last_level #レベルアップ
+          #@status_window.level_up(i)
+          d = "LVUP"
+        else
+          d = ""
+        end
+      end
+    end
+    # ゴールド獲得
+    $game_party.gain_gold(gold)
+    # トレジャー獲得
+    for item in treasures
+      case item
+      when RPG::Item
+        $game_party.gain_item(item.id, 1)
+      when RPG::Weapon
+        $game_party.gain_weapon(item.id, 1)
+      when RPG::Armor
+        $game_party.gain_armor(item.id, 1)
+      end
+    end
+
+    #プレイヤーのHPを回復して、VITにAPを戻す
+    @player.hp = @player.maxhp
+    @player.sp = @player_vit + @player_ap
+    num_player_hp_clear #プレイヤーのHPの消去
+    num_player_hp       #プレイヤーのHP
+    player_lv_refresh #LVの更新
+
+    if $game_switches[24] == true #黄金の輝き使用中
+      $game_variables[8] -= 0.2 #清潔感の減少
+    else
+      $game_variables[8] -= 1 #清潔感の減少
+    end
+
+    if item != nil
+      c = item.name
+    else
+      c = ""
+    end
+    @help_window.battle_result(exp, gold, c, d)
+    @help_window.refresh("victory") # ヘルプメッセージウィンドウを更新
+
+    # フェーズ 9 に移行
+    @phase = 9
+  end
+  #--------------------------------------------------------------------------
+  # ● フェイズ9更新 (戦闘結果)
+  #--------------------------------------------------------------------------
+  def update_phase9
+    # C ボタンが押された場合
     if Input.trigger?(Input::C)
-      # Play decision SE
+      # 決定 SE を演奏
       $game_system.se_play($data_system.decision_se)
-      # Set action
-      @active_battler.current_action.target_index = @enemy_arrow.index
-      # End enemy selection
-      end_enemy_select
-      # If skill window is showing
-      if @skill_window != nil
-        # End skill selection
-        end_skill_select
+      # バトル終了
+      battle_end(0)
+    end
+    # A ボタンが押された場合
+    if Input.trigger?(Input::A)
+      if @talk == 0
+        # 決定 SE を演奏
+        $game_system.se_play($data_system.decision_se)
+        @help_window.refresh("talk") # ヘルプメッセージウィンドウを更新
+        @talk = 1
       end
-      # If item window is showing
-      if @item_window != nil
-        # End item selection
-        end_item_select
-      end
-      # Go to command input for next actor
-      phase3_next_actor
     end
   end
   #--------------------------------------------------------------------------
-  # * Frame Update (actor command phase : actor selection)
+  # ● AP回復ターンの処理
   #--------------------------------------------------------------------------
-  def update_phase3_actor_select
-    # Update actor arrow
-    @actor_arrow.update
-    # If B button was pressed
-    if Input.trigger?(Input::B)
-      # Play cancel SE
-      $game_system.se_play($data_system.cancel_se)
-      # End actor selection
-      end_actor_select
-      return
-    end
-    # If C button was pressed
-    if Input.trigger?(Input::C)
-      # Play decision SE
-      $game_system.se_play($data_system.decision_se)
-      # Set action
-      @active_battler.current_action.target_index = @actor_arrow.index
-      # End actor selection
-      end_actor_select
-      # If skill window is showing
-      if @skill_window != nil
-        # End skill selection
-        end_skill_select
+  def ap_recoveryturn
+    a = @turn % @player_ap_recoveryturn
+    if a == 1 #ターンをプレイヤーのAP回復ターンで割った余りが1ならば
+      @player_vit += @player_ap #プレイヤーのAPをVITに戻す
+
+      if @player_vit >= @player_maxap #プレイヤーのVITが最大AP以上ならば
+        @player_ap = @player_maxap
+        @player_vit -= @player_maxap
+      else
+        @player_ap = @player_vit
+        @player_vit = 0
       end
-      # If item window is showing
-      if @item_window != nil
-        # End item selection
-        end_item_select
+    end
+    a = @turn % @enemy_ap_recoveryturn
+    if a == 1 #ターンをプレイヤーのAP回復ターンで割った余りが1ならば
+      @enemy_vit += @enemy_ap #プレイヤーのAPをVITに戻す
+
+      if @enemy_vit >= @enemy_maxap #プレイヤーのVITが最大AP以上ならば
+        @enemy_ap = @enemy_maxap
+        @enemy_vit -= @enemy_maxap
+      else
+        @enemy_ap = @enemy_vit
+        @enemy_vit = 0
       end
-      # Go to command input for next actor
-      phase3_next_actor
     end
   end
   #--------------------------------------------------------------------------
-  # * Start Enemy Selection
+  # ● ウェイトカウント
   #--------------------------------------------------------------------------
-  def start_enemy_select
-    # Make enemy arrow
-    @enemy_arrow = Arrow_Enemy.new(@spriteset.viewport1)
-    # Associate help window
-    @enemy_arrow.help_window = @help_window
-    # Disable actor command window
-    @actor_command_window.active = false
-    @actor_command_window.visible = false
-  end
-  #--------------------------------------------------------------------------
-  # * End Enemy Selection
-  #--------------------------------------------------------------------------
-  def end_enemy_select
-    # Dispose of enemy arrow
-    @enemy_arrow.dispose
-    @enemy_arrow = nil
-    # If command is [fight]
-    if @actor_command_window.index == 0
-      # Enable actor command window
-      @actor_command_window.active = true
-      @actor_command_window.visible = true
-      # Hide help window
-      @help_window.visible = false
+  def shake_count
+    if @shake_count_change == 0
+      @shake_count_old = Graphics.frame_count
+      @shake_count_change = 1
     end
+    @shake_count = Graphics.frame_count - @shake_count_old
   end
   #--------------------------------------------------------------------------
-  # * Start Actor Selection
+  # ● ダイス
   #--------------------------------------------------------------------------
-  def start_actor_select
-    # Make actor arrow
-    @actor_arrow = Arrow_Actor.new(@spriteset.viewport2)
-    @actor_arrow.index = @actor_index
-    # Associate help window
-    @actor_arrow.help_window = @help_window
-    # Disable actor command window
-    @actor_command_window.active = false
-    @actor_command_window.visible = false
+  def dice(x)
+    return rand(x) + 1
   end
-  #--------------------------------------------------------------------------
-  # * End Actor Selection
-  #--------------------------------------------------------------------------
-  def end_actor_select
-    # Dispose of actor arrow
-    @actor_arrow.dispose
-    @actor_arrow = nil
-  end
-  #--------------------------------------------------------------------------
-  # * Start Skill Selection
-  #--------------------------------------------------------------------------
-  def start_skill_select
-    # Make skill window
-    @skill_window = Window_Skill.new(@active_battler)
-    # Associate help window
-    @skill_window.help_window = @help_window
-    # Disable actor command window
-    @actor_command_window.active = false
-    @actor_command_window.visible = false
-  end
-  #--------------------------------------------------------------------------
-  # * End Skill Selection
-  #--------------------------------------------------------------------------
-  def end_skill_select
-    # Dispose of skill window
-    @skill_window.dispose
-    @skill_window = nil
-    # Hide help window
-    @help_window.visible = false
-    # Enable actor command window
-    @actor_command_window.active = true
-    @actor_command_window.visible = true
-  end
-  #--------------------------------------------------------------------------
-  # * Start Item Selection
-  #--------------------------------------------------------------------------
-  def start_item_select
-    # Make item window
-    @item_window = Window_Item.new
-    # Associate help window
-    @item_window.help_window = @help_window
-    # Disable actor command window
-    @actor_command_window.active = false
-    @actor_command_window.visible = false
-  end
-  #--------------------------------------------------------------------------
-  # * End Item Selection
-  #--------------------------------------------------------------------------
-  def end_item_select
-    # Dispose of item window
-    @item_window.dispose
-    @item_window = nil
-    # Hide help window
-    @help_window.visible = false
-    # Enable actor command window
-    @actor_command_window.active = true
-    @actor_command_window.visible = true
-  end
+
 end

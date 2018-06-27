@@ -1,20 +1,20 @@
 #==============================================================================
-# ** Scene_Title
+# ■ Scene_Title
 #------------------------------------------------------------------------------
-#  This class performs title screen processing.
+# 　タイトル画面の処理を行うクラスです。
 #==============================================================================
 
 class Scene_Title
   #--------------------------------------------------------------------------
-  # * Main Processing
+  # ● メイン処理
   #--------------------------------------------------------------------------
   def main
-    # If battle test
+    # 戦闘テストの場合
     if $BTEST
       battle_test
       return
     end
-    # Load database
+    # データベースをロード
     $data_actors        = load_data("Data/Actors.rxdata")
     $data_classes       = load_data("Data/Classes.rxdata")
     $data_skills        = load_data("Data/Skills.rxdata")
@@ -28,93 +28,103 @@ class Scene_Title
     $data_tilesets      = load_data("Data/Tilesets.rxdata")
     $data_common_events = load_data("Data/CommonEvents.rxdata")
     $data_system        = load_data("Data/System.rxdata")
-    # Make system object
+    # システムオブジェクトを作成
     $game_system = Game_System.new
-    # Make title graphic
+    # タイトルグラフィックを作成
     @sprite = Sprite.new
     @sprite.bitmap = RPG::Cache.title($data_system.title_name)
-    # Make command window
+
+    # ウィンドウスキンの変更
+    $game_system.windowskin_name = "skin04"
+
+    # コマンドウィンドウを作成
     s1 = "New Game"
-    s2 = "Continue"
+    s2 = "Load"
     s3 = "Shutdown"
     @command_window = Window_Command.new(192, [s1, s2, s3])
     @command_window.back_opacity = 160
-    @command_window.x = 320 - @command_window.width / 2
-    @command_window.y = 288
-    # Continue enabled determinant
-    # Check if at least one save file exists
-    # If enabled, make @continue_enabled true; if disabled, make it false
+    #@command_window.x = 320 - @command_window.width / 2 - 150
+    @command_window.x = 50
+    #@command_window.y = 288
+    @command_window.y = 50
+    # コンティニュー有効判定
+    # セーブファイルがひとつでも存在するかどうかを調べる
+    # 有効なら @continue_enabled を true、無効なら false にする
     @continue_enabled = false
     for i in 0..3
       if FileTest.exist?("Save#{i+1}.rxdata")
         @continue_enabled = true
       end
     end
-    # If continue is enabled, move cursor to "Continue"
-    # If disabled, display "Continue" text in gray
+    # コンティニューが有効な場合、カーソルをコンティニューに合わせる
+    # 無効な場合、コンティニューの文字をグレー表示にする
     if @continue_enabled
       @command_window.index = 1
     else
       @command_window.disable_item(1)
     end
-    # Play title BGM
+    # タイトル BGM を演奏
     $game_system.bgm_play($data_system.title_bgm)
-    # Stop playing ME and BGS
+    # ME、BGS の演奏を停止
     Audio.me_stop
     Audio.bgs_stop
-    # Execute transition
+    # トランジション実行
     Graphics.transition
-    # Main loop
+    # メインループ
     loop do
-      # Update game screen
+      # ゲーム画面を更新
       Graphics.update
-      # Update input information
+      # 入力情報を更新
       Input.update
-      # Frame update
+      # フレーム更新
       update
-      # Abort loop if screen is changed
+      # 画面が切り替わったらループを中断
       if $scene != self
         break
       end
     end
-    # Prepare for transition
+    # トランジション準備
     Graphics.freeze
-    # Dispose of command window
+    # コマンドウィンドウを解放
     @command_window.dispose
-    # Dispose of title graphic
+    # タイトルグラフィックを解放
     @sprite.bitmap.dispose
     @sprite.dispose
+
+    # ウィンドウスキンの変更
+    $game_system.windowskin_name = "skin01"
+
   end
   #--------------------------------------------------------------------------
-  # * Frame Update
+  # ● フレーム更新
   #--------------------------------------------------------------------------
   def update
-    # Update command window
+    # コマンドウィンドウを更新
     @command_window.update
-    # If C button was pressed
+    # C ボタンが押された場合
     if Input.trigger?(Input::C)
-      # Branch by command window cursor position
+      # コマンドウィンドウのカーソル位置で分岐
       case @command_window.index
-      when 0  # New game
+      when 0  # ニューゲーム
         command_new_game
-      when 1  # Continue
+      when 1  # コンティニュー
         command_continue
-      when 2  # Shutdown
+      when 2  # シャットダウン
         command_shutdown
       end
     end
   end
   #--------------------------------------------------------------------------
-  # * Command: New Game
+  # ● コマンド : ニューゲーム
   #--------------------------------------------------------------------------
   def command_new_game
-    # Play decision SE
+    # 決定 SE を演奏
     $game_system.se_play($data_system.decision_se)
-    # Stop BGM
+    # BGM を停止
     Audio.bgm_stop
-    # Reset frame count for measuring play time
+    # プレイ時間計測用のフレームカウントをリセット
     Graphics.frame_count = 0
-    # Make each type of game object
+    # 各種ゲームオブジェクトを作成
     $game_temp          = Game_Temp.new
     $game_system        = Game_System.new
     $game_switches      = Game_Switches.new
@@ -126,54 +136,54 @@ class Scene_Title
     $game_troop         = Game_Troop.new
     $game_map           = Game_Map.new
     $game_player        = Game_Player.new
-    # Set up initial party
+    # 初期パーティをセットアップ
     $game_party.setup_starting_members
-    # Set up initial map position
+    # 初期位置のマップをセットアップ
     $game_map.setup($data_system.start_map_id)
-    # Move player to initial position
+    # プレイヤーを初期位置に移動
     $game_player.moveto($data_system.start_x, $data_system.start_y)
-    # Refresh player
+    # プレイヤーをリフレッシュ
     $game_player.refresh
-    # Run automatic change for BGM and BGS set with map
+    # マップに設定されている BGM と BGS の自動切り替えを実行
     $game_map.autoplay
-    # Update map (run parallel process event)
+    # マップを更新 (並列イベント実行)
     $game_map.update
-    # Switch to map screen
+    # マップ画面に切り替え
     $scene = Scene_Map.new
   end
   #--------------------------------------------------------------------------
-  # * Command: Continue
+  # ● コマンド : コンティニュー
   #--------------------------------------------------------------------------
   def command_continue
-    # If continue is disabled
+    # コンティニューが無効の場合
     unless @continue_enabled
-      # Play buzzer SE
+      # ブザー SE を演奏
       $game_system.se_play($data_system.buzzer_se)
       return
     end
-    # Play decision SE
+    # 決定 SE を演奏
     $game_system.se_play($data_system.decision_se)
-    # Switch to load screen
+    # ロード画面に切り替え
     $scene = Scene_Load.new
   end
   #--------------------------------------------------------------------------
-  # * Command: Shutdown
+  # ● コマンド : シャットダウン
   #--------------------------------------------------------------------------
   def command_shutdown
-    # Play decision SE
+    # 決定 SE を演奏
     $game_system.se_play($data_system.decision_se)
-    # Fade out BGM, BGS, and ME
+    # BGM、BGS、ME をフェードアウト
     Audio.bgm_fade(800)
     Audio.bgs_fade(800)
     Audio.me_fade(800)
-    # Shutdown
+    # シャットダウン
     $scene = nil
   end
   #--------------------------------------------------------------------------
-  # * Battle Test
+  # ● 戦闘テスト
   #--------------------------------------------------------------------------
   def battle_test
-    # Load database (for battle test)
+    # データベース (戦闘テスト用) をロード
     $data_actors        = load_data("Data/BT_Actors.rxdata")
     $data_classes       = load_data("Data/BT_Classes.rxdata")
     $data_skills        = load_data("Data/BT_Skills.rxdata")
@@ -187,9 +197,9 @@ class Scene_Title
     $data_tilesets      = load_data("Data/BT_Tilesets.rxdata")
     $data_common_events = load_data("Data/BT_CommonEvents.rxdata")
     $data_system        = load_data("Data/BT_System.rxdata")
-    # Reset frame count for measuring play time
+    # プレイ時間計測用のフレームカウントをリセット
     Graphics.frame_count = 0
-    # Make each game object
+    # 各種ゲームオブジェクトを作成
     $game_temp          = Game_Temp.new
     $game_system        = Game_System.new
     $game_switches      = Game_Switches.new
@@ -201,17 +211,17 @@ class Scene_Title
     $game_troop         = Game_Troop.new
     $game_map           = Game_Map.new
     $game_player        = Game_Player.new
-    # Set up party for battle test
+    # 戦闘テスト用のパーティをセットアップ
     $game_party.setup_battle_test_members
-    # Set troop ID, can escape flag, and battleback
+    # トループ ID、逃走可能フラグ、バトルバックを設定
     $game_temp.battle_troop_id = $data_system.test_troop_id
     $game_temp.battle_can_escape = true
     $game_map.battleback_name = $data_system.battleback_name
-    # Play battle start SE
+    # バトル開始 SE を演奏
     $game_system.se_play($data_system.battle_start_se)
-    # Play battle BGM
+    # バトル BGM を演奏
     $game_system.bgm_play($game_system.battle_bgm)
-    # Switch to battle screen
+    # バトル画面に切り替え
     $scene = Scene_Battle.new
   end
 end

@@ -1,452 +1,533 @@
 #==============================================================================
-# ** Scene_Battle (part 4)
+# ■ Scene_Battle (分割定義 4)
 #------------------------------------------------------------------------------
-#  This class performs battle screen processing.
+# 　バトル画面の処理を行うクラスです。
 #==============================================================================
 
 class Scene_Battle
   #--------------------------------------------------------------------------
-  # * Start Main Phase
+  # @p_str = @player.str  #プレイヤーの腕力
+  # @p_dex = @player.dex  #プレイヤーの器用さ
+  # @p_def = @player.int  #プレイヤーの守り
+  # @p_agi = @player.agi  #プレイヤーの素早さ
+  # @p_atk = @player.atk  #プレイヤーの武器攻撃力
+  # @p_grd = @player.pdef #プレイヤーの防具守備力
+  # @e_str = @enemy.str   #エネミーの腕力
+  # @e_dex = @enemy.dex   #エネミーの器用さ
+  # @e_def = @enemy.int   #エネミーの守り
+  # @e_agi = @enemy.agi   #エネミーの素早さ
+  # @e_atk = @enemy.atk   #エネミーの武器攻撃力
+  # @e_grd = @enemy.pdef  #エネミーの防具守備力
   #--------------------------------------------------------------------------
-  def start_phase4
-    # Shift to phase 4
-    @phase = 4
-    # Turn count
-    $game_temp.battle_turn += 1
-    # Search all battle event pages
-    for index in 0...$data_troops[@troop_id].pages.size
-      # Get event page
-      page = $data_troops[@troop_id].pages[index]
-      # If this page span is [turn]
-      if page.span == 1
-        # Clear action completed flags
-        $game_temp.battle_event_flags[index] = false
+  #--------------------------------------------------------------------------
+  # ● 命中計算処理
+  #--------------------------------------------------------------------------
+  def hit #命中率
+    @p_dex_plus = @p_dex + p_dex_bonus #器用さボーナス
+
+    a = 100.0 / (@p_dex_plus + @e_agi_plus)
+    b = @p_dex_plus * a
+    if @p_dex_plus > @e_agi_plus  #プレイヤーの器用さがエネミーの素早さよりも上ならば
+      case @commandB_index
+      when 1  #攻撃
+        b = b + hit_bonus #命中率ボーナス
+      when 2  #閃光斬り
+        b = b + hit_bonus #命中率ボーナス
+        b = b - 15
       end
     end
-    # Set actor as unselectable
-    @actor_index = -1
-    @active_battler = nil
-    # Enable party command window
-    @party_command_window.active = false
-    @party_command_window.visible = false
-    # Disable actor command window
-    @actor_command_window.active = false
-    @actor_command_window.visible = false
-    # Set main phase flag
-    $game_temp.battle_main_phase = true
-    # Make enemy action
-    for enemy in $game_troop.enemies
-      enemy.make_action
+
+    b = b.round #四捨五入
+
+    if $game_switches[22] == true #手ブラ
+      b = b - 5
     end
-    # Make action orders
-    make_action_orders
-    # Shift to step 1
-    @phase4_step = 1
+
+    if b > 99 #命中率が100以上ならば
+      b = 100
+    elsif b < 0 #命中率が0より下ならば
+      b = 0
+    end
+
+    return b
   end
-  #--------------------------------------------------------------------------
-  # * Make Action Orders
-  #--------------------------------------------------------------------------
-  def make_action_orders
-    # Initialize @action_battlers array
-    @action_battlers = []
-    # Add enemy to @action_battlers array
-    for enemy in $game_troop.enemies
-      @action_battlers.push(enemy)
+  def p_dex_bonus #器用さボーナス
+    case @commandB_index
+    when 1  #攻撃
+      a = @ap_cost_dex_attack
+    when 2  #閃光斬り
+      a = @ap_cost_dex_flash
+      a = a / 2
     end
-    # Add actor to @action_battlers array
-    for actor in $game_party.actors
-      @action_battlers.push(actor)
+    case a
+    when 0  # +0
+      return 0
+    when 1  # +7
+      return 7
+    when 2  # +5
+      return 12
+    when 3  # +4
+      return 16
+    when 4  # +3
+      return 19
+    when 5  # +3
+      return 22
+    when 6  # +3
+      return 25
+    when 7  # +2
+      return 27
+    when 8  # +2
+      return 29
+    when 9  # +2
+      return 31
     end
-    # Decide action speed for all
-    for battler in @action_battlers
-      battler.make_action_speed
-    end
-    # Line up action speed in order from greatest to least
-    @action_battlers.sort! {|a,b|
-      b.current_action.speed - a.current_action.speed }
   end
-  #--------------------------------------------------------------------------
-  # * Frame Update (main phase)
-  #--------------------------------------------------------------------------
-  def update_phase4
-    case @phase4_step
+  def hit_bonus #命中率ボーナス
+    case @commandB_index
+    when 1  #攻撃
+      a = @ap_cost_dex_attack
+    when 2  #閃光斬り
+      a = @ap_cost_dex_flash
+      a = a / 2
+    end
+    case a
+    when 0
+      return 30
     when 1
-      update_phase4_step1
+      return 30
     when 2
-      update_phase4_step2
+      return 28
     when 3
-      update_phase4_step3
+      return 26
     when 4
-      update_phase4_step4
+      return 26
     when 5
-      update_phase4_step5
+      return 26
     when 6
-      update_phase4_step6
+      return 26
+    when 7
+      return 26
+    when 8
+      return 26
+    when 9
+      return 26
     end
   end
   #--------------------------------------------------------------------------
-  # * Frame Update (main phase step 1 : action preparation)
+  # ● 与ダメージ計算処理
   #--------------------------------------------------------------------------
-  def update_phase4_step1
-    # Hide help window
-    @help_window.visible = false
-    # Determine win/loss
-    if judge
-      # If won, or if lost : end method
-      return
-    end
-    # If an action forcing battler doesn't exist
-    if $game_temp.forcing_battler == nil
-      # Set up battle event
-      setup_battle_event
-      # If battle event is running
-      if $game_system.battle_interpreter.running?
-        return
-      end
-    end
-    # If an action forcing battler exists
-    if $game_temp.forcing_battler != nil
-      # Add to head, or move
-      @action_battlers.delete($game_temp.forcing_battler)
-      @action_battlers.unshift($game_temp.forcing_battler)
-    end
-    # If no actionless battlers exist (all have performed an action)
-    if @action_battlers.size == 0
-      # Start party command phase
-      start_phase2
-      return
-    end
-    # Initialize animation ID and common event ID
-    @animation1_id = 0
-    @animation2_id = 0
-    @common_event_id = 0
-    # Shift from head of actionless battlers
-    @active_battler = @action_battlers.shift
-    # If already removed from battle
-    if @active_battler.index == nil
-      return
-    end
-    # Slip damage
-    if @active_battler.hp > 0 and @active_battler.slip_damage?
-      @active_battler.slip_damage_effect
-      @active_battler.damage_pop = true
-    end
-    # Natural removal of states
-    @active_battler.remove_states_auto
-    # Refresh status window
-    @status_window.refresh
-    # Shift to step 2
-    @phase4_step = 2
-  end
-  #--------------------------------------------------------------------------
-  # * Frame Update (main phase step 2 : start action)
-  #--------------------------------------------------------------------------
-  def update_phase4_step2
-    # If not a forcing action
-    unless @active_battler.current_action.forcing
-      # If restriction is [normal attack enemy] or [normal attack ally]
-      if @active_battler.restriction == 2 or @active_battler.restriction == 3
-        # Set attack as an action
-        @active_battler.current_action.kind = 0
-        @active_battler.current_action.basic = 0
-      end
-      # If restriction is [cannot perform action]
-      if @active_battler.restriction == 4
-        # Clear battler being forced into action
-        $game_temp.forcing_battler = nil
-        # Shift to step 1
-        @phase4_step = 1
-        return
-      end
-    end
-    # Clear target battlers
-    @target_battlers = []
-    # Branch according to each action
-    case @active_battler.current_action.kind
-    when 0  # basic
-      make_basic_action_result
-    when 1  # skill
-      make_skill_action_result
-    when 2  # item
-      make_item_action_result
-    end
-    # Shift to step 3
-    if @phase4_step == 2
-      @phase4_step = 3
-    end
-  end
-  #--------------------------------------------------------------------------
-  # * Make Basic Action Results
-  #--------------------------------------------------------------------------
-  def make_basic_action_result
-    # If attack
-    if @active_battler.current_action.basic == 0
-      # Set anaimation ID
-      @animation1_id = @active_battler.animation1_id
-      @animation2_id = @active_battler.animation2_id
-      # If action battler is enemy
-      if @active_battler.is_a?(Game_Enemy)
-        if @active_battler.restriction == 3
-          target = $game_troop.random_target_enemy
-        elsif @active_battler.restriction == 2
-          target = $game_party.random_target_actor
-        else
-          index = @active_battler.current_action.target_index
-          target = $game_party.smooth_target_actor(index)
+  def enemy_damage  #与ダメージ
+    @p_str_plus = @p_str * p_str_bonus #腕力ボーナス
+
+    a = (@p_str_plus - @e_def_plus) * 1.2
+    b = a + (@p_atk - @e_grd)
+    if @p_str_plus > @e_def_plus  #プレイヤーの腕力がエネミーの守りよりも上ならば
+      if enemy_damage_bonus > 0 #ボーナスが0以上ならば
+        case @commandB_index
+        when 1  #攻撃
+          b = b + enemy_damage_bonus #与ダメージボーナス
+        when 2  #閃光斬り
+          b = b + enemy_damage_bonus #与ダメージボーナス
+          b = b * 3
         end
       end
-      # If action battler is actor
-      if @active_battler.is_a?(Game_Actor)
-        if @active_battler.restriction == 3
-          target = $game_party.random_target_actor
-        elsif @active_battler.restriction == 2
-          target = $game_troop.random_target_enemy
-        else
-          index = @active_battler.current_action.target_index
-          target = $game_troop.smooth_target_enemy(index)
-        end
-      end
-      # Set array of targeted battlers
-      @target_battlers = [target]
-      # Apply normal attack results
-      for target in @target_battlers
-        target.attack_effect(@active_battler)
-      end
-      return
     end
-    # If guard
-    if @active_battler.current_action.basic == 1
-      # Display "Guard" in help window
-      @help_window.set_text($data_system.words.guard, 1)
-      return
+
+    b = b.round #四捨五入
+
+    if b > 999 #与ダメージが1000以上ならば
+      b = 999
+    elsif b < 0 #与ダメージが0より下ならば
+      b = 0
     end
-    # If escape
-    if @active_battler.is_a?(Game_Enemy) and
-       @active_battler.current_action.basic == 2
-      # Display "Escape" in help window
-      @help_window.set_text("Escape", 1)
-      # Escape
-      @active_battler.escape
-      return
+
+    return b
+  end
+  def p_str_bonus #腕力ボーナス
+    case @commandB_index
+    when 1  #攻撃
+      a = @ap_cost_str_attack
+    when 2  #閃光斬り
+      a = @ap_cost_str_flash
+      a = a / 2
     end
-    # If doing nothing
-    if @active_battler.current_action.basic == 3
-      # Clear battler being forced into action
-      $game_temp.forcing_battler = nil
-      # Shift to step 1
-      @phase4_step = 1
-      return
+    case a
+    when 0  #
+      return 1.0
+    when 1  #
+      return 1.2
+    when 2  #
+      return 1.4
+    when 3  #
+      return 1.6
+    when 4  #
+      return 1.8
+    when 5  #
+      return 2.0
+    when 6  #
+      return 2.2
+    when 7  #
+      return 2.4
+    when 8  #
+      return 2.6
+    when 9  #
+      return 2.8
+    end
+  end
+  def enemy_damage_bonus #与ダメージボーナス
+    case @commandB_index
+    when 1  #攻撃
+      a = @ap_cost_str_attack
+    when 2  #閃光斬り
+      a = @ap_cost_str_flash
+      a = a / 2
+    end
+    case a
+    when 0
+      return ((@p_atk * 1.0) - (@e_grd)) * 2
+    when 1
+      return ((@p_atk * 1.1) - (@e_grd)) * 2
+    when 2
+      return ((@p_atk * 1.2) - (@e_grd)) * 2
+    when 3
+      return ((@p_atk * 1.3) - (@e_grd)) * 2
+    when 4
+      return ((@p_atk * 1.4) - (@e_grd)) * 2
+    when 5
+      return ((@p_atk * 1.5) - (@e_grd)) * 2
+    when 6
+      return ((@p_atk * 1.6) - (@e_grd)) * 2
+    when 7
+      return ((@p_atk * 1.7) - (@e_grd)) * 2.3
+    when 8
+      return ((@p_atk * 1.8) - (@e_grd)) * 2.6
+    when 9
+      return ((@p_atk * 1.9) - (@e_grd)) * 2.9
     end
   end
   #--------------------------------------------------------------------------
-  # * Set Targeted Battler for Skill or Item
-  #     scope : effect scope for skill or item
+  # ● 回避計算処理
   #--------------------------------------------------------------------------
-  def set_target_battlers(scope)
-    # If battler performing action is enemy
-    if @active_battler.is_a?(Game_Enemy)
-      # Branch by effect scope
-      case scope
-      when 1  # single enemy
-        index = @active_battler.current_action.target_index
-        @target_battlers.push($game_party.smooth_target_actor(index))
-      when 2  # all enemies
-        for actor in $game_party.actors
-          if actor.exist?
-            @target_battlers.push(actor)
-          end
-        end
-      when 3  # single ally
-        index = @active_battler.current_action.target_index
-        @target_battlers.push($game_troop.smooth_target_enemy(index))
-      when 4  # all allies
-        for enemy in $game_troop.enemies
-          if enemy.exist?
-            @target_battlers.push(enemy)
-          end
-        end
-      when 5  # single ally (HP 0)
-        index = @active_battler.current_action.target_index
-        enemy = $game_troop.enemies[index]
-        if enemy != nil and enemy.hp0?
-          @target_battlers.push(enemy)
-        end
-      when 6  # all allies (HP 0)
-        for enemy in $game_troop.enemies
-          if enemy != nil and enemy.hp0?
-            @target_battlers.push(enemy)
-          end
-        end
-      when 7  # user
-        @target_battlers.push(@active_battler)
-      end
-    end
-    # If battler performing action is actor
-    if @active_battler.is_a?(Game_Actor)
-      # Branch by effect scope
-      case scope
-      when 1  # single enemy
-        index = @active_battler.current_action.target_index
-        @target_battlers.push($game_troop.smooth_target_enemy(index))
-      when 2  # all enemies
-        for enemy in $game_troop.enemies
-          if enemy.exist?
-            @target_battlers.push(enemy)
-          end
-        end
-      when 3  # single ally
-        index = @active_battler.current_action.target_index
-        @target_battlers.push($game_party.smooth_target_actor(index))
-      when 4  # all allies
-        for actor in $game_party.actors
-          if actor.exist?
-            @target_battlers.push(actor)
-          end
-        end
-      when 5  # single ally (HP 0)
-        index = @active_battler.current_action.target_index
-        actor = $game_party.actors[index]
-        if actor != nil and actor.hp0?
-          @target_battlers.push(actor)
-        end
-      when 6  # all allies (HP 0)
-        for actor in $game_party.actors
-          if actor != nil and actor.hp0?
-            @target_battlers.push(actor)
-          end
-        end
-      when 7  # user
-        @target_battlers.push(@active_battler)
+  def avoid #回避率
+    @p_agi_plus = @p_agi + p_agi_bonus #素早さボーナス
+
+    a = 100.0 / (@p_agi_plus + @e_dex_plus)
+    b = @p_agi_plus * a
+    if @p_agi_plus > @e_dex_plus  #プレイヤーの素早さがエネミーの器用さよりも上ならば
+      case @commandB_index
+      when 1  #攻撃
+        b = b + avoid_bonus #回避率ボーナス
+      when 2  #閃光斬り
+        b = b + avoid_bonus #回避率ボーナス
+        b = b - 15
       end
     end
+
+    b = b.round #四捨五入
+
+    if b > 99 #回避率が100以上ならば
+      b = 100
+    elsif b < 0 #回避率が0より下ならば
+      b = 0
+    end
+
+    return b
+  end
+  def p_agi_bonus #素早さボーナス
+    case @commandB_index
+    when 1  #攻撃
+      a = @ap_cost_agi_attack
+    when 2  #閃光斬り
+      a = @ap_cost_agi_flash
+      a = a / 2
+    end
+    case a
+    when 0  # +0
+      return 0
+    when 1  # +7
+      return 7
+    when 2  # +5
+      return 12
+    when 3  # +4
+      return 16
+    when 4  # +3
+      return 19
+    when 5  # +3
+      return 22
+    when 6  # +3
+      return 25
+    when 7  # +2
+      return 27
+    when 8  # +2
+      return 29
+    when 9  # +2
+      return 31
+    end
+  end
+  def avoid_bonus #回避率ボーナス
+    case @commandB_index
+    when 1  #攻撃
+      a = @ap_cost_agi_attack
+    when 2  #閃光斬り
+      a = @ap_cost_agi_flash
+      a = a / 2
+    end
+    case a
+    when 0
+      return 30
+    when 1
+      return 30
+    when 2
+      return 28
+    when 3
+      return 26
+    when 4
+      return 26
+    when 5
+      return 26
+    when 6
+      return 26
+    when 7
+      return 26
+    when 8
+      return 26
+    when 9
+      return 26
+    end
   end
   #--------------------------------------------------------------------------
-  # * Make Skill Action Results
+  # ● 被ダメージ計算処理
   #--------------------------------------------------------------------------
-  def make_skill_action_result
-    # Get skill
-    @skill = $data_skills[@active_battler.current_action.skill_id]
-    # If not a forcing action
-    unless @active_battler.current_action.forcing
-      # If unable to use due to SP running out
-      unless @active_battler.skill_can_use?(@skill.id)
-        # Clear battler being forced into action
-        $game_temp.forcing_battler = nil
-        # Shift to step 1
-        @phase4_step = 1
-        return
+  def player_damage  #被ダメージ
+    @p_def_plus = @p_def * p_def_bonus #守りボーナス
+
+    a = (@e_str_plus - @p_def_plus) * 1.2
+    b = a + (@e_atk - @p_grd)
+    if @e_str_plus > @p_def_plus #エネミーの腕力がプレイヤーの守りよりも上ならば
+      if player_damage_bonus > 0 #ボーナスが0以上ならば
+        case @commandB_index
+        when 1  #攻撃
+          b = b + player_damage_bonus #被ダメージボーナス
+        when 2  #閃光斬り
+          b = b + player_damage_bonus #被ダメージボーナス
+          b = b * 3
+        end
       end
     end
-    # Use up SP
-    @active_battler.sp -= @skill.sp_cost
-    # Refresh status window
-    @status_window.refresh
-    # Show skill name on help window
-    @help_window.set_text(@skill.name, 1)
-    # Set animation ID
-    @animation1_id = @skill.animation1_id
-    @animation2_id = @skill.animation2_id
-    # Set command event ID
-    @common_event_id = @skill.common_event_id
-    # Set target battlers
-    set_target_battlers(@skill.scope)
-    # Apply skill effect
-    for target in @target_battlers
-      target.skill_effect(@active_battler, @skill)
+
+    b = b.round #四捨五入
+
+    if b > 999 #被ダメージが1000以上ならば
+      b = 999
+    elsif b < 0 #被ダメージが0より下ならば
+      b = 0
+    end
+
+    return b
+  end
+  def p_def_bonus #守りボーナス
+    case @commandB_index
+    when 1  #攻撃
+      a = @ap_cost_def_attack
+    when 2  #閃光斬り
+      a = @ap_cost_def_flash
+      a = a / 2
+    end
+    case a
+    when 0  #
+      return 1.0
+    when 1  #
+      return 1.2
+    when 2  #
+      return 1.4
+    when 3  #
+      return 1.6
+    when 4  #
+      return 1.8
+    when 5  #
+      return 2.0
+    when 6  #
+      return 2.2
+    when 7  #
+      return 2.4
+    when 8  #
+      return 2.6
+    when 9  #
+      return 2.8
+    end
+  end
+  def player_damage_bonus #被ダメージボーナス
+    case @commandB_index
+      when 1  #攻撃
+        a = @ap_cost_def_attack
+      when 2  #閃光斬り
+        a = @ap_cost_def_flash
+        a = a / 2
+    end
+    case a
+    when 0
+      return ((@e_atk) - (@p_grd * 1.0)) * 2
+    when 1
+      return ((@e_atk) - (@p_grd * 1.1)) * 2
+    when 2
+      return ((@e_atk) - (@p_grd * 1.2)) * 2
+    when 3
+      return ((@e_atk) - (@p_grd * 1.3)) * 2
+    when 4
+      return ((@e_atk) - (@p_grd * 1.4)) * 2
+    when 5
+      return ((@e_atk) - (@p_grd * 1.5)) * 2
+    when 6
+      return ((@e_atk) - (@p_grd * 1.6)) * 2
+    when 7
+      return ((@e_atk) - (@p_grd * 1.7)) * 2.3
+    when 8
+      return ((@e_atk) - (@p_grd * 1.8)) * 2.6
+    when 9
+      return ((@e_atk) - (@p_grd * 1.9)) * 2.9
     end
   end
   #--------------------------------------------------------------------------
-  # * Make Item Action Results
+  # ● エネミーのAPの加算
   #--------------------------------------------------------------------------
-  def make_item_action_result
-    # Get item
-    @item = $data_items[@active_battler.current_action.item_id]
-    # If unable to use due to items running out
-    unless $game_party.item_can_use?(@item.id)
-      # Shift to step 1
-      @phase4_step = 1
-      return
+  def enemy_ap_plus #エネミーのAPを加算する
+    case @ap_cost_dex_enemy #エネミーの器用さ消費AP
+    when 0
+      @e_dex_plus = @e_dex + 0
+    when 1
+      @e_dex_plus = @e_dex + 7
+    when 2
+      @e_dex_plus = @e_dex + 12
+    when 3
+      @e_dex_plus = @e_dex + 16
+    when 4
+      @e_dex_plus = @e_dex + 19
+    when 5
+      @e_dex_plus = @e_dex + 22
+    when 6
+      @e_dex_plus = @e_dex + 25
+    when 7
+      @e_dex_plus = @e_dex + 27
+    when 8
+      @e_dex_plus = @e_dex + 29
+    when 9
+      @e_dex_plus = @e_dex + 31
     end
-    # If consumable
-    if @item.consumable
-      # Decrease used item by 1
-      $game_party.lose_item(@item.id, 1)
+
+    case @ap_cost_str_enemy #エネミーの腕力消費AP
+    when 0
+      @e_str_plus = @e_str * 1.0
+    when 1
+      @e_str_plus = @e_str * 1.2
+    when 2
+      @e_str_plus = @e_str * 1.4
+    when 3
+      @e_str_plus = @e_str * 1.6
+    when 4
+      @e_str_plus = @e_str * 1.8
+    when 5
+      @e_str_plus = @e_str * 2.0
+    when 6
+      @e_str_plus = @e_str * 2.2
+    when 7
+      @e_str_plus = @e_str * 2.4
+    when 8
+      @e_str_plus = @e_str * 2.6
+    when 9
+      @e_str_plus = @e_str * 2.8
     end
-    # Display item name on help window
-    @help_window.set_text(@item.name, 1)
-    # Set animation ID
-    @animation1_id = @item.animation1_id
-    @animation2_id = @item.animation2_id
-    # Set common event ID
-    @common_event_id = @item.common_event_id
-    # Decide on target
-    index = @active_battler.current_action.target_index
-    target = $game_party.smooth_target_actor(index)
-    # Set targeted battlers
-    set_target_battlers(@item.scope)
-    # Apply item effect
-    for target in @target_battlers
-      target.item_effect(@item)
+
+    case @ap_cost_agi_enemy #エネミーの素早さ消費AP
+    when 0
+      @e_agi_plus = @e_agi + 0
+    when 1
+      @e_agi_plus = @e_agi + 7
+    when 2
+      @e_agi_plus = @e_agi + 12
+    when 3
+      @e_agi_plus = @e_agi + 16
+    when 4
+      @e_agi_plus = @e_agi + 19
+    when 5
+      @e_agi_plus = @e_agi + 22
+    when 6
+      @e_agi_plus = @e_agi + 25
+    when 7
+      @e_agi_plus = @e_agi + 27
+    when 8
+      @e_agi_plus = @e_agi + 29
+    when 9
+      @e_agi_plus = @e_agi + 31
+    end
+
+    case @ap_cost_def_enemy #エネミーの守り消費AP
+    when 0
+      @e_def_plus = @e_def * 1.0
+    when 1
+      @e_def_plus = @e_def * 1.2
+    when 2
+      @e_def_plus = @e_def * 1.4
+    when 3
+      @e_def_plus = @e_def * 1.6
+    when 4
+      @e_def_plus = @e_def * 1.8
+    when 5
+      @e_def_plus = @e_def * 2.0
+    when 6
+      @e_def_plus = @e_def * 2.2
+    when 7
+      @e_def_plus = @e_def * 2.4
+    when 8
+      @e_def_plus = @e_def * 2.6
+    when 9
+      @e_def_plus = @e_def * 2.8
     end
   end
   #--------------------------------------------------------------------------
-  # * Frame Update (main phase step 3 : animation for action performer)
+  # ● パラメータの更新
   #--------------------------------------------------------------------------
-  def update_phase4_step3
-    # Animation for action performer (if ID is 0, then white flash)
-    if @animation1_id == 0
-      @active_battler.white_flash = true
-    else
-      @active_battler.animation_id = @animation1_id
-      @active_battler.animation_hit = true
-    end
-    # Shift to step 4
-    @phase4_step = 4
+  def parameter_refresh #パラメータの更新
+    num_parameter_clear #パラメータの消去
+
+    enemy_ap_plus #エネミーのAPを加算する
+
+    @hit = hit  #命中率
+    @enemy_damage = enemy_damage  #与ダメージ
+    @avoid = avoid #回避率
+    @player_damage = player_damage  #被ダメージ
+
+    num_hit #命中率
+    num_enemy_damage  #与ダメージ
+    num_avoid #回避率
+    num_player_damage  #被ダメージ
+
+    #test_window_refresh #テストウインドウの更新
   end
-  #--------------------------------------------------------------------------
-  # * Frame Update (main phase step 4 : animation for target)
-  #--------------------------------------------------------------------------
-  def update_phase4_step4
-    # Animation for target
-    for target in @target_battlers
-      target.animation_id = @animation2_id
-      target.animation_hit = (target.damage != "Miss")
-    end
-    # Animation has at least 8 frames, regardless of its length
-    @wait_count = 8
-    # Shift to step 5
-    @phase4_step = 5
+
+  def ap_refresh #apの更新
+    @num_player_ap_keta1.dispose if @num_player_ap_keta1 != nil #プレイヤーのAP
+    @num_player_ap_keta2.dispose if @num_player_ap_keta2 != nil
+    @num_player_ap_keta3.dispose if @num_player_ap_keta3 != nil
+    @num_player_ap_keta4.dispose if @num_player_ap_keta4 != nil
+    @num_player_vit_keta1.dispose if @num_player_vit_keta1 != nil #プレイヤーのVIT
+    @num_player_vit_keta2.dispose if @num_player_vit_keta2 != nil
+    @num_player_vit_keta3.dispose if @num_player_vit_keta3 != nil
+    @num_player_vit_keta4.dispose if @num_player_vit_keta4 != nil
+
+    num_player_ap  #プレイヤーのAP
+    num_player_vit  #プレイヤーのVIT
+
+    @num_enemy_ap_keta1.dispose if @num_enemy_ap_keta1 != nil #エネミーのAP
+    @num_enemy_ap_keta2.dispose if @num_enemy_ap_keta2 != nil
+    @num_enemy_ap_keta3.dispose if @num_enemy_ap_keta3 != nil
+    @num_enemy_ap_keta4.dispose if @num_enemy_ap_keta4 != nil
+    @num_enemy_vit_keta1.dispose if @num_enemy_vit_keta1 != nil #エネミーのVIT
+    @num_enemy_vit_keta2.dispose if @num_enemy_vit_keta2 != nil
+    @num_enemy_vit_keta3.dispose if @num_enemy_vit_keta3 != nil
+    @num_enemy_vit_keta4.dispose if @num_enemy_vit_keta4 != nil
+
+    num_enemy_ap  #エネミーのAP
+    num_enemy_vit  #エネミーのVIT
   end
-  #--------------------------------------------------------------------------
-  # * Frame Update (main phase step 5 : damage display)
-  #--------------------------------------------------------------------------
-  def update_phase4_step5
-    # Hide help window
-    @help_window.visible = false
-    # Refresh status window
-    @status_window.refresh
-    # Display damage
-    for target in @target_battlers
-      if target.damage != nil
-        target.damage_pop = true
-      end
-    end
-    # Shift to step 6
-    @phase4_step = 6
-  end
-  #--------------------------------------------------------------------------
-  # * Frame Update (main phase step 6 : refresh)
-  #--------------------------------------------------------------------------
-  def update_phase4_step6
-    # Clear battler being forced into action
-    $game_temp.forcing_battler = nil
-    # If common event ID is valid
-    if @common_event_id > 0
-      # Set up event
-      common_event = $data_common_events[@common_event_id]
-      $game_system.battle_interpreter.setup(common_event.list, 0)
-    end
-    # Shift to step 1
-    @phase4_step = 1
-  end
+
 end

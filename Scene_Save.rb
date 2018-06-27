@@ -1,75 +1,76 @@
 #==============================================================================
-# ** Scene_Save
+# ■ Scene_Save
 #------------------------------------------------------------------------------
-#  This class performs save screen processing.
+# 　セーブ画面の処理を行うクラスです。
 #==============================================================================
 
 class Scene_Save < Scene_File
   #--------------------------------------------------------------------------
-  # * Object Initialization
+  # ● オブジェクト初期化
   #--------------------------------------------------------------------------
   def initialize
-    super("Which file would you like to save to?")
+    #super("どのファイルにセーブしますか？")
+    super("Select Save Position　　　(L/R switches pages)")
   end
   #--------------------------------------------------------------------------
-  # * Decision Processing
+  # ● 決定時の処理
   #--------------------------------------------------------------------------
   def on_decision(filename)
-    # Play save SE
+    # セーブ SE を演奏
     $game_system.se_play($data_system.save_se)
-    # Write save data
+    # セーブデータの書き込み
     file = File.open(filename, "wb")
     write_save_data(file)
     file.close
-    # If called from event
+    # イベントから呼び出されている場合
     if $game_temp.save_calling
-      # Clear save call flag
+      # セーブ呼び出しフラグをクリア
       $game_temp.save_calling = false
-      # Switch to map screen
+      # マップ画面に切り替え
       $scene = Scene_Map.new
       return
     end
-    # Switch to menu screen
+    # メニュー画面に切り替え
     $scene = Scene_Menu.new(4)
   end
   #--------------------------------------------------------------------------
-  # * Cancel Processing
+  # ● キャンセル時の処理
   #--------------------------------------------------------------------------
   def on_cancel
-    # Play cancel SE
+    # キャンセル SE を演奏
     $game_system.se_play($data_system.cancel_se)
-    # If called from event
+    # イベントから呼び出されている場合
     if $game_temp.save_calling
-      # Clear save call flag
+      # セーブ呼び出しフラグをクリア
       $game_temp.save_calling = false
-      # Switch to map screen
+      # マップ画面に切り替え
       $scene = Scene_Map.new
       return
     end
-    # Switch to menu screen
+    # メニュー画面に切り替え
     $scene = Scene_Menu.new(4)
   end
   #--------------------------------------------------------------------------
-  # * Write Save Data
-  #     file : write file object (opened)
+  # ● セーブデータの書き込み
+  #     file : 書き込み用ファイルオブジェクト (オープン済み)
   #--------------------------------------------------------------------------
   def write_save_data(file)
-    # Make character data for drawing save file
+    # セーブファイル描画用のキャラクターデータを作成
     characters = []
     for i in 0...$game_party.actors.size
       actor = $game_party.actors[i]
       characters.push([actor.character_name, actor.character_hue])
     end
-    # Write character data for drawing save file
+    # セーブファイル描画用のキャラクターデータを書き込む
     Marshal.dump(characters, file)
-    # Wrire frame count for measuring play time
+    # プレイ時間計測用のフレームカウントを書き込む
     Marshal.dump(Graphics.frame_count, file)
-    # Increase save count by 1
+    # セーブ回数を 1 増やす
     $game_system.save_count += 1
-    # Save magic number
-    # (A random value will be written each time saving with editor)
+    # マジックナンバーを保存する
+    # (エディタで保存するたびにランダムな値に書き換えられる)
     $game_system.magic_number = $data_system.magic_number
-    # Write each type of game object
+    # 各種ゲームオブジェクトを書き込む
     Marshal.dump($game_system, file)
     Marshal.dump($game_switches, file)
     Marshal.dump($game_variables, file)

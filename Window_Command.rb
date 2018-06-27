@@ -1,17 +1,17 @@
 #==============================================================================
-# ** Window_Command
+# ■ Window_Command
 #------------------------------------------------------------------------------
-#  This window deals with general command choices.
+# 　一般的なコマンド選択を行うウィンドウです。
 #==============================================================================
 
 class Window_Command < Window_Selectable
   #--------------------------------------------------------------------------
-  # * Object Initialization
-  #     width    : window width
-  #     commands : command text string array
+  # ● オブジェクト初期化
+  #     width    : ウィンドウの幅
+  #     commands : コマンド文字列の配列
   #--------------------------------------------------------------------------
   def initialize(width, commands)
-    # Compute window height from command quantity
+    # コマンドの個数からウィンドウの高さを算出
     super(0, 0, width, commands.size * 32 + 32)
     @item_max = commands.size
     @commands = commands
@@ -20,7 +20,7 @@ class Window_Command < Window_Selectable
     self.index = 0
   end
   #--------------------------------------------------------------------------
-  # * Refresh
+  # ● リフレッシュ
   #--------------------------------------------------------------------------
   def refresh
     self.contents.clear
@@ -29,9 +29,9 @@ class Window_Command < Window_Selectable
     end
   end
   #--------------------------------------------------------------------------
-  # * Draw Item
-  #     index : item number
-  #     color : text color
+  # ● 項目の描画
+  #     index : 項目番号
+  #     color : 文字色
   #--------------------------------------------------------------------------
   def draw_item(index, color)
     self.contents.font.color = color
@@ -40,10 +40,24 @@ class Window_Command < Window_Selectable
     self.contents.draw_text(rect, @commands[index])
   end
   #--------------------------------------------------------------------------
-  # * Disable Item
-  #     index : item number
+  # ● 項目の無効化
+  #     index : 項目番号
   #--------------------------------------------------------------------------
   def disable_item(index)
     draw_item(index, disabled_color)
+  end
+  #--------------------------------------------------------------------------
+  # ● 項目の有効化
+  #     index : 項目番号
+  #--------------------------------------------------------------------------
+  def able_item(index)
+    draw_item(index, normal_color)
+  end
+  #--------------------------------------------------------------------------
+  # ● 項目の選択
+  #     index : 項目番号
+  #--------------------------------------------------------------------------
+  def select_item(index)
+    draw_item(index, system_color)
   end
 end

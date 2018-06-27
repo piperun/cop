@@ -1,20 +1,26 @@
 #==============================================================================
-# ** Scene_Load
+# ■ Scene_Load
 #------------------------------------------------------------------------------
-#  This class performs load screen processing.
+# 　ロード画面の処理を行うクラスです。
 #==============================================================================
 
 class Scene_Load < Scene_File
   #--------------------------------------------------------------------------
-  # * Object Initialization
+  # ● オブジェクト初期化
   #--------------------------------------------------------------------------
   def initialize
-    # Remake temporary object
+    # テンポラリオブジェクトを再作成
     $game_temp = Game_Temp.new
-    # Timestamp selects new file
+    # タイムスタンプが最新のファイルを選択
     $game_temp.last_file_index = 0
     latest_time = Time.at(0)
-    for i in 0..3
+
+    #ページとセーブファイル最大数
+    @page_max = 5
+    @savefile_max = 8
+    n = @page_max * @savefile_max - 1
+    #for i in 0..3
+    for i in 0..n
       filename = make_filename(i)
       if FileTest.exist?(filename)
         file = File.open(filename, "r")
@@ -25,51 +31,52 @@ class Scene_Load < Scene_File
         file.close
       end
     end
-    super("Which file would you like to load?")
+    #super("どのファイルをロードしますか？")
+    super("Select File to Load　　　(L/R switches pages)")
   end
   #--------------------------------------------------------------------------
-  # * Decision Processing
+  # ● 決定時の処理
   #--------------------------------------------------------------------------
   def on_decision(filename)
-    # If file doesn't exist
+    # ファイルが存在しない場合
     unless FileTest.exist?(filename)
-      # Play buzzer SE
+      # ブザー SE を演奏
       $game_system.se_play($data_system.buzzer_se)
       return
     end
-    # Play load SE
+    # ロード SE を演奏
     $game_system.se_play($data_system.load_se)
-    # Read save data
+    # セーブデータの書き込み
     file = File.open(filename, "rb")
     read_save_data(file)
     file.close
-    # Restore BGM and BGS
+    # BGM、BGS を復帰
     $game_system.bgm_play($game_system.playing_bgm)
     $game_system.bgs_play($game_system.playing_bgs)
-    # Update map (run parallel process event)
+    # マップを更新 (並列イベント実行)
     $game_map.update
-    # Switch to map screen
+    # マップ画面に切り替え
     $scene = Scene_Map.new
   end
   #--------------------------------------------------------------------------
-  # * Cancel Processing
+  # ● キャンセル時の処理
   #--------------------------------------------------------------------------
   def on_cancel
-    # Play cancel SE
+    # キャンセル SE を演奏
     $game_system.se_play($data_system.cancel_se)
-    # Switch to title screen
+    # タイトル画面に切り替え
     $scene = Scene_Title.new
   end
   #--------------------------------------------------------------------------
-  # * Read Save Data
-  #     file : file object for reading (opened)
+  # ● セーブデータの読み込み
+  #     file : 読み込み用ファイルオブジェクト (オープン済み)
   #--------------------------------------------------------------------------
   def read_save_data(file)
-    # Read character data for drawing save file
+    # セーブファイル描画用のキャラクターデータを読み込む
     characters = Marshal.load(file)
-    # Read frame count for measuring play time
+    # プレイ時間計測用のフレームカウントを読み込む
     Graphics.frame_count = Marshal.load(file)
-    # Read each type of game object
+    # 各種ゲームオブジェクトを読み込む
     $game_system        = Marshal.load(file)
     $game_switches      = Marshal.load(file)
     $game_variables     = Marshal.load(file)
@@ -80,14 +87,14 @@ class Scene_Load < Scene_File
     $game_troop         = Marshal.load(file)
     $game_map           = Marshal.load(file)
     $game_player        = Marshal.load(file)
-    # If magic number is different from when saving
-    # (if editing was added with editor)
+    # マジックナンバーがセーブ時と異なる場合
+    # (エディタで編集が加えられている場合)
     if $game_system.magic_number != $data_system.magic_number
-      # Load map
+      # マップをリロード
       $game_map.setup($game_map.map_id)
       $game_player.center($game_player.x, $game_player.y)
     end
-    # Refresh party members
+    # パーティメンバーをリフレッシュ
     $game_party.refresh
   end
 end
