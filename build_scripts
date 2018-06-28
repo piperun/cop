@@ -1,0 +1,30 @@
+#!/usr/bin/ruby
+require 'zlib'
+
+# Scripts are organized as an array of entries
+# Each entry is another array with three elements:
+# 0 random number?
+# 1 script name
+# 2 compressed script source
+
+class Writer
+  def self.write_file(filename)
+    scripts = self.compile_scripts()
+    File.open(filename, "wb") { |f| Marshal.dump(scripts, f) }
+  end
+
+  def self.compile_scripts
+    scripts = []
+    File.open('scripts.txt').each(sep="\n") do |line|
+      name, filename = line.strip().split("|")
+      if File.exists?(filename)
+        scripts.push([rand(99999999), name, Zlib::Deflate.deflate(File.read(filename))])
+      end
+    end
+    return scripts
+  end
+end
+
+if ARGV.length > 0
+  Writer.write_file(ARGV[0])
+end
