@@ -43,7 +43,7 @@ class Ev012 < Sprite
     @body = Sprite.new
     if @pose == "A"
       @body.bitmap = RPG::Cache.picture("EV012_bodyA_#{@type}")
-    elsif @pose = "B"
+    elsif @pose == "B"
       @body.bitmap = RPG::Cache.picture("EV012_bodyB_#{@type}")
     else
 
