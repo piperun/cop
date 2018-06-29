@@ -242,11 +242,11 @@ class Ev008 < Sprite
     body
     head
     hair
-    jacketback if @jacket_check = 1 and @jacket_back_check = 1
+    jacketback if @jacket_check == 1 and @jacket_back_check == 1
     camisole if @camisole_check == 1
-    panty if @panty_check = 1
-    skirt if @skirt_check = 1
-    jacket if @jacket_check = 1
+    panty if @panty_check == 1
+    skirt if @skirt_check == 1
+    jacket if @jacket_check == 1
     sweatface if @sweat != 0
     redface if @red != 0
     table if @breath != 0
