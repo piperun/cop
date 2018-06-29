@@ -111,6 +111,8 @@ XRXS 9C. メッセージ表示|plugins/XRXS 9C - Cinema.rb
 XRXS25. ダッシュ機能 ver.2|plugins/XRXS 25 - Dash Function.rb
 XRXS71. 立ち止まり仕草|plugins/XRXS 71 - Stopped Gesture.rb
 Caterpillar|plugins/Fukuyama - Caterpillar.rb
+Point|Point.rb
+Tween|Tween.rb
 Pose|Pose.rb
 Menu_Pose|Menu_Pose.rb
 Hip_Pose|Hip_Pose.rb

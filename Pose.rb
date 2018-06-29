@@ -7,6 +7,7 @@ class Pose
       clothing_name = CLOTHING_SETS[index] || 'default'
     end
 
+    @position = Point.new(0,0)
     @current_pose = nil
     @current_face = nil
     @current_clothing = nil
@@ -21,6 +22,49 @@ class Pose
     clothing(clothing_name)
   end
 
+  def x
+    return @position.x
+  end
+
+  def x=(value)
+    position(value, @position.y)
+  end
+
+  def y
+    return @position.y
+  end
+
+  def y=(value)
+    position(@position.x, value)
+  end
+
+  def position(x, y)
+    npos = Point.new(x || @position.x, y || @position.y)
+    delta = Point.new(npos.x - @position.x, npos.y - @position.y)
+    @base_sprites.each { |sprite|
+      unless sprite.nil?
+        sprite.x += delta.x
+        sprite.y += delta.y
+      end
+    }
+    @face_sprite.x += delta.x
+    @face_sprite.y += delta.y
+    @clothing_sprites.each { |sprite|
+      unless sprite.nil?
+        sprite.x += delta.x
+        sprite.y += delta.y
+      end
+    }
+    @effect_sprites.each { |sprite|
+      unless sprite.nil?
+        sprite.x += delta.x
+        sprite.y += delta.y
+      end
+    }
+    @position = npos
+    return self
+  end
+
   def pose(name)
     if @current_pose != name
       @base_sprites.each { |sprite| sprite.dispose() if sprite != nil }
@@ -28,11 +72,11 @@ class Pose
       @current_pose = name
 
       unless (pose = POSES[name]).nil?
+        @position = Point.from_array(pose['origin'] || [0,0])
         unless (layers = pose['base']).nil?
-          origin = pose['origin'] || [0,0]
           layers.each do |layer|
             z = DEFAULT_BASE_Z + @base_sprites.length
-            @base_sprites.push(make_sprite(origin, layer, z))
+            @base_sprites.push(make_sprite(layer, z))
           end
         end
       end
@@ -56,8 +100,7 @@ class Pose
       unless (pose = POSES[@current_pose]).nil?
         unless (layers = pose['faces']).nil?
           unless (layer = layers[name]).nil?
-            origin = pose['origin'] || [0,0]
-            @face_sprite = make_sprite(origin, layer, DEFAULT_FACE_Z)
+            @face_sprite = make_sprite(layer, DEFAULT_FACE_Z)
           end
         end
       end
@@ -74,10 +117,9 @@ class Pose
       unless (pose = POSES[@current_pose]).nil?
         unless (clothing = pose['clothing']).nil?
           unless (layers = clothing[name]).nil?
-            origin = pose['origin'] || [0,0]
             layers.each do |layer|
               z = DEFAULT_CLOTHING_Z + @clothing_sprites.length
-              @clothing_sprites.push(make_sprite(origin, layer, z))
+              @clothing_sprites.push(make_sprite(layer, z))
             end
           end
         end
@@ -91,8 +133,7 @@ class Pose
       unless (pose = POSES[@current_pose]).nil?
         unless (layers = pose['effects']).nil?
           unless (layer = layers[name]).nil?
-            origin = pose['origin'] || [0,0]
-            @effect_sprites[name] = make_sprite(origin, layer, DEFAULT_EFFECT_Z)
+            @effect_sprites[name] = make_sprite(layer, DEFAULT_EFFECT_Z)
           end
         end
       end
@@ -136,8 +177,19 @@ class Pose
     return self
   end
 
-  # STUB
+  # DEPRECATED - Performed slide animations, now handled via tweening
   def slide
+    tween = Tween.new()
+    if ['CA', 'CB'].include?(@current_pose)
+      tween.position(self, [nil, 220], [nil, 245], 5).start()
+      tween.position(self, [nil, 245], [nil, 220], 5).start()
+    elsif @current_pose == 'D'
+      tween.position(self, [470, 255], [500, 255], 6).start()
+      tween.position(self, [500, 255], [470, 255], 6).start()
+    else
+      tween.position(self, [550, nil], [500, nil], 5).start()
+      tween.position(self, [500, nil], [550, nil], 5).start()
+    end
     return self
   end
 
@@ -156,19 +208,18 @@ class Pose
     return self
   end
 
-  def make_sprite(origin, layer, z)
+  def make_sprite(layer, z)
     # TODO: allow disabling of layers via switches
     unless (filename = layer['file']).nil?
       if FileTest.exists?('Graphics/Pictures/' + filename)
         sprite = Sprite.new
         sprite.bitmap = RPG::Cache.picture(filename)
-        x, y = origin
         lx, ly = layer['pos'] || [0,0]
         lz = layer['z'] || z
         sprite.ox = sprite.bitmap.width / 2
         sprite.oy = sprite.bitmap.height / 2
-        sprite.x = x + lx
-        sprite.y = y + ly
+        sprite.x = @position.x + lx
+        sprite.y = @position.y + ly
         sprite.z = lz
         return sprite
       end
