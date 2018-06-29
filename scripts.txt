@@ -1,3 +1,4 @@
+GameData|GameData.rb
 Game_Temp|Game_Temp.rb
 Game_System|Game_System.rb
 Game_Switches|Game_Switches.rb
