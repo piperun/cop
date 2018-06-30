@@ -193,9 +193,40 @@ class Pose
     return self
   end
 
-  # STUB
-  def shake
+  def animate(name)
+    altered_layers = {}
+    unless (pose = POSES[@current_pose]).nil?
+      unless (animations = pose['animations']).nil?
+        unless (animation = animations[name]).nil?
+          unless (frames = animation['frames']).nil?
+            unless (sequence = animation['sequence']).nil?
+              sequence.each do |pair|
+                frame_index, duration = pair
+                unless (frame = frames[frame_index - 1]).nil?
+                  frame.each do |fragment|
+                    unless (replace = fragment['replace']).nil?
+                      replace_layer(replace, fragment)
+                      altered_layers[replace] = true
+                    end
+                  end
+                end
+                while duration > 0
+                  duration -= 1
+                  Graphics.update()
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+    altered_layers.keys.each { |key| restore_layer(key) }
     return self
+  end
+
+  # Shortcut
+  def shake
+    return animate("shake")
   end
 
   # DEPRECATED - Was used to display the current pose, is now done on instantiation
@@ -205,6 +236,91 @@ class Pose
 
   def clear
     dispose()
+    return self
+  end
+
+  def replace_layer(which, replacement)
+    type, index = which.split('/')
+    case type
+    when 'base'
+      z = DEFAULT_BASE_Z + @base_sprites.length
+      index = index.to_i - 1
+      unless (sprite = @base_sprites[index]).nil?
+        z = sprite.z
+        sprite.dispose()
+      end
+      @base_sprites[index] = make_sprite(replacement, z)
+    when 'face'
+      z = DEFAULT_FACE_Z
+      unless (sprite = @face_sprite).nil?
+        z = sprite.z
+        sprite.dispose()
+      end
+      @face_sprite = make_sprite(replacement, z)
+    when 'clothing'
+      z = DEFAULT_CLOTHING_Z + @clothing_sprites.length
+      index = index.to_i - 1
+      unless (sprite = @clothing_sprites[index]).nil?
+        z = sprite.z
+        sprite.dispose()
+      end
+      @clothing_sprites[index] = make_sprite(replacement, z)
+    when 'effect'
+      #TODO: not implemented
+    end
+  end
+
+  def restore_layer(which)
+    type, index = which.split('/')
+    case type
+    when 'base'
+      z = DEFAULT_BASE_Z + @base_sprites.length
+      index = index.to_i - 1
+      unless (sprite = @base_sprites[index]).nil?
+        z = sprite.z
+        sprite.dispose()
+      end
+      @base_sprites[index] = nil
+      unless (pose = POSES[@current_pose]).nil?
+        unless (layers = pose['base']).nil?
+          unless (layer = layers[index]).nil?
+            @base_sprites[index] = make_sprite(layer, z)
+          end
+        end
+      end
+    when 'face'
+      z = DEFAULT_FACE_Z
+      unless (sprite = @face_sprite).nil?
+        z = sprite.z
+        sprite.dispose()
+      end
+      @face_sprite = nil
+      unless (pose = POSES[@current_pose]).nil?
+        unless (faces = pose['faces']).nil?
+          unless (layer = faces[@current_face]).nil?
+            @face_sprite = make_sprite(layer, z)
+          end
+        end
+      end
+    when 'clothing'
+      z = DEFAULT_CLOTHING_Z + @clothing_sprites.length
+      index = index.to_i - 1
+      unless (sprite = @clothing_sprites[index]).nil?
+        z = sprite.z
+        sprite.dispose()
+      end
+      unless (pose = POSES[@current_pose]).nil?
+        unless (clothing = pose['clothing']).nil?
+          unless (layers = clothing[@current_clothing]).nil?
+            unless (layer = layers[index]).nil?
+              @clothing_sprites[index] = make_sprite(layer, z)
+            end
+          end
+        end
+      end
+    when 'effect'
+      #TODO: not implemented
+    end
     return self
   end
 

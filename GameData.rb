@@ -183,6 +183,28 @@ module GameData
         ]
       },
       "effects" => EFFECTS_POSE_A,
+      "animations" => {
+        "shake" => {
+          "frames" => [
+            [
+              { "replace" => "base/3", "file" => "PoseA/PoseA_bustA01.png" },
+              { "replace" => "clothing/3", "file" => "PoseA/PoseA_camisoleA01.png" },
+              { "replace" => "clothing/4", "file" => "PoseA/PoseA_jacketB01.png" },
+            ],
+            [
+              { "replace" => "base/3", "file" => "PoseA/PoseA_bustA02.png" },
+              { "replace" => "clothing/3", "file" => "PoseA/PoseA_camisoleA02.png" },
+              { "replace" => "clothing/4", "file" => "PoseA/PoseA_jacketB02.png" },
+            ],
+            [
+              { "replace" => "base/3", "file" => "PoseA/PoseA_bustA03.png" },
+              { "replace" => "clothing/3", "file" => "PoseA/PoseA_camisoleA03.png" },
+              { "replace" => "clothing/4", "file" => "PoseA/PoseA_jacketB03.png" },
+            ],
+          ],
+          "sequence" => [ [1,2], [2,2], [3,3], [2,3], [3,5] ],
+        }
+      }
     },
     "AC" => {
       "origin" => DEFAULT_POSE_ORIGIN,
