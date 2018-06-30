@@ -8,23 +8,23 @@ require 'zlib'
 # 2 compressed script source
 
 class Writer
-  def self.write_file(filename)
-    scripts = self.compile_scripts()
-    File.open(filename, "wb") { |f| Marshal.dump(scripts, f) }
+  def self.write_file(layout_file, output_file)
+    scripts = self.compile_scripts(layout_file)
+    File.open(output_file, "wb") { |f| Marshal.dump(scripts, f) }
   end
 
-  def self.compile_scripts
+  def self.compile_scripts(layout_file)
     scripts = []
-    File.open('scripts.txt').each(sep="\n") do |line|
-      name, filename = line.strip().split("|")
-      if File.exists?(filename)
-        scripts.push([rand(99999999), name, Zlib::Deflate.deflate(File.read(filename))])
+    File.open(layout_file).each(sep="\n") do |line|
+      name, script_file = line.strip().split("|")
+      if File.exists?(script_file)
+        scripts.push([rand(99999999), name, Zlib::Deflate.deflate(File.read(script_file))])
       end
     end
     return scripts
   end
 end
 
-if ARGV.length > 0
-  Writer.write_file(ARGV[0])
+if ARGV.length > 1
+  Writer.write_file(ARGV[0], ARGV[1])
 end
