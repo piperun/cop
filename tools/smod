@@ -1,0 +1,196 @@
+#!/usr/bin/ruby
+module RPG
+
+  class AudioFile end
+  class MoveRoute end
+  class MoveCommand end
+  class MapInfo end
+
+  class CommonEvent
+
+    def export
+      last_index = 0
+      @list.each_with_index do |v,i|
+        if v.code == 355 || v.code == 655
+          puts "" if last_index != i - 1 && last_index > 0
+          puts "#{@id} 0 #{i} #{v.parameters.join(";")}"
+          last_index = i
+        end
+      end
+    end
+
+    def modify(replacements)
+      @list.each_with_index{ |v,i| v.modify(@id, 0, i, replacements) }
+      @list.delete_if{ |v| v.empty? }
+    end
+  end
+
+  class Map
+
+    def export
+      @events.each{ |k,v| v.export() }
+    end
+
+    def modify(replacements)
+      @events.each{ |k,v| v.modify(replacements) }
+    end
+  end
+
+  class Event
+
+    class Page
+      class Condition end
+      class Graphic end
+
+      def export(event_id, page_index)
+        last_index = 0
+        @list.each_with_index do |v,i|
+          if v.code == 355 || v.code == 655
+            puts "" if last_index != i - 1 && last_index > 0
+            puts "#{event_id} #{page_index} #{i} #{v.parameters.join(";")}"
+            last_index = i
+          end
+        end
+        puts ""
+      end
+
+      def modify(event_id, page_index, replacements)
+        @list.each_with_index{ |v,i| v.modify(event_id, page_index, i, replacements) }
+        @list.delete_if{ |v| v.empty? }
+      end
+    end
+
+    def export
+      @pages.each_with_index{ |v,i| v.export(@id, i) }
+    end
+
+    def modify(replacements)
+      @pages.each_with_index{ |v,i| v.modify(@id, i, replacements) }
+    end
+  end
+
+  class EventCommand
+
+    attr_accessor :code
+    attr_accessor :parameters
+
+    def modify(event_id, page_index, command_index, replacements)
+      if @code == 355 || @code == 655
+        @parameters = [ replacements.get(event_id, page_index, command_index) ]
+      end
+    end
+
+    def empty?
+      return (@code == 355 || @code == 655) && (@parameters.empty? || @parameters[0].empty?)
+    end
+  end
+end
+
+class Tone
+
+  def initialize(raw)
+    @raw = raw
+  end
+
+  def _dump(level)
+    return @raw
+  end
+
+  def self._load(args)
+    new(args)
+  end
+end
+
+class Color
+
+  def initialize(raw)
+    @raw = raw
+  end
+
+  def _dump(level)
+    return @raw
+  end
+
+  def self._load(args)
+    new(args)
+  end
+end
+
+class Table
+
+  def initialize(raw)
+    @raw = raw
+  end
+
+  def _dump(level)
+    return @raw
+  end
+
+  def self._load(args)
+    new(args)
+  end
+end
+
+class Exporter
+
+  def self.export(filename)
+    if File.exists?(filename)
+      input = File.open(filename, "rb") { |f| Marshal.load(f) }
+      if input.instance_of?(RPG::Map)
+        input.export()
+      elsif input.instance_of?(Array)
+        input.each{ |v| v.export() if v.instance_of?(RPG::CommonEvent) }
+      end
+    end
+  end
+end
+
+class Replacements
+
+  def initialize
+    @replacements = {}
+  end
+
+  def set(event_id, page_index, command_index, replacement)
+    @replacements[event_id] = {} if @replacements[event_id].nil?
+    @replacements[event_id][page_index] = {} if @replacements[event_id][page_index].nil?
+    @replacements[event_id][page_index][command_index] = replacement
+  end
+
+  def get(event_id, page_index, command_index)
+    unless (pages = @replacements[event_id]).nil?
+      unless (commands = pages[page_index]).nil?
+        replacement = commands[command_index]
+        return replacement unless replacement.nil? || replacement.empty?
+      end
+    end
+    return ""
+  end
+end
+
+class Compiler
+
+  def self.compile(input_file, script_file)
+    if File.exists?(input_file) && File.exists?(script_file)
+      script = File.open(script_file, "rb").read()
+      replacements = Replacements.new
+      script.scan(/^(\d+)[\t ]+(\d+)[\t ]+(\d+)[\t ]*(.*)/) do |e,p,c,s|
+        replacements.set(e.to_i, p.to_i, c.to_i, s)
+      end
+      input = File.open(input_file, "rb") { |f| Marshal.load(f) }
+      if input.instance_of?(RPG::Map)
+        input.modify(replacements)
+      elsif input.instance_of?(Array)
+        input.each{ |v| v.modify(replacements) if v.instance_of?(RPG::CommonEvent) }
+      end
+      puts Marshal.dump(input)
+    end
+  end
+end
+
+if ARGV.length > 1
+  case ARGV[0]
+  when "-e"; Exporter.export(ARGV[1])
+  when "-c"; Compiler.compile(ARGV[1], ARGV[2]) if ARGV.length > 2
+  end
+end
