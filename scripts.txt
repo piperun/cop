@@ -1,104 +1,104 @@
-GameData|GameData.rb
-Game_Temp|Game_Temp.rb
-Game_System|Game_System.rb
-Game_Switches|Game_Switches.rb
-Game_Variables|Game_Variables.rb
-Game_SelfSwitches|Game_SelfSwitches.rb
-Game_Screen|Game_Screen.rb
-Game_Picture|Game_Picture.rb
-Game_Battler 1|Game_Battler 1.rb
-Game_Battler 2|Game_Battler 2.rb
-Game_Battler 3|Game_Battler 3.rb
-Game_BattleAction|Game_BattleAction.rb
-Game_Actor|Game_Actor.rb
-Game_Enemy|Game_Enemy.rb
-Game_Actors|Game_Actors.rb
-Game_Party|Game_Party.rb
-Game_Troop|Game_Troop.rb
-Game_Map|Game_Map.rb
-Game_CommonEvent|Game_CommonEvent.rb
-Game_Character 1|Game_Character 1.rb
-Game_Character 2|Game_Character 2.rb
-Game_Character 3|Game_Character 3.rb
-Game_Event|Game_Event.rb
-Game_Player|Game_Player.rb
-Sprite_Character|Sprite_Character.rb
-Sprite_Battler|Sprite_Battler.rb
-Sprite_Picture|Sprite_Picture.rb
-Sprite_Timer|Sprite_Timer.rb
-Spriteset_Map|Spriteset_Map.rb
-Spriteset_Battle|Spriteset_Battle.rb
-Window_Base|Window_Base.rb
-Window_Selectable|Window_Selectable.rb
-Window_Command|Window_Command.rb
-Window_Help|Window_Help.rb
-Window_Gold|Window_Gold.rb
-Window_PlayTime|Window_PlayTime.rb
-Window_Steps|Window_Steps.rb
-Window_MenuStatus|Window_MenuStatus.rb
-Window_Item|Window_Item.rb
-Window_Item #改変|Window_Item #改変.rb
-Window_Skill|Window_Skill.rb
-Window_SkillStatus|Window_SkillStatus.rb
-Window_Target|Window_Target.rb
-Window_EquipLeft|Window_EquipLeft.rb
-Window_EquipRight|Window_EquipRight.rb
-Window_EquipItem|Window_EquipItem.rb
-Window_Status|Window_Status.rb
-Window_SaveFile|Window_SaveFile.rb
-Window_ShopCommand|Window_ShopCommand.rb
-Window_ShopBuy|Window_ShopBuy.rb
-Window_ShopSell|Window_ShopSell.rb
-Window_ShopNumber|Window_ShopNumber.rb
-Window_ShopStatus|Window_ShopStatus.rb
-Window_NameEdit|Window_NameEdit.rb
-Window_NameInput|Window_NameInput.rb
-Window_InputNumber|Window_InputNumber.rb
-Window_Message|Window_Message.rb
-Window_PartyCommand|Window_PartyCommand.rb
-Window_BattleStatus|Window_BattleStatus.rb
-Window_BattleResult|Window_BattleResult.rb
-Window_DebugLeft|Window_DebugLeft.rb
-Window_DebugRight|Window_DebugRight.rb
-Arrow_Base|Arrow_Base.rb
-Arrow_Enemy|Arrow_Enemy.rb
-Arrow_Actor|Arrow_Actor.rb
-Interpreter 1|Interpreter 1.rb
-Interpreter 2|Interpreter 2.rb
-Interpreter 3|Interpreter 3.rb
-Interpreter 4|Interpreter 4.rb
-Interpreter 5|Interpreter 5.rb
-Interpreter 6|Interpreter 6.rb
-Interpreter 7|Interpreter 7.rb
-Scene_Title|Scene_Title.rb
-Scene_Map|Scene_Map.rb
-Window_Info|Window_Info.rb
-Scene_Menu|Scene_Menu.rb
-Scene_Menu 2|Scene_Menu 2.rb
-Scene_Item|Scene_Item.rb
-Scene_Skill|Scene_Skill.rb
-Scene_Equip|Scene_Equip.rb
-Scene_Status|Scene_Status.rb
-Scene_File|Scene_File.rb
-Scene_Save|Scene_Save.rb
-Scene_Load|Scene_Load.rb
-Scene_End|Scene_End.rb
-Scene_Battle 1|Scene_Battle 1.rb
-Scene_Battle 2|Scene_Battle 2.rb
-Scene_Battle 3|Scene_Battle 3.rb
-Scene_Battle 4|Scene_Battle 4.rb
-Scene_Battle 5|Scene_Battle 5.rb
-Scene_Battle 6|Scene_Battle 6.rb
-Scene_Battle 7|Scene_Battle 7.rb
-Scene_Battle 8|Scene_Battle 8.rb
-Scene_Battle 9|Scene_Battle 9.rb
-Scene_Battle 10|Scene_Battle 10.rb
-Scene_Battle 11|Scene_Battle 11.rb
-Battle_Help|Battle_Help.rb
-Scene_Shop|Scene_Shop.rb
-Scene_Name|Scene_Name.rb
-Scene_Gameover|Scene_Gameover.rb
-Scene_Debug|Scene_Debug.rb
+GameData|scripts/GameData.rb
+Game_Temp|scripts/Game_Temp.rb
+Game_System|scripts/Game_System.rb
+Game_Switches|scripts/Game_Switches.rb
+Game_Variables|scripts/Game_Variables.rb
+Game_SelfSwitches|scripts/Game_SelfSwitches.rb
+Game_Screen|scripts/Game_Screen.rb
+Game_Picture|scripts/Game_Picture.rb
+Game_Battler 1|scripts/Game_Battler 1.rb
+Game_Battler 2|scripts/Game_Battler 2.rb
+Game_Battler 3|scripts/Game_Battler 3.rb
+Game_BattleAction|scripts/Game_BattleAction.rb
+Game_Actor|scripts/Game_Actor.rb
+Game_Enemy|scripts/Game_Enemy.rb
+Game_Actors|scripts/Game_Actors.rb
+Game_Party|scripts/Game_Party.rb
+Game_Troop|scripts/Game_Troop.rb
+Game_Map|scripts/Game_Map.rb
+Game_CommonEvent|scripts/Game_CommonEvent.rb
+Game_Character 1|scripts/Game_Character 1.rb
+Game_Character 2|scripts/Game_Character 2.rb
+Game_Character 3|scripts/Game_Character 3.rb
+Game_Event|scripts/Game_Event.rb
+Game_Player|scripts/Game_Player.rb
+Sprite_Character|scripts/Sprite_Character.rb
+Sprite_Battler|scripts/Sprite_Battler.rb
+Sprite_Picture|scripts/Sprite_Picture.rb
+Sprite_Timer|scripts/Sprite_Timer.rb
+Spriteset_Map|scripts/Spriteset_Map.rb
+Spriteset_Battle|scripts/Spriteset_Battle.rb
+Window_Base|scripts/Window_Base.rb
+Window_Selectable|scripts/Window_Selectable.rb
+Window_Command|scripts/Window_Command.rb
+Window_Help|scripts/Window_Help.rb
+Window_Gold|scripts/Window_Gold.rb
+Window_PlayTime|scripts/Window_PlayTime.rb
+Window_Steps|scripts/Window_Steps.rb
+Window_MenuStatus|scripts/Window_MenuStatus.rb
+Window_Item|scripts/Window_Item.rb
+Window_Item #改変|scripts/Window_Item #改変.rb
+Window_Skill|scripts/Window_Skill.rb
+Window_SkillStatus|scripts/Window_SkillStatus.rb
+Window_Target|scripts/Window_Target.rb
+Window_EquipLeft|scripts/Window_EquipLeft.rb
+Window_EquipRight|scripts/Window_EquipRight.rb
+Window_EquipItem|scripts/Window_EquipItem.rb
+Window_Status|scripts/Window_Status.rb
+Window_SaveFile|scripts/Window_SaveFile.rb
+Window_ShopCommand|scripts/Window_ShopCommand.rb
+Window_ShopBuy|scripts/Window_ShopBuy.rb
+Window_ShopSell|scripts/Window_ShopSell.rb
+Window_ShopNumber|scripts/Window_ShopNumber.rb
+Window_ShopStatus|scripts/Window_ShopStatus.rb
+Window_NameEdit|scripts/Window_NameEdit.rb
+Window_NameInput|scripts/Window_NameInput.rb
+Window_InputNumber|scripts/Window_InputNumber.rb
+Window_Message|scripts/Window_Message.rb
+Window_PartyCommand|scripts/Window_PartyCommand.rb
+Window_BattleStatus|scripts/Window_BattleStatus.rb
+Window_BattleResult|scripts/Window_BattleResult.rb
+Window_DebugLeft|scripts/Window_DebugLeft.rb
+Window_DebugRight|scripts/Window_DebugRight.rb
+Arrow_Base|scripts/Arrow_Base.rb
+Arrow_Enemy|scripts/Arrow_Enemy.rb
+Arrow_Actor|scripts/Arrow_Actor.rb
+Interpreter 1|scripts/Interpreter 1.rb
+Interpreter 2|scripts/Interpreter 2.rb
+Interpreter 3|scripts/Interpreter 3.rb
+Interpreter 4|scripts/Interpreter 4.rb
+Interpreter 5|scripts/Interpreter 5.rb
+Interpreter 6|scripts/Interpreter 6.rb
+Interpreter 7|scripts/Interpreter 7.rb
+Scene_Title|scripts/Scene_Title.rb
+Scene_Map|scripts/Scene_Map.rb
+Window_Info|scripts/Window_Info.rb
+Scene_Menu|scripts/Scene_Menu.rb
+Scene_Menu 2|scripts/Scene_Menu 2.rb
+Scene_Item|scripts/Scene_Item.rb
+Scene_Skill|scripts/Scene_Skill.rb
+Scene_Equip|scripts/Scene_Equip.rb
+Scene_Status|scripts/Scene_Status.rb
+Scene_File|scripts/Scene_File.rb
+Scene_Save|scripts/Scene_Save.rb
+Scene_Load|scripts/Scene_Load.rb
+Scene_End|scripts/Scene_End.rb
+Scene_Battle 1|scripts/Scene_Battle 1.rb
+Scene_Battle 2|scripts/Scene_Battle 2.rb
+Scene_Battle 3|scripts/Scene_Battle 3.rb
+Scene_Battle 4|scripts/Scene_Battle 4.rb
+Scene_Battle 5|scripts/Scene_Battle 5.rb
+Scene_Battle 6|scripts/Scene_Battle 6.rb
+Scene_Battle 7|scripts/Scene_Battle 7.rb
+Scene_Battle 8|scripts/Scene_Battle 8.rb
+Scene_Battle 9|scripts/Scene_Battle 9.rb
+Scene_Battle 10|scripts/Scene_Battle 10.rb
+Scene_Battle 11|scripts/Scene_Battle 11.rb
+Battle_Help|scripts/Battle_Help.rb
+Scene_Shop|scripts/Scene_Shop.rb
+Scene_Name|scripts/Scene_Name.rb
+Scene_Gameover|scripts/Scene_Gameover.rb
+Scene_Debug|scripts/Scene_Debug.rb
 REQUIRED - 355 Fix|plugins/Zeriab_Interpreter 355 fix.rb
 Animated Title Scene|plugins/Heretic - Animated Title Scene.rb
 Timed User Input 1|plugins/Heretic - Timed User Input 1.rb
@@ -111,35 +111,35 @@ XRXS 9C. メッセージ表示|plugins/XRXS 9C - Cinema.rb
 XRXS25. ダッシュ機能 ver.2|plugins/XRXS 25 - Dash Function.rb
 XRXS71. 立ち止まり仕草|plugins/XRXS 71 - Stopped Gesture.rb
 Caterpillar|plugins/Fukuyama - Caterpillar.rb
-Point|Point.rb
-Tween|Tween.rb
-Pose|Pose.rb
-Menu_Pose|Menu_Pose.rb
-Hip_Pose|Hip_Pose.rb
-Battle_Pose|Battle_Pose.rb
-Bust_Anime|Bust_Anime.rb
-Kiss_Anime|Kiss_Anime.rb
-Ev003|Ev003.rb
-Ev004|Ev004.rb
-Ev005|Ev005.rb
-Ev006|Ev006.rb
-Ev007|Ev007.rb
-Ev008|Ev008.rb
-Ev009|Ev009.rb
-Ev010|Ev010.rb
-Ev011|Ev011.rb
-Ev012|Ev012.rb
-Ev013|Ev013.rb
-Ev014|Ev014.rb
-Ev015|Ev015.rb
-Ev016|Ev016.rb
-Ev017|Ev017.rb
-Ev018|Ev018.rb
-Ev019|Ev019.rb
-Ev020|Ev020.rb
-Ev021|Ev021.rb
-Ev_back|Ev_back.rb
+Point|scripts/Point.rb
+Tween|scripts/Tween.rb
+Pose|scripts/Pose.rb
+Menu_Pose|scripts/Menu_Pose.rb
+Hip_Pose|scripts/Hip_Pose.rb
+Battle_Pose|scripts/Battle_Pose.rb
+Bust_Anime|scripts/Bust_Anime.rb
+Kiss_Anime|scripts/Kiss_Anime.rb
+Ev003|scripts/Ev003.rb
+Ev004|scripts/Ev004.rb
+Ev005|scripts/Ev005.rb
+Ev006|scripts/Ev006.rb
+Ev007|scripts/Ev007.rb
+Ev008|scripts/Ev008.rb
+Ev009|scripts/Ev009.rb
+Ev010|scripts/Ev010.rb
+Ev011|scripts/Ev011.rb
+Ev012|scripts/Ev012.rb
+Ev013|scripts/Ev013.rb
+Ev014|scripts/Ev014.rb
+Ev015|scripts/Ev015.rb
+Ev016|scripts/Ev016.rb
+Ev017|scripts/Ev017.rb
+Ev018|scripts/Ev018.rb
+Ev019|scripts/Ev019.rb
+Ev020|scripts/Ev020.rb
+Ev021|scripts/Ev021.rb
+Ev_back|scripts/Ev_back.rb
 Cg_Mode #追加|plugins/Cg_Mode.rb
 簡易版マップ軽量化|plugins/Tonbi - Simple Map Lighting.rb
 MAWS 1.2|plugins/MAWS.rb
-Main|Main.rb
+Main|scripts/Main.rb
