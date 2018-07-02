@@ -8,6 +8,10 @@ class Pose
     end
 
     @position = Point.new(0,0)
+    unless (pose = POSES[pose_name]).nil?
+      @position = Point.from_array(pose['origin'] || [0,0])
+    end
+
     @current_pose = nil
     @current_face = nil
     @current_clothing = nil
@@ -72,7 +76,6 @@ class Pose
       @current_pose = name
 
       unless (pose = POSES[name]).nil?
-        @position = Point.from_array(pose['origin'] || [0,0])
         unless (layers = pose['base']).nil?
           layers.each do |layer|
             z = DEFAULT_BASE_Z + @base_sprites.length
