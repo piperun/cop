@@ -164,6 +164,16 @@ class Pose
     return add_effect('blush')
   end
 
+  # shortcut
+  def sweat()
+    return add_effect('sweat')
+  end
+
+  # shortcut
+  def bruise()
+    return add_effect('bruise')
+  end
+
   def wait(time)
     while time > 0
       time -= 1
