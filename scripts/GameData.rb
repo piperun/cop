@@ -122,6 +122,40 @@ module GameData
     "E06" => { "file" => "PoseD/PoseD_headE06.png" },
   }
 
+  # Faces are shared between various poses, this avoids repetition.
+  FACES_MENU_FRONT = {
+    "A01" => { "file" => "Menu/Menu_headA01.png" },
+    "A02" => { "file" => "Menu/Menu_headA02.png" },
+    "A03" => { "file" => "Menu/Menu_headA03.png" },
+    "A04" => { "file" => "Menu/Menu_headA04.png" },
+    "A05" => { "file" => "Menu/Menu_headA05.png" },
+    "A06" => { "file" => "Menu/Menu_headA06.png" },
+    "A07" => { "file" => "Menu/Menu_headA07.png" },
+    "A08" => { "file" => "Menu/Menu_headA08.png" },
+    "A09" => { "file" => "Menu/Menu_headA09.png" },
+    "A10" => { "file" => "Menu/Menu_headA10.png" },
+    "A11" => { "file" => "Menu/Menu_headA11.png" },
+    "A12" => { "file" => "Menu/Menu_headA12.png" },
+    "A13" => { "file" => "Menu/Menu_headA13.png" },
+    "A14" => { "file" => "Menu/Menu_headA14.png" },
+    "A15" => { "file" => "Menu/Menu_headA15.png" },
+    "A16" => { "file" => "Menu/Menu_headA16.png" },
+    "A17" => { "file" => "Menu/Menu_headA17.png" },
+  }
+
+  # Faces are shared between various poses, this avoids repetition.
+  FACES_MENU_SIDE = {
+    "D01" => { "file" => "Menu/Menu_headD01.png" },
+    "D02" => { "file" => "Menu/Menu_headD02.png" },
+    "D03" => { "file" => "Menu/Menu_headD03.png" },
+    "D04" => { "file" => "Menu/Menu_headD04.png" },
+    "D05" => { "file" => "Menu/Menu_headD05.png" },
+    "D06" => { "file" => "Menu/Menu_headD06.png" },
+    "D07" => { "file" => "Menu/Menu_headD07.png" },
+    "D08" => { "file" => "Menu/Menu_headD08.png" },
+    "D09" => { "file" => "Menu/Menu_headD09.png" },
+  }
+
   # Effects are shared between various poses, this avoids repetition.
   EFFECTS_POSE_A = {
     "blush" => { "file" => "PoseA/PoseA_red.png" },
@@ -145,6 +179,7 @@ module GameData
   # Each origin is a pair of absolute screen coordinates (x,y) representing the pose center.
   # These should be converted to screen percentages to support window resize.
   DEFAULT_POSE_ORIGIN = [ 500, 250 ]
+  DEFAULT_MENU_ORIGIN = [ 320, 280 ]
 
   # This is where all poses are defined. All attributes are optional.
   POSES = {
@@ -353,6 +388,156 @@ module GameData
         ]
       },
       "effects" => EFFECTS_POSE_D,
-    }
+    },
+    "MenuA" => {
+      "origin" => DEFAULT_MENU_ORIGIN,
+      "faces" => FACES_MENU_FRONT,
+      "base" => [
+        { "file" => "Menu/Menu_bodyA.png" },
+        { "file" => "Menu/Menu_hair.png" },
+      ],
+      "clothing" => {
+        "default" => [
+          { "file" => "Menu/Menu_panty.png" },
+          { "file" => "Menu/Menu_camisoleA.png" },
+          { "file" => "Menu/Menu_skirtA.png" },
+          { "file" => "Menu/Menu_jacketA.png" },
+        ]
+      },
+      "effects" => {
+        "blush" => { "file" => "Menu/Menu_red.png" },
+      },
+    },
+    "MenuA2" => {
+      "origin" => DEFAULT_MENU_ORIGIN,
+      "faces" => FACES_MENU_FRONT,
+      "base" => [
+        { "file" => "Menu/Menu_bodyA2.png" },
+        { "file" => "Menu/Menu_hair.png" },
+      ],
+      "clothing" => {
+        "default" => [
+          { "file" => "Menu/Menu_panty.png" },
+          { "file" => "Menu/Menu_camisoleB.png" },
+          { "file" => "Menu/Menu_skirtB.png" },
+        ]
+      },
+      "effects" => {
+        "blush" => { "file" => "Menu/Menu_red.png" },
+      },
+    },
+    "MenuB" => {
+      "origin" => DEFAULT_MENU_ORIGIN,
+      "faces" => FACES_MENU_FRONT,
+      "base" => [
+        { "file" => "Menu/Menu_bodyB.png" },
+        { "file" => "Menu/Menu_hair.png" },
+      ],
+      "clothing" => {
+        "default" => [
+          { "file" => "Menu/Menu_panty.png" },
+          { "file" => "Menu/Menu_camisoleB.png" },
+          { "file" => "Menu/Menu_skirtB.png" },
+          { "file" => "Menu/Menu_jacketB.png" },
+        ]
+      },
+      "effects" => {
+        "blush" => { "file" => "Menu/Menu_red.png" },
+      },
+    },
+    "MenuC" => {
+      "origin" => DEFAULT_MENU_ORIGIN,
+      "faces" => FACES_MENU_FRONT,
+      "base" => [
+        { "file" => "Menu/Menu_bodyC.png" },
+        { "file" => "Menu/Menu_hair.png" },
+      ],
+      "clothing" => {
+        "default" => [
+          { "file" => "Menu/Menu_panty.png" },
+          { "file" => "Menu/Menu_camisoleC.png" },
+          { "file" => "Menu/Menu_skirtB.png" },
+        ]
+      },
+      "effects" => {
+        "blush" => { "file" => "Menu/Menu_red.png" },
+      },
+    },
+    "MenuD" => {
+      "origin" => DEFAULT_MENU_ORIGIN,
+      "faces" => FACES_MENU_SIDE,
+      "base" => [
+        { "file" => "Menu/Menu_bodyD.png" },
+      ],
+      "clothing" => {
+        "default" => [
+          { "file" => "Menu/Menu_skirt.png", "z" => 0 },
+          { "file" => "Menu/Menu_pantyH.png" },
+          { "file" => "Menu/Menu_camisoleH.png" },
+          { "file" => "Menu/Menu_jacketH.png" },
+          { "file" => "Menu/Menu_skirtH.png" },
+        ]
+      },
+      "effects" => {
+        "blush" => { "file" => "Menu/Menu_red3.png" },
+      },
+    },
+    "MenuF" => {
+      "origin" => DEFAULT_MENU_ORIGIN,
+      "faces" => FACES_MENU_SIDE,
+      "base" => [
+        { "file" => "Menu/Menu_bodyF.png" },
+      ],
+      "clothing" => {
+        "default" => [
+          { "file" => "Menu/Menu_skirt.png", "z" => 0 },
+          { "file" => "Menu/Menu_pantyF.png" },
+          { "file" => "Menu/Menu_camisoleF.png" },
+          { "file" => "Menu/Menu_jacketF.png" },
+          { "file" => "Menu/Menu_skirtF.png" },
+        ]
+      },
+      "effects" => {
+        "blush" => { "file" => "Menu/Menu_red3.png" },
+      },
+    },
+    "MenuG" => {
+      "origin" => DEFAULT_MENU_ORIGIN,
+      "faces" => FACES_MENU_SIDE,
+      "base" => [
+        { "file" => "Menu/Menu_bodyG.png" },
+      ],
+      "clothing" => {
+        "default" => [
+          { "file" => "Menu/Menu_skirt.png", "z" => 0 },
+          { "file" => "Menu/Menu_camisoleF.png" },
+          { "file" => "Menu/Menu_pantyG.png" },
+          { "file" => "Menu/Menu_jacketG.png" },
+          { "file" => "Menu/Menu_skirtF.png" },
+        ]
+      },
+      "effects" => {
+        "blush" => { "file" => "Menu/Menu_red3.png" },
+      },
+    },
+    "MenuH" => {
+      "origin" => DEFAULT_MENU_ORIGIN,
+      "faces" => FACES_MENU_SIDE,
+      "base" => [
+        { "file" => "Menu/Menu_bodyH.png" },
+      ],
+      "clothing" => {
+        "default" => [
+          { "file" => "Menu/Menu_skirt.png", "z" => 0 },
+          { "file" => "Menu/Menu_camisoleH.png" },
+          { "file" => "Menu/Menu_pantyH.png" },
+          { "file" => "Menu/Menu_jacketH.png" },
+          { "file" => "Menu/Menu_skirtH.png" },
+        ]
+      },
+      "effects" => {
+        "blush" => { "file" => "Menu/Menu_red3.png" },
+      },
+    },
   }
 end
