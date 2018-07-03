@@ -79,65 +79,22 @@ class Pose
     return self
   end
 
-  def pose(name)
-    if @current_pose != name
-      @base_sprites.each { |sprite| sprite.dispose() if sprite != nil }
-      @base_sprites = []
-      @current_pose = name
-
-      unless (pose = POSES[name]).nil?
-        unless (layers = pose['base']).nil?
-          layers.each do |layer|
-            z = DEFAULT_BASE_Z + @base_sprites.length
-            @base_sprites.push(make_sprite(layer, z))
-          end
-        end
-      end
-
-      # Unless we are disposing (name = nil), reapply face, clothing and effects
-      if name != nil
-        face(@current_face)
-        clothing(@current_clothing)
-        @effect_sprites.keys.each { |name| clear_effect(name); add_effect(name) }
-      end
-    end
+  def pose(pose_name, face_name = nil)
+    @current_pose = pose_name
+    @current_face = face_name || @current_face
+    redraw()
     return self
   end
 
   def face(name)
-    if @current_face != name
-      @face_sprite.dispose if @face_sprite != nil
-      @face_sprite = nil
-      @current_face = name
-
-      unless (pose = POSES[@current_pose]).nil?
-        unless (layers = pose['faces']).nil?
-          unless (layer = layers[name]).nil?
-            @face_sprite = make_sprite(layer, DEFAULT_FACE_Z)
-          end
-        end
-      end
-    end
+    @current_face = name
+    redraw()
     return self
   end
 
   def clothing(name)
-    if @current_clothing != name
-      @clothing_sprites.each { |sprite| sprite.dispose() if sprite != nil }
-      @clothing_sprites = []
-      @current_clothing = name
-
-      unless (pose = POSES[@current_pose]).nil?
-        unless (clothing = pose['clothing']).nil?
-          unless (layers = clothing[name]).nil?
-            layers.each do |layer|
-              z = DEFAULT_CLOTHING_Z + @clothing_sprites.length
-              @clothing_sprites.push(make_sprite(layer, z))
-            end
-          end
-        end
-      end
-    end
+    @current_clothing = name
+    redraw()
   end
 
   def add_effect(name)
@@ -193,10 +150,11 @@ class Pose
   end
 
   def dispose
-    pose(nil)
-    face(nil)
-    clothing(nil)
+    @current_pose = nil
+    @current_face = nil
+    @current_clothing = nil
     normal()
+    redraw()
     return self
   end
 
@@ -345,6 +303,39 @@ class Pose
       #TODO: not implemented
     end
     return self
+  end
+
+  def redraw
+    # Dispose all layers
+    @base_sprites.each { |sprite| sprite.dispose() if sprite != nil }
+    @base_sprites = []
+    @face_sprite.dispose if @face_sprite != nil
+    @face_sprite = nil
+    @clothing_sprites.each { |sprite| sprite.dispose() if sprite != nil }
+    @clothing_sprites = []
+
+    # Restore all layers
+    unless (pose = POSES[@current_pose]).nil?
+      unless (layers = pose['base']).nil?
+        layers.each do |layer|
+          z = DEFAULT_BASE_Z + @base_sprites.length
+          @base_sprites.push(make_sprite(layer, z))
+        end
+      end
+      unless (layers = pose['faces']).nil?
+        unless (layer = layers[@current_face]).nil?
+          @face_sprite = make_sprite(layer, DEFAULT_FACE_Z)
+        end
+      end
+      unless (clothing = pose['clothing']).nil?
+        unless (layers = clothing[@current_clothing]).nil?
+          layers.each do |layer|
+            z = DEFAULT_CLOTHING_Z + @clothing_sprites.length
+            @clothing_sprites.push(make_sprite(layer, z))
+          end
+        end
+      end
+    end
   end
 
   def make_sprite(layer, z)
