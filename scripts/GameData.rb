@@ -4,11 +4,11 @@ module GameData
   # The Z-level of any layer can be overridden by adding attribute "z" => 1234.
   # This effectively forces a layer to be at the specified Z-level.
   # Below are the starting defaults for each layer type.
-  DEFAULT_BASE_Z = 0
-  DEFAULT_CLOTHING_Z = 10
-  DEFAULT_FACE_Z = 20
+  DEFAULT_BASE_Z = 10
+  DEFAULT_CLOTHING_Z = 20
+  DEFAULT_FACE_Z = 30
   # Effect Z-levels currently do not increment, they always are set to the default unless overridden.
-  DEFAULT_EFFECT_Z = 30
+  DEFAULT_EFFECT_Z = 40
 
   # Variables can only hold numbers, so we need to translate numbers to names.
   # This is also where we define the required switch for each clothing set.
@@ -158,6 +158,7 @@ module GameData
       ],
       "clothing" => {
         "default" => [
+          { "file" => "PoseA/PoseA_jacketA04.png", "z" => 0 },
           { "file" => "PoseA/PoseA_panty.png" },
           { "file" => "PoseA/PoseA_skirtA.png" },
           { "file" => "PoseA/PoseA_camisoleA01.png" },
@@ -176,6 +177,7 @@ module GameData
       ],
       "clothing" => {
         "default" => [
+          { "file" => "PoseA/PoseA_jacketA04.png", "z" => 0 },
           { "file" => "PoseA/PoseA_panty.png" },
           { "file" => "PoseA/PoseA_skirtA.png" },
           { "file" => "PoseA/PoseA_camisoleA01.png" },
@@ -188,18 +190,18 @@ module GameData
           "frames" => [
             [
               { "replace" => "base/3", "file" => "PoseA/PoseA_bustA01.png" },
-              { "replace" => "clothing/3", "file" => "PoseA/PoseA_camisoleA01.png" },
-              { "replace" => "clothing/4", "file" => "PoseA/PoseA_jacketB01.png" },
+              { "replace" => "clothing/4", "file" => "PoseA/PoseA_camisoleA01.png" },
+              { "replace" => "clothing/5", "file" => "PoseA/PoseA_jacketB01.png" },
             ],
             [
               { "replace" => "base/3", "file" => "PoseA/PoseA_bustA02.png" },
-              { "replace" => "clothing/3", "file" => "PoseA/PoseA_camisoleA02.png" },
-              { "replace" => "clothing/4", "file" => "PoseA/PoseA_jacketB02.png" },
+              { "replace" => "clothing/4", "file" => "PoseA/PoseA_camisoleA02.png" },
+              { "replace" => "clothing/5", "file" => "PoseA/PoseA_jacketB02.png" },
             ],
             [
               { "replace" => "base/3", "file" => "PoseA/PoseA_bustA03.png" },
-              { "replace" => "clothing/3", "file" => "PoseA/PoseA_camisoleA03.png" },
-              { "replace" => "clothing/4", "file" => "PoseA/PoseA_jacketB03.png" },
+              { "replace" => "clothing/4", "file" => "PoseA/PoseA_camisoleA03.png" },
+              { "replace" => "clothing/5", "file" => "PoseA/PoseA_jacketB03.png" },
             ],
           ],
           "sequence" => [ [1,2], [2,2], [3,3], [2,3], [3,5] ],
@@ -217,8 +219,8 @@ module GameData
       "clothing" => {
         "default" => [
           { "file" => "PoseA/PoseA_panty.png" },
-          { "file" => "PoseA/PoseA_skirtA.png" },
           { "file" => "PoseA/PoseA_camisoleC01.png" },
+          { "file" => "PoseA/PoseA_skirtA.png" },
         ]
       },
       "effects" => EFFECTS_POSE_A,
@@ -233,9 +235,11 @@ module GameData
       ],
       "clothing" => {
         "default" => [
+          { "file" => "PoseA/PoseA_jacketA04.png", "z" => 0 },
+          { "file" => "PoseA/PoseA_skirtbackD.png", "z" => 1 },
           { "file" => "PoseA/PoseA_panty.png" },
-          { "file" => "PoseA/PoseA_skirtA.png" },
           { "file" => "PoseA/PoseA_camisoleD.png" },
+          { "file" => "PoseA/PoseA_skirtD.png" },
           { "file" => "PoseA/PoseA_jacketD.png" },
         ]
       },
@@ -251,9 +255,11 @@ module GameData
       ],
       "clothing" => {
         "default" => [
+          { "file" => "PoseA/PoseA_jacketA04.png", "z" => 0 },
+          { "file" => "PoseA/PoseA_skirtbackE.png", "z" => 1 },
           { "file" => "PoseA/PoseA_panty.png" },
-          { "file" => "PoseA/PoseA_skirtA.png" },
           { "file" => "PoseA/PoseA_camisoleE.png" },
+          { "file" => "PoseA/PoseA_skirtE.png" },
           { "file" => "PoseA/PoseA_jacketE.png" },
         ]
       },
@@ -268,8 +274,9 @@ module GameData
       ],
       "clothing" => {
         "default" => [
-          { "file" => "PoseB/PoseB_camisoleA.png" },
+          { "file" => "PoseB/PoseB_jacketA02.png", "z" => 0 },
           { "file" => "PoseB/PoseB_panty.png" },
+          { "file" => "PoseB/PoseB_camisoleA.png" },
           { "file" => "PoseB/PoseB_skirtA.png" },
           { "file" => "PoseB/PoseB_jacketA.png" },
         ]
@@ -284,9 +291,10 @@ module GameData
       ],
       "clothing" => {
         "default" => [
-          { "file" => "PoseB/PoseB_camisoleA.png" },
+          { "file" => "PoseB/PoseB_jacketA02.png", "z" => 0 },
           { "file" => "PoseB/PoseB_panty.png" },
-          { "file" => "PoseB/PoseB_skirtA.png" },
+          { "file" => "PoseB/PoseB_camisoleA.png" },
+          { "file" => "PoseB/PoseB_skirtB.png" },
           { "file" => "PoseB/PoseB_jacketA.png" },
         ]
       },
@@ -295,9 +303,9 @@ module GameData
       "origin" => DEFAULT_POSE_ORIGIN,
       "faces" => FACES_POSE_C,
       "base" => [
+        { "file" => "PoseC/PoseC_hair.png" },
         { "file" => "PoseC/PoseC_bodyA.png" },
         { "file" => "PoseC/PoseC_bust.png" },
-        { "file" => "PoseC/PoseC_hair.png" },
       ],
       "clothing" => {
         "default" => [
@@ -313,9 +321,9 @@ module GameData
       "origin" => DEFAULT_POSE_ORIGIN,
       "faces" => FACES_POSE_C,
       "base" => [
-        { "file" => "PoseC/PoseC_bodyA.png" },
-        { "file" => "PoseC/PoseC_bust.png" },
         { "file" => "PoseC/PoseC_hair.png" },
+        { "file" => "PoseC/PoseC_bodyB.png" },
+        { "file" => "PoseC/PoseC_bust.png" },
       ],
       "clothing" => {
         "default" => [
@@ -331,16 +339,17 @@ module GameData
       "origin" => [ 470, 255 ],
       "faces" => FACES_POSE_D,
       "base" => [
-        { "file" => "PoseC/PoseC_bodyA.png" },
-        { "file" => "PoseC/PoseC_foot.png" },
-        { "file" => "PoseC/PoseC_hair.png" },
+        { "file" => "PoseD/PoseD_hair.png" },
+        { "file" => "PoseD/PoseD_bodyA.png" },
+        { "file" => "PoseD/PoseD_foot.png", "z" => 30 },
       ],
       "clothing" => {
         "default" => [
-          { "file" => "PoseC/PoseC_panty.png" },
-          { "file" => "PoseC/PoseC_camisoleA.png" },
-          { "file" => "PoseC/PoseC_skirtA.png" },
-          { "file" => "PoseC/PoseC_jacketB.png" },
+          { "file" => "PoseD/PoseD_jacketback.png", "z" => 0 },
+          { "file" => "PoseD/PoseD_panty.png" },
+          { "file" => "PoseD/PoseD_camisoleA.png" },
+          { "file" => "PoseD/PoseD_skirtA.png" },
+          { "file" => "PoseD/PoseD_jacketA.png" },
         ]
       },
       "effects" => EFFECTS_POSE_D,
