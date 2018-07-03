@@ -59,8 +59,10 @@ class Pose
         sprite.y += delta.y
       end
     }
-    @face_sprite.x += delta.x
-    @face_sprite.y += delta.y
+    unless @face_sprite.nil?
+      @face_sprite.x += delta.x
+      @face_sprite.y += delta.y
+    end
     @clothing_sprites.each { |sprite|
       unless sprite.nil?
         sprite.x += delta.x
