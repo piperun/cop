@@ -18,8 +18,7 @@ class Scene_Menu
   def main
     # 画像の表示
     menuback
-    $menu_pose = Menu_Pose.new("A", "01", 0)
-    $menu_pose.pop
+    $menu_pose = Pose.new("MenuA", "A01")
     # ウィンドウスキンの変更
     $game_system.windowskin_name = "skin04"
     # アクターを取得
@@ -112,7 +111,7 @@ class Scene_Menu
     Graphics.freeze
     # 画像を開放
     @menuback.dispose
-    $menu_pose.clear
+    $menu_pose.dispose
     # Dispose of windows
     @status_window.dispose
     @info_window.dispose
@@ -328,9 +327,7 @@ class Scene_Menu
       @index_put_off_now = 0
       @pose_num = "A"
       @pose_y = 280
-      $menu_pose.clear
-      $menu_pose = Menu_Pose.new("A", "01", 0)
-      $menu_pose.pop
+      $menu_pose.pose("MenuA").face("A01")
     end
     # If C button was pressed
     if Input.trigger?(Input::C)
@@ -386,9 +383,7 @@ class Scene_Menu
         @index_put_off_now = 0
         @pose_num = "A"
         @pose_y = 280
-        $menu_pose.clear
-        $menu_pose = Menu_Pose.new("A", "01", 0)
-        $menu_pose.pop
+        $menu_pose.pose("MenuA").face("A01")
       end
     end
   end
@@ -408,9 +403,7 @@ class Scene_Menu
       @index_put_on_now = 0
       @pose_num = "A"
       @pose_y = 280
-      $menu_pose.clear
-      $menu_pose = Menu_Pose.new("A", "01", 0)
-      $menu_pose.pop
+      $menu_pose.pose("MenuA").face("A01")
     end
     # C ボタンが押された場合
     if Input.trigger?(Input::C)
@@ -480,9 +473,7 @@ class Scene_Menu
           @index_put_on_now = 0
           @pose_num = "A"
           @pose_y = 280
-          $menu_pose.clear
-          $menu_pose = Menu_Pose.new("A", "01", 0)
-          $menu_pose.pop
+          $menu_pose.pose("MenuA").face("A01")
         end
       else
         # コマンドウィンドウのカーソル位置で分岐
@@ -537,9 +528,7 @@ class Scene_Menu
           @index_put_on_now = 0
           @pose_num = "A"
           @pose_y = 280
-          $menu_pose.clear
-          $menu_pose = Menu_Pose.new("A", "01", 0)
-          $menu_pose.pop
+          $menu_pose.pose("MenuA").face("A01")
         end
       end
     end
@@ -689,8 +678,7 @@ class Scene_Menu
   # ● ポーズ変更
   #--------------------------------------------------------------------------
   def change_pose
-    $menu_pose.clear
-    $menu_pose = Menu_Pose.new(@pose_num, @face_number, 0)
+    $menu_pose.pose("Menu#{@pose_num}").face("#{@pose_num}#{@face_number}")
     $menu_pose.slide(@pose_y,@move_y)
   end
   #--------------------------------------------------------------------------
