@@ -42,6 +42,14 @@ class Pose
     position(@position.x, value)
   end
 
+  def origin
+    unless (pose = POSES[@current_pose]).nil?
+      x, y = pose['origin'] || [0,0]
+      position(x, y)
+    end
+    return self
+  end
+
   def position(x, y)
     npos = Point.new(x || @position.x, y || @position.y)
     delta = Point.new(npos.x - @position.x, npos.y - @position.y)
