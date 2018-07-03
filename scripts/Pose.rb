@@ -164,7 +164,7 @@ class Pose
     return self
   end
 
-  def clear_effects
+  def normal
     @effect_sprites.keys.each { |name| clear_effect(name) }
     return self
   end
@@ -196,7 +196,7 @@ class Pose
     pose(nil)
     face(nil)
     clothing(nil)
-    clear_effects()
+    normal()
     return self
   end
 
