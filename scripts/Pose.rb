@@ -59,7 +59,7 @@ class Pose
         sprite.y += delta.y
       end
     }
-    @effect_sprites.each { |sprite|
+    @effect_sprites.each { |effect_name, sprite|
       unless sprite.nil?
         sprite.x += delta.x
         sprite.y += delta.y
