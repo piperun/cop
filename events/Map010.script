@@ -1,0 +1,121 @@
+
+11 0 0 $pose = Pose.new("A","B","B02",1,0)
+11 0 1 $pose.slide
+11 0 2 $pose.clear
+11 0 3 $pose = nil
+11 0 4 $pose = Pose.new("A","B","B02",1,0)
+11 0 5 $pose.shake
+
+11 0 14 $pose.clear
+11 0 15 $pose = nil
+11 0 16 $pose = Pose.new("A","B","E02",0,0)
+11 0 17 $pose.pop
+
+11 0 20 $pose.clear
+11 0 21 $pose = nil
+11 0 22 $pose = Pose.new("A","B","E03",0,0)
+11 0 23 $pose.shake
+
+11 0 33 $pose.clear
+11 0 34 $pose = nil
+11 0 35 $pose = Pose.new("A","B","E04",0,0)
+11 0 36 $pose.pop
+
+11 0 39 $pose.clear
+11 0 40 $pose = nil
+11 0 41 $pose = Pose.new("A","B","D04",0,0)
+11 0 42 $pose.pop
+
+11 0 45 $pose.clear
+11 0 46 $pose = nil
+11 0 47 $pose = Pose.new("A","B","D01",0,0)
+11 0 48 $pose.pop
+
+11 0 56 $pose.clear
+11 0 57 $pose = nil
+11 0 58 $pose = Pose.new("A","B","A01",0,0)
+11 0 59 $pose.pop
+
+11 0 62 $pose.clear
+11 0 63 $pose = nil
+11 0 64 $pose = Pose.new("A","B","A06",0,0)
+11 0 65 $pose.shake
+
+11 0 76 $pose.clear
+11 0 77 $pose = nil
+
+
+
+
+
+
+
+3 1 0 $pose = Pose.new("A","B","D07",1,0)
+3 1 1 $pose.slide
+
+3 1 4 $pose.clear
+3 1 5 $pose = nil
+
+
+9 0 0 $pose = Pose.new("A","B","A03",0,0)
+9 0 1 $pose.slide
+
+9 0 4 $pose.clear
+9 0 5 $pose = nil
+
+
+9 2 0 $pose = Pose.new("A","B","A03",0,0)
+9 2 1 $pose.slide
+
+9 2 4 $pose.clear
+9 2 5 $pose = nil
+
+
+9 4 0 $pose = Pose.new("A","B","A03",0,0)
+9 4 1 $pose.slide
+
+9 4 4 $pose.clear
+9 4 5 $pose = nil
+
+9 5 0 $pose = Pose.new("A","B","A03",0,0)
+9 5 1 $pose.slide
+
+9 5 4 $pose.clear
+9 5 5 $pose = nil
+
+
+
+4 1 0 $pose = Pose.new("A","B","A03",0,0)
+4 1 1 $pose.slide
+
+4 1 4 $pose.clear
+4 1 5 $pose = nil
+
+
+10 0 0 $pose = Pose.new("A","B","A03",0,0)
+10 0 1 $pose.slide
+
+10 0 4 $pose.clear
+10 0 5 $pose = nil
+
+
+10 2 0 $pose = Pose.new("A","B","A03",0,0)
+10 2 1 $pose.slide
+
+10 2 4 $pose.clear
+10 2 5 $pose = nil
+
+
+10 4 0 $pose = Pose.new("A","B","A03",0,0)
+10 4 1 $pose.slide
+
+10 4 4 $pose.clear
+10 4 5 $pose = nil
+
+10 5 0 $pose = Pose.new("A","B","A03",0,0)
+10 5 1 $pose.slide
+
+10 5 4 $pose.clear
+10 5 5 $pose = nil
+
+

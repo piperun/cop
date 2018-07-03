@@ -1,0 +1,137 @@
+1 0 2 $pose = Pose.new("A","B","A01",0,0)
+1 0 3 $pose.slide
+1 0 4 $pose.clear
+1 0 5 $pose = nil
+1 0 6 $pose = Pose.new("A","B","A01",0,0)
+1 0 7 $pose.shake
+
+1 0 14 $pose.clear
+1 0 15 $pose = nil
+1 0 16 $pose = Pose.new("A","B","A05",0,0)
+1 0 17 $pose.pop
+
+1 0 21 $pose.clear
+1 0 22 $pose = nil
+1 0 23 $pose = Pose.new("A","B","A01",0,0)
+1 0 24 $pose.shake
+
+1 0 34 $pose.clear
+1 0 35 $pose = nil
+1 0 36 $pose = Pose.new("A","B","A02",0,0)
+1 0 37 $pose.pop
+
+1 0 40 $pose.clear
+1 0 41 $pose = nil
+1 0 42 $pose = Pose.new("A","B","A01",0,0)
+1 0 43 $pose.pop
+
+1 0 46 $pose.clear
+1 0 47 $pose = nil
+1 0 48 $pose = Pose.new("A","B","A02",0,0)
+1 0 49 $pose.pop
+
+1 0 53 $pose.clear
+1 0 54 $pose = nil
+1 0 55 $pose = Pose.new("A","B","A01",0,1)
+1 0 56 $pose.pop
+
+1 0 60 $pose.clear
+1 0 61 $pose = nil
+1 0 62 $pose = Pose.new("A","B","A02",0,1)
+1 0 63 $pose.pop
+
+1 0 69 $pose.clear
+1 0 70 $pose = nil
+1 0 71 $pose = Pose.new("A","B","A01",0,0)
+1 0 72 $pose.pop
+
+1 0 78 $pose.clear
+1 0 79 $pose = nil
+1 0 80 $pose = Pose.new("A","B","A05",0,0)
+1 0 81 $pose.pop
+
+1 0 83 $pose.clear
+1 0 84 $pose = nil
+1 0 85 $pose = Pose.new("A","B","A06",0,1)
+1 0 86 $pose.pop
+
+1 0 89 $pose.clear
+1 0 90 $pose = nil
+1 0 91 $pose = Pose.new("A","B","A01",0,0)
+1 0 92 $pose.pop
+
+1 0 96 $pose.clear
+1 0 97 $pose = nil
+1 0 98 $pose = Pose.new("A","B","A06",0,0)
+1 0 99 $pose.pop
+
+1 0 102 $pose.clear
+1 0 103 $pose = nil
+
+1 0 120 $pose.clear
+1 0 121 $pose = nil
+1 0 122 $pose = Pose.new("A","B","A01",0,0)
+1 0 123 $pose.pop
+
+1 0 129 $pose.clear
+1 0 130 $pose = nil
+1 0 131 $pose = Pose.new("A","B","A02",0,0)
+1 0 132 $pose.pop
+
+1 0 136 $pose.clear
+1 0 137 $pose = nil
+1 0 138 $pose = Pose.new("A","B","A01",0,1)
+1 0 139 $pose.pop
+
+1 0 143 $pose.clear
+1 0 144 $pose = nil
+1 0 145 $pose = Pose.new("A","B","A02",0,1)
+1 0 146 $pose.pop
+
+1 0 152 $pose.clear
+1 0 153 $pose = nil
+1 0 154 $pose = Pose.new("A","B","A01",0,0)
+1 0 155 $pose.pop
+
+1 0 161 $pose.clear
+1 0 162 $pose = nil
+1 0 163 $pose = Pose.new("A","B","A05",0,0)
+1 0 164 $pose.pop
+
+1 0 166 $pose.clear
+1 0 167 $pose = nil
+1 0 168 $pose = Pose.new("A","B","A06",0,1)
+1 0 169 $pose.pop
+
+1 0 172 $pose.clear
+1 0 173 $pose = nil
+1 0 174 $pose = Pose.new("A","B","A01",0,0)
+1 0 175 $pose.pop
+
+1 0 179 $pose.clear
+1 0 180 $pose = nil
+1 0 181 $pose = Pose.new("A","B","A06",0,0)
+1 0 182 $pose.pop
+
+1 0 184 $pose.clear
+1 0 185 $pose = nil
+1 0 186 $pose = Pose.new("A","B","A02",0,0)
+1 0 187 $pose.pop
+
+1 0 189 $pose.clear
+1 0 190 $pose = nil
+
+1 0 207 $pose.clear
+1 0 208 $pose = nil
+1 0 209 $pose = Pose.new("A","B","D07",0,0)
+1 0 210 $pose.pop
+
+1 0 214 $pose.clear
+1 0 215 $pose = nil
+1 0 216 $pose = Pose.new("A","B","A06",0,0)
+1 0 217 $pose.pop
+
+1 0 220 $pose.clear
+1 0 221 $pose = nil
+
+

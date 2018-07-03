@@ -1,0 +1,95 @@
+
+6 1 0 $pose = Pose.new("A","B","C01",0,0)
+6 1 1 $pose.slide
+
+6 1 4 $pose.clear
+6 1 5 $pose = nil
+
+
+7 0 23 $pose = Pose.new("A","A","A06",0,0)
+7 0 24 $pose.slide
+7 0 25 $pose.clear
+7 0 26 $pose = nil
+7 0 27 $pose = Pose.new("A","A","A06",0,0)
+7 0 28 $pose.shake
+
+7 0 41 $pose.clear
+7 0 42 $pose = nil
+7 0 43 $pose = Pose.new("A","A","A04",0,0)
+7 0 44 $pose.pop
+
+7 0 47 $pose.clear
+7 0 48 $pose = nil
+
+7 0 71 $pose = Pose.new("A","A","A04",0,0)
+7 0 72 $pose.slide
+
+7 0 75 $pose.clear
+7 0 76 $pose = nil
+7 0 77 $pose = Pose.new("A","A","A03",0,0)
+7 0 78 $pose.pop
+
+7 0 81 $pose.clear
+7 0 82 $pose = nil
+
+7 0 101 $Ev006 = Ev006.new("A01", 0, 0)
+7 0 102 $Ev006.pop
+
+7 0 174 $Ev006.clear
+7 0 175 $Ev006 = nil
+
+7 0 211 $pose = Pose.new("A","A","A06",0,0)
+7 0 212 $pose.slide
+7 0 213 $pose.clear
+7 0 214 $pose = nil
+7 0 215 $pose = Pose.new("A","A","A06",0,0)
+7 0 216 $pose.shake
+
+7 0 220 $pose.clear
+7 0 221 $pose = nil
+
+7 0 270 $pose = Pose.new("A","A","D06",0,0)
+7 0 271 $pose.slide
+
+7 0 274 $pose.clear
+7 0 275 $pose = nil
+7 0 276 $pose = Pose.new("A","A","D07",1,0)
+7 0 277 $pose.pop
+
+7 0 280 $pose.clear
+7 0 281 $pose = nil
+
+
+
+
+
+
+
+
+
+4 0 13 $pose = Pose.new("A","A","A04",1,0)
+4 0 14 $pose.slide
+4 0 15 $pose.clear
+4 0 16 $pose = nil
+4 0 17 $pose = Pose.new("A","A","A04",1,0)
+4 0 18 $pose.shake
+
+4 0 21 $pose.clear
+4 0 22 $pose = nil
+
+4 0 38 $Ev006 = Ev006.new("A01",0,0)
+4 0 39 $Ev006.pop
+
+4 0 81 $Ev006.clear
+4 0 82 $Ev006 = nil
+4 0 83 $Ev006 = Ev006.new("A01","A01",0)
+4 0 84 $Ev006.pop
+
+4 0 110 $Ev006.clear
+4 0 111 $Ev006 = nil
+
+
+
+
+
+

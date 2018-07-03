@@ -1,0 +1,966 @@
+5 0 2 $ev021 = Ev021.new
+5 0 3 $ev021.pop("A")
+
+5 0 6 $ev021.massage_on("A",10)
+
+5 0 8 $ev021.pop("F")
+5 0 9 $ev021.massage_on("B",10)
+
+5 0 11 $ev021.pop("M")
+5 0 12 $ev021.massage_on("B",10)
+
+5 0 14 $ev021.massage_off
+
+5 0 16 $ev021.clear
+5 0 17 $ev021 = nil
+
+
+
+
+
+
+
+11 0 0 $Ev007 = Ev007.new("B05","A03","A05","A02",2,1)
+11 0 1 $Ev007.pop
+
+
+
+17 0 0 $Ev005 = Ev005.new("C01")
+17 0 1 $Ev005.pop
+
+17 0 3 $pose = Pose.new("A","B","A03",0,0)
+17 0 4 $pose.slide
+
+17 0 7 $pose.clear
+17 0 8 $pose = nil
+
+28 0 32 $Ev010 = Ev010.new("A01","B01",0,1,1,1,1)
+28 0 33 $Ev010.pop
+
+28 0 39 $Ev010.clear
+28 0 40 $Ev010 = nil
+28 0 41 $Ev010 = Ev010.new("A03","C01",1,1,1,1,1)
+28 0 42 $Ev010.pop
+
+28 0 51 $Ev010.clear
+28 0 52 $Ev010 = nil
+28 0 53 $Ev010 = Ev010.new("A03","B03",1,1,1,1,1)
+28 0 54 $Ev010.pop
+
+28 0 65 $Ev010.clear
+28 0 66 $Ev010 = nil
+28 0 67 $Ev010 = Ev010.new("A03","C03",1,1,1,1,1)
+28 0 68 $Ev010.pop
+
+28 0 75 $Ev010.clear
+28 0 76 $Ev010 = nil
+28 0 77 $Ev010 = Ev010.new("A03","B01",1,1,1,1,1)
+28 0 78 $Ev010.pop
+
+28 0 81 $Ev010.clear
+28 0 82 $Ev010 = nil
+28 0 83 $Ev010 = Ev010.new("A03","B02",1,1,1,1,1)
+28 0 84 $Ev010.pop
+
+28 0 87 $Ev010.clear
+28 0 88 $Ev010 = nil
+28 0 89 $Ev010 = Ev010.new("A01","C03",1,1,1,1,1)
+28 0 90 $Ev010.pop
+
+28 0 95 $Ev010.clear
+28 0 96 $Ev010 = nil
+
+28 0 98 $Ev010 = Ev010.new("A02","C03",0,1,1,1,1)
+28 0 99 $Ev010.pop
+
+28 0 102 $Ev010.clear
+28 0 103 $Ev010 = nil
+28 0 104 $Ev010 = Ev010.new("A02","B03",0,1,1,1,1)
+28 0 105 $Ev010.pop
+
+28 0 111 $Ev010.clear
+28 0 112 $Ev010 = nil
+28 0 113 $Ev010 = Ev010.new("A02","B02",0,1,1,1,1)
+28 0 114 $Ev010.pop
+
+28 0 118 $Ev010.clear
+28 0 119 $Ev010 = nil
+28 0 120 $Ev010 = Ev010.new("A02","D01",0,1,1,1,1)
+28 0 121 $Ev010.pop
+
+28 0 127 $Ev010.clear
+28 0 128 $Ev010 = nil
+28 0 129 $Ev010 = Ev010.new("A04","B01",0,1,1,1,1)
+28 0 130 $Ev010.pop
+
+28 0 139 $Ev010.clear
+28 0 140 $Ev010 = nil
+
+28 0 142 $Ev010 = Ev010.new("A04","C03",1,1,1,1,1)
+28 0 143 $Ev010.pop
+
+28 0 146 $Ev010.clear
+28 0 147 $Ev010 = nil
+28 0 148 $Ev010 = Ev010.new("A04","D03",1,1,1,1,1)
+28 0 149 $Ev010.pop
+
+28 0 153 $Ev010.clear
+28 0 154 $Ev010 = nil
+28 0 155 $Ev010 = Ev010.new("A04","B02",1,1,1,1,1)
+28 0 156 $Ev010.pop
+
+28 0 159 $Ev010.clear
+28 0 160 $Ev010 = nil
+28 0 161 $Ev010 = Ev010.new("A04","D01",1,1,1,1,1)
+28 0 162 $Ev010.pop
+
+28 0 166 $Ev010.clear
+28 0 167 $Ev010 = nil
+28 0 168 $Ev010 = Ev010.new("A04","D03",1,1,1,1,1)
+28 0 169 $Ev010.pop
+
+28 0 180 $Ev010.clear
+28 0 181 $Ev010 = nil
+28 0 182 $Ev010 = Ev010.new("A04","C03",1,1,1,1,1)
+28 0 183 $Ev010.pop
+
+28 0 188 $Ev010.clear
+28 0 189 $Ev010 = nil
+28 0 190 $Ev010 = Ev010.new("A04","C04",1,1,1,1,1)
+28 0 191 $Ev010.pop
+
+28 0 202 $Ev010.clear
+28 0 203 $Ev010 = nil
+28 0 204 $Ev010 = Ev010.new("A04","D03",1,1,1,1,1)
+28 0 205 $Ev010.pop
+
+28 0 213 $Ev010.clear
+28 0 214 $Ev010 = nil
+28 0 215 $Ev010 = Ev010.new("A04","C03",1,1,1,1,1)
+28 0 216 $Ev010.pop
+
+28 0 221 $Ev010.clear
+28 0 222 $Ev010 = nil
+28 0 223 $Ev010 = Ev010.new("A04","D01",1,1,1,1,1)
+28 0 224 $Ev010.pop
+
+28 0 230 $Ev010.clear
+28 0 231 $Ev010 = nil
+28 0 232 $Ev010 = Ev010.new("A04","D03",1,1,1,1,1)
+28 0 233 $Ev010.pop
+
+28 0 237 $Ev010.clear
+28 0 238 $Ev010 = nil
+28 0 239 $Ev010 = Ev010.new("A04","D03",1,2,2,1,1)
+28 0 240 $Ev010.pop
+
+28 0 249 $Ev010.clear
+28 0 250 $Ev010 = nil
+28 0 251 $Ev010 = Ev010.new("A04","D01",0,5,2,1,1)
+28 0 252 $Ev010.pop
+
+28 0 255 $Ev010.clear
+28 0 256 $Ev010 = nil
+28 0 257 $Ev010 = Ev010.new("A04","B02",0,5,2,1,1)
+28 0 258 $Ev010.pop
+
+28 0 263 $Ev010.clear
+28 0 264 $Ev010 = nil
+28 0 265 $Ev010 = Ev010.new("A04","D01",0,5,2,1,1)
+28 0 266 $Ev010.pop
+
+28 0 269 $Ev010.clear
+28 0 270 $Ev010 = nil
+28 0 271 $Ev010 = Ev010.new("A04","B02",0,5,2,1,1)
+28 0 272 $Ev010.pop
+
+28 0 277 $Ev010.clear
+28 0 278 $Ev010 = nil
+28 0 279 $Ev010 = Ev010.new("A04","D02",0,5,2,1,1)
+28 0 280 $Ev010.pop
+
+28 0 289 $Ev010.clear
+28 0 290 $Ev010 = nil
+28 0 291 $Ev010 = Ev010.new("A04","D03",0,5,2,1,1)
+28 0 292 $Ev010.pop
+
+28 0 295 $Ev010.clear
+28 0 296 $Ev010 = nil
+
+23 0 0 $ev001 = Bust_Anime.new
+23 0 1 $ev001.p("B","A01","A01",0,"A",0,0)
+
+23 0 4 $ev001.massage_on("A","A",5)
+23 0 5 $ev001.p("B","A01","A01",0,"J",0,0)
+
+12 0 2 $pose = Pose.new("A","A","B01",0,1)
+12 0 3 $pose.slide
+12 0 4 $ev011 = Ev011.new
+12 0 5 $ev011.pop("E")
+
+12 0 7 $ev011.massage_on(10)
+
+12 0 12 $pose.clear
+12 0 13 $pose = nil
+12 0 14 $pose = Pose.new("A","A","E07",0,1)
+12 0 15 $pose.pop
+
+12 0 19 $ev011.massage_off
+12 0 20 $ev011.clear
+12 0 21 $ev011 = nil
+12 0 22 $pose.clear
+12 0 23 $pose = nil
+
+1 0 0 $pose = Pose.new("A","B","A03",0,0)
+1 0 1 $pose.slide
+
+
+
+7 0 0 $pose = Pose.new("A","A","A01",0,0)
+7 0 1 $pose.slide
+
+7 0 3 $pose.clear
+7 0 4 $pose = nil
+7 0 5 $pose = Pose.new("A","B","A01",0,0)
+7 0 6 $pose.slide
+
+7 0 8 $pose.clear
+7 0 9 $pose = nil
+7 0 10 $pose = Pose.new("A","C","A01",0,1)
+7 0 11 $pose.slide
+
+7 0 13 $pose.clear
+7 0 14 $pose = nil
+7 0 15 $pose = Pose.new("A","D","A01",1,0)
+7 0 16 $pose.slide
+
+7 0 18 $pose.clear
+7 0 19 $pose = nil
+7 0 20 $pose = Pose.new("A","E","A01",0,0)
+7 0 21 $pose.slide
+
+7 0 23 $pose.clear
+7 0 24 $pose = nil
+7 0 25 $pose = Pose.new("B","A","A01",0,0)
+7 0 26 $pose.slide
+
+7 0 28 $pose.clear
+7 0 29 $pose = nil
+7 0 30 $pose = Pose.new("B","B","A01",0,0)
+7 0 31 $pose.slide
+
+7 0 33 $pose.clear
+7 0 34 $pose = nil
+7 0 35 $pose = Pose.new("C","A","A01",0,0)
+7 0 36 $pose.slide
+
+7 0 38 $pose.clear
+7 0 39 $pose = nil
+7 0 40 $pose = Pose.new("C","B","A01",0,0)
+7 0 41 $pose.slide
+
+7 0 43 $pose.clear
+7 0 44 $pose = nil
+7 0 45 $pose = Pose.new("D","A","A01",0,1)
+7 0 46 $pose.slide
+
+7 0 48 $pose.clear
+7 0 49 $pose = nil
+
+24 0 0 $game_screen.weather(21, 20, 10, 3)
+
+13 0 2 $pose = Pose.new("A","B","B01",0,0)
+13 0 3 $pose.slide
+
+13 0 6 $pose.clear
+13 0 7 $pose = nil
+
+13 0 14 $pose = Pose.new("A","B","B01",0,0)
+13 0 15 $pose.slide
+
+13 0 24 $pose.clear
+13 0 25 $pose = nil
+13 0 26 $pose = Pose.new("A","B","D07",1,0)
+13 0 27 $pose.pop
+
+13 0 30 $pose.clear
+13 0 31 $pose = nil
+
+2 0 6 $ev001 = Bust_Anime.new
+2 0 7 $ev001.p("B","A01","A01",0,"A",0,0)
+
+2 0 17 $ev001.Graphics_freeze
+2 0 18 $ev001.massage_on("A","B",5)
+2 0 19 $ev001.p("B","A01","A01",0,"B",0,0)
+
+2 0 21 $ev001.massage_on("B","B",5)
+2 0 22 $ev001.p("B","A01","A01",0,"B",0,0)
+
+2 0 24 $ev001.massage_on("B","B",5)
+2 0 25 $ev001.p("B","A01","A01",0,"B",1,0)
+
+2 0 30 $ev001.massage_off
+2 0 31 $ev001.p("B","A01","A01",0,"A",1,"B")
+
+2 0 33 $ev001.p("B","A01","A01",0,"A",2,0)
+2 0 34 $ev001.shake_on
+
+2 0 36 $ev001.massage_on("A","B",5)
+2 0 37 $ev001.p("B","A01","A01",0,"C",2,0)
+
+2 0 40 $ev001.massage_on("B","B",5)
+2 0 41 $ev001.p("B","A01","A01",0,"C",2,0)
+
+2 0 43 $ev001.massage_on("A","B",5)
+2 0 44 $ev001.p("B","A01","A01",0,"F",2,0)
+
+2 0 47 $ev001.massage_on("B","B",5)
+
+2 0 50 $ev001.massage_on("A","B",5)
+2 0 51 $ev001.p("B","A01","A01",0,"G",2,0)
+
+2 0 54 $ev001.massage_on("B","B",5)
+
+2 0 57 $ev001.massage_on("A","B",5)
+2 0 58 $ev001.p("B","A01","A01",0,"H",2,0)
+
+2 0 61 $ev001.massage_on("B","B",5)
+
+2 0 64 $ev001.massage_on("A","B",5)
+2 0 65 $ev001.p("B","A01","A01",0,"I",2,0)
+
+2 0 68 $ev001.massage_on("B","B",5)
+
+2 0 71 $ev001.p("A","A01","A01",0,"A",2,0)
+
+2 0 74 $ev001.clear
+2 0 75 $ev001 = nil
+
+30 0 10 $pose = Pose.new("A","A","A05",0,0)
+30 0 11 $pose.slide
+30 0 12 $pose.clear
+30 0 13 $pose = nil
+30 0 14 $pose = Pose.new("A","A","A05",0,0)
+30 0 15 $pose.shake
+
+30 0 33 $pose.clear
+30 0 34 $pose = nil
+30 0 35 $pose = Pose.new("A","B","B02",1,0)
+30 0 36 $pose.shake
+
+30 0 50 $pose.clear
+30 0 51 $pose = nil
+30 0 52 $hip = Hip.new("F","D07",0,0)
+30 0 53 $hip.pop
+
+30 0 65 $hip.clear
+30 0 66 $hip = nil
+30 0 67 $hip = Hip.new("F","D01",1,0)
+30 0 68 $hip.pop
+
+30 0 82 $hip.clear
+30 0 83 $hip = nil
+30 0 84 $hip = Hip.new("F","D07",1,0)
+30 0 85 $hip.pop
+
+30 0 88 $hip.clear
+30 0 89 $hip = nil
+30 0 90 $hip = Hip.new("H","D08",1,0)
+30 0 91 $hip.pop
+
+30 0 101 $hip.clear
+30 0 102 $hip = nil
+30 0 103 $hip = Hip.new("H","D01",1,0)
+30 0 104 $hip.pop
+
+30 0 113 $hip.clear
+30 0 114 $hip = nil
+
+30 0 117 $pose = Pose.new("A","A","E03",1,1)
+30 0 118 $pose.slide
+
+30 0 133 $pose.clear
+30 0 134 $pose = nil
+30 0 135 $pose = Pose.new("A","A","E06",1,1)
+30 0 136 $pose.pop
+
+30 0 139 $pose.clear
+30 0 140 $pose = nil
+
+30 1 2 $pose = Pose.new("A","A","A06",1,1)
+30 1 3 $pose.slide
+30 1 4 $pose.clear
+30 1 5 $pose = nil
+30 1 6 $pose = Pose.new("A","A","E06",1,1)
+30 1 7 $pose.shake
+
+30 1 10 $pose.clear
+30 1 11 $pose = nil
+
+
+
+
+
+30 6 8 $pose = Pose.new("A","A","E06",1,1)
+30 6 9 $pose.slide
+30 6 10 $pose.clear
+30 6 11 $pose = nil
+30 6 12 $pose = Pose.new("A","A","E06",1,1)
+30 6 13 $pose.shake
+
+30 6 16 $pose.clear
+30 6 17 $pose = nil
+
+30 7 7 $pose = Pose.new("A","A","A04",0,0)
+30 7 8 $pose.slide
+30 7 9 $pose.clear
+30 7 10 $pose = nil
+30 7 11 $pose = Pose.new("A","A","A04",0,0)
+30 7 12 $pose.shake
+
+30 7 23 $pose.clear
+30 7 24 $pose = nil
+30 7 25 $pose = Pose.new("A","A","A05",0,0)
+30 7 26 $pose.pop
+
+30 7 33 $pose.clear
+30 7 34 $pose = nil
+30 7 35 $pose = Pose.new("A","A","A06",0,0)
+30 7 36 $pose.pop
+
+30 7 39 $pose.clear
+30 7 40 $pose = nil
+30 7 41 $pose = Pose.new("C","B","A05",0,0)
+30 7 42 $pose.pop
+
+30 7 46 $pose.clear
+30 7 47 $pose = nil
+
+30 7 81 $Ev020 = Ev020.new("A",1,1,1,1)
+30 7 82 $Ev020.pop
+
+30 7 129 $Ev020.clear
+30 7 130 $Ev020 = nil
+
+30 7 147 $pose = Pose.new("A","B","A04",1,0)
+30 7 148 $pose.slide
+30 7 149 $pose.clear
+30 7 150 $pose = nil
+30 7 151 $pose = Pose.new("A","B","A04",1,0)
+30 7 152 $pose.shake
+
+30 7 160 $pose.clear
+30 7 161 $pose = nil
+30 7 162 $pose = Pose.new("A","B","D06",1,0)
+30 7 163 $pose.pop
+
+30 7 181 $pose.clear
+30 7 182 $pose = nil
+30 7 183 $pose = Pose.new("A","B","B01",1,1)
+30 7 184 $pose.pop
+
+30 7 188 $pose.clear
+30 7 189 $pose = nil
+
+30 7 191 $Ev003 = Ev003.new("A02","A17",1)
+30 7 192 $Ev003.pop
+
+30 7 208 $Ev003.clear
+30 7 209 $Ev003 = nil
+
+30 7 211 $Ev003 = Ev003.new("A04","A17",1)
+30 7 212 $Ev003.pop
+
+30 7 222 $Ev003.clear
+30 7 223 $Ev003 = nil
+30 7 224 $Ev003 = Ev003.new("A03","A17",1)
+30 7 225 $Ev003.pop
+
+30 7 229 $Ev003.clear
+30 7 230 $Ev003 = nil
+
+30 7 233 $pose = Pose.new("A","B","A01",0,0)
+30 7 234 $pose.slide
+
+30 7 251 $pose.clear
+30 7 252 $pose = nil
+30 7 253 $pose = Pose.new("A","B","A06",0,0)
+30 7 254 $pose.shake
+
+30 7 257 $pose.clear
+30 7 258 $pose = nil
+
+30 7 261 $Ev017 = Ev017.new("E01",1,0,1,1,0)
+30 7 262 $Ev017.pop
+
+30 7 286 $Ev017.clear
+30 7 287 $Ev017 = nil
+30 7 288 $Ev017 = Ev017.new("E02",1,0,1,0,0)
+30 7 289 $Ev017.pop
+
+30 7 294 $Ev017.clear
+30 7 295 $Ev017 = nil
+30 7 296 $Ev017 = Ev017.new("A01",1,0,1,0,0)
+30 7 297 $Ev017.pop
+
+30 7 301 $Ev017.clear
+30 7 302 $Ev017 = nil
+
+30 7 348 $pose = Pose.new("A","A","A03",0,0)
+30 7 349 $pose.slide
+
+30 7 352 $pose.clear
+30 7 353 $pose = nil
+
+30 7 360 $pose = Pose.new("A","A","A03",0,0)
+30 7 361 $pose.slide
+
+30 7 364 $pose.clear
+30 7 365 $pose = nil
+
+30 8 6 $pose = Pose.new("C","A","A06",0,0)
+30 8 7 $pose.slide
+
+30 8 10 $pose.clear
+30 8 11 $pose = nil
+
+
+
+
+8 0 1 $ev013 = Ev013.new
+8 0 2 $ev013.pop("A","A01",1,1,0,0)
+
+8 0 5 $ev013.massage_on("B",5)
+8 0 6 $ev013.pop("B","A02",1,1,1,1)
+
+8 0 8 $ev013.pop("C","A02",1,1,1,1)
+8 0 9 $ev013.massage_on("C",5)
+
+8 0 11 $ev013.massage_on("D",3)
+8 0 12 $ev013.pop("D","A02",1,1,1,1)
+
+8 0 15 $ev013.massage_off
+8 0 16 $ev013.clear
+8 0 17 $ev013 = nil
+8 0 18 $ev012 = Ev012.new("A","A01","A01",1,0,0)
+8 0 19 $ev012.pop
+
+8 0 21 $ev012.clear
+8 0 22 $ev012 = nil
+8 0 23 $ev012 = Ev012.new("B","A02","A03",1,1,1) 
+8 0 24 $ev012.pop
+
+8 0 26 $ev012.clear
+8 0 27 $ev012 = nil
+
+8 0 29 $ev011 = Ev011.new
+8 0 30 $ev011.pop("A")
+
+8 0 33 $ev011.massage_on(10)
+
+8 0 35 $ev011.pop("B")
+8 0 36 $ev011.massage_on(10)
+
+8 0 38 $ev011.pop("G")
+8 0 39 $ev011.massage_on(10)
+
+8 0 41 $ev011.massage_off
+
+8 0 43 $ev011.clear
+8 0 44 $ev011 = nil
+
+8 0 46 $Ev010 = Ev010.new("A01","A01",0,0,0,0,1)
+8 0 47 $Ev010.pop
+
+8 0 49 $Ev010.clear
+8 0 50 $Ev010 = nil
+8 0 51 $Ev010 = Ev010.new("A03","A02",1,0,0,1,1)
+8 0 52 $Ev010.pop
+
+8 0 54 $Ev010.clear
+8 0 55 $Ev010 = nil
+8 0 56 $Ev010 = Ev010.new("A02","A02",0,0,0,1,1)
+8 0 57 $Ev010.pop
+
+8 0 59 $Ev010.clear
+8 0 60 $Ev010 = nil
+8 0 61 $Ev010 = Ev010.new("B01","A05",3,3,1,1,1)
+8 0 62 $Ev010.pop
+
+8 0 64 $Ev010.clear
+8 0 65 $Ev010 = nil
+8 0 66 $Ev008 = Ev008.new("C01","C02",1,0,3)
+8 0 67 $Ev008.pop
+
+8 0 69 $Ev008.clear
+8 0 70 $Ev008 = nil
+
+8 0 72 $Ev007 = Ev007.new("A01","A01","B04","B02",1,3)
+8 0 73 $Ev007.pop
+
+8 0 75 $Ev007.clear
+8 0 76 $Ev007 = nil
+
+8 0 78 $Ev005 = Ev005.new("A01")
+8 0 79 $Ev005.pop
+
+8 0 81 $Ev005.clear
+8 0 82 $Ev005 = nil
+
+8 0 84 $Ev006 = Ev006.new("A01", "A01", "B01")
+8 0 85 $Ev006.pop
+
+8 0 87 $Ev006.clear
+8 0 88 $Ev006 = nil
+
+
+3 0 12 $pose = Pose.new("A","B","A03",0,0)
+3 0 13 $pose.slide
+
+3 0 18 $pose.clear
+3 0 19 $pose = nil
+3 0 20 $pose = Pose.new("A","B","A04",1,0)
+3 0 21 $pose.pop
+
+3 0 32 $pose.clear
+3 0 33 $pose = nil
+3 0 34 $pose = Pose.new("A","B","A03",0,0)
+3 0 35 $pose.pop
+
+3 0 38 $pose.clear
+3 0 39 $pose = nil
+3 0 40 $pose = Pose.new("A","B","A04",0,0)
+3 0 41 $pose.pop
+
+3 0 47 $pose.clear
+3 0 48 $pose = nil
+3 0 49 $pose = Pose.new("A","B","B02",0,1)
+3 0 50 $pose.shake
+
+3 0 56 $pose.clear
+3 0 57 $pose = nil
+3 0 58 $pose = Pose.new("A","B","B01",0,1)
+3 0 59 $pose.pop
+
+3 0 65 $pose.clear
+3 0 66 $pose = nil
+3 0 67 $pose = Pose.new("A","B","D07",0,1)
+3 0 68 $pose.pop
+
+3 0 84 $pose.clear
+3 0 85 $pose = nil
+
+3 0 92 $Ev003 = Ev003.new("A02","A14",1)
+3 0 93 $Ev003.pop
+
+3 0 105 $Ev003.clear
+3 0 106 $Ev003 = nil
+
+3 0 108 $Ev003 = Ev003.new("A03","A12",1)
+3 0 109 $Ev003.pop
+
+3 0 115 $Ev003.clear
+3 0 116 $Ev003 = nil
+3 0 117 $Ev003 = Ev003.new("A03","A11",1)
+3 0 118 $Ev003.pop
+
+3 0 128 $Ev003.clear
+3 0 129 $Ev003 = nil
+3 0 130 $Ev003 = Ev003.new("A03","A14",1)
+3 0 131 $Ev003.pop
+
+3 0 144 $Ev003.clear
+3 0 145 $Ev003 = nil
+3 0 146 $Ev003 = Ev003.new("A04","A12",1)
+3 0 147 $Ev003.pop
+
+3 0 154 $Ev003.clear
+3 0 155 $Ev003 = nil
+3 0 156 $Ev003 = Ev003.new("A04","A15",1)
+3 0 157 $Ev003.pop
+
+3 0 164 $Ev003.clear
+3 0 165 $Ev003 = nil
+
+3 0 167 $Ev003 = Ev003.new("A05","A16",1)
+3 0 168 $Ev003.pop
+
+3 0 177 $Ev003.clear
+3 0 178 $Ev003 = nil
+3 0 179 $ev001 = Bust_Anime.new
+3 0 180 $ev001.p("A","C02","A02",1,"A",0,0)
+
+3 0 183 $ev001.p("A","C04","A02",1,"A",0,0)
+
+3 0 191 $ev001.Graphics_freeze
+3 0 192 $ev001.massage_on("A","A",5)
+3 0 193 $ev001.p("B","C04","A04",1,"C",0,0)
+
+3 0 202 $ev001.p("B","C03","A04",1,"C",0,0)
+
+3 0 211 $ev001.p("B","C04","A05",1,"C",0,0)
+
+3 0 219 $ev001.massage_on("B","A",10)
+3 0 220 $ev001.p("B","C04","A05",1,"G",0,0)
+
+3 0 224 $ev001.p("B","C05","A06",1,"G",0,0)
+
+3 0 236 $ev001.p("B","C04","A06",1,"G",0,0)
+
+3 0 244 $ev001.massage_off
+
+3 0 247 $ev001.p("B","C02","A04",1,"G",0,0)
+
+3 0 253 $ev001.p("B","C04","A04",1,"G",0,0)
+
+3 0 259 $ev001.massage_on("B","A",8)
+3 0 260 $ev001.p("B","C04","A05",1,"G",0,0)
+
+3 0 271 $ev001.p("B","C04","A06",1,"G",0,0)
+
+3 0 281 $ev001.p("B","C02","A04",1,"G",0,0)
+
+3 0 297 $ev001.p("B","C04","A05",1,"G",0,0)
+
+3 0 307 $ev001.p("B","C04","A06",1,"G",0,0)
+
+3 0 325 $ev001.p("B","C04","B07",1,"G",0,0)
+
+3 0 331 $ev001.clear
+3 0 332 $ev001 = nil
+
+3 0 334 $ev013 = Ev013.new
+3 0 335 $ev013.pop("A","B02",1,1,1,1)
+
+3 0 343 $ev013.pop("D","B03",1,1,1,1)
+3 0 344 $ev013.massage_on("D",3)
+
+3 0 350 $ev013.pop("D","A03",1,1,1,1)
+
+3 0 357 $ev013.pop("D","B03",1,1,1,1)
+
+3 0 389 $ev013.massage_off
+3 0 390 $ev013.pop("A","B03",0,2,2,1)
+
+3 0 396 $ev013.clear
+3 0 397 $ev013 = nil
+
+3 0 465 $pose = Pose.new("A","B","A06",1,1)
+3 0 466 $pose.slide
+3 0 467 $pose.clear
+3 0 468 $pose = nil
+3 0 469 $pose = Pose.new("A","B","A06",1,1)
+3 0 470 $pose.shake
+
+3 0 480 $pose.clear
+3 0 481 $pose = nil
+3 0 482 $pose = Pose.new("A","B","A01",1,1)
+3 0 483 $pose.pop
+
+3 0 488 $pose.clear
+3 0 489 $pose = nil
+3 0 490 $pose = Pose.new("A","B","A05",1,1)
+3 0 491 $pose.pop
+
+3 0 497 $pose.clear
+3 0 498 $pose = nil
+3 0 499 $pose = Pose.new("A","B","D05",0,0)
+3 0 500 $pose.pop
+
+3 0 505 $pose.clear
+3 0 506 $pose = nil
+3 0 507 $pose = Pose.new("A","B","D02",0,0)
+3 0 508 $pose.pop
+
+3 0 514 $pose.clear
+3 0 515 $pose = nil
+3 0 516 $pose = Pose.new("A","B","D05",0,0)
+3 0 517 $pose.pop
+
+3 0 520 $pose.clear
+3 0 521 $pose = nil
+3 0 522 $pose = Pose.new("A","B","D06",0,0)
+3 0 523 $pose.pop
+
+3 0 534 $pose.clear
+3 0 535 $pose = nil
+3 0 536 $pose = Pose.new("A","B","A06",0,0)
+3 0 537 $pose.pop
+
+3 0 542 $pose.clear
+3 0 543 $pose = nil
+
+3 0 560 $pose.clear
+3 0 561 $pose = nil
+3 0 562 $pose = Pose.new("A","B","E02",0,1)
+3 0 563 $pose.pop
+
+3 0 571 $pose.clear
+3 0 572 $pose = nil
+3 0 573 $pose = Pose.new("A","B","E06",0,1)
+3 0 574 $pose.pop
+
+3 0 580 $pose.clear
+3 0 581 $pose = nil
+
+3 0 607 $pose = Pose.new("A","B","A06",1,1)
+3 0 608 $pose.slide
+3 0 609 $pose.clear
+3 0 610 $pose = nil
+3 0 611 $pose = Pose.new("A","B","A06",1,1)
+3 0 612 $pose.shake
+
+3 0 622 $pose.clear
+3 0 623 $pose = nil
+3 0 624 $pose = Pose.new("A","B","A01",0,0)
+3 0 625 $pose.pop
+
+3 0 630 $pose.clear
+3 0 631 $pose = nil
+3 0 632 $pose = Pose.new("A","B","A05",0,0)
+3 0 633 $pose.pop
+
+3 0 639 $pose.clear
+3 0 640 $pose = nil
+3 0 641 $pose = Pose.new("A","B","D05",0,0)
+3 0 642 $pose.pop
+
+3 0 647 $pose.clear
+3 0 648 $pose = nil
+3 0 649 $pose = Pose.new("A","B","D02",0,0)
+3 0 650 $pose.pop
+
+3 0 656 $pose.clear
+3 0 657 $pose = nil
+3 0 658 $pose = Pose.new("A","B","D05",0,0)
+3 0 659 $pose.pop
+
+3 0 662 $pose.clear
+3 0 663 $pose = nil
+3 0 664 $pose = Pose.new("A","B","D06",0,0)
+3 0 665 $pose.pop
+
+3 0 676 $pose.clear
+3 0 677 $pose = nil
+3 0 678 $pose = Pose.new("A","B","A06",0,0)
+3 0 679 $pose.pop
+
+3 0 684 $pose.clear
+3 0 685 $pose = nil
+
+14 0 2 $pose = Pose.new("A","A","B02",0,0)
+14 0 3 $pose.slide
+
+14 0 8 $pose.clear
+14 0 9 $pose = nil
+14 0 10 $pose = Pose.new("C","B","B02",0,1)
+14 0 11 $pose.pop
+
+14 0 21 $pose.clear
+14 0 22 $pose = nil
+14 0 23 $pose = Pose.new("A","B","E02",0,1)
+14 0 24 $pose.pop
+
+14 0 27 $pose.clear
+14 0 28 $pose = nil
+
+
+20 0 13 $pose = Pose.new("A","B","A03",0,0)
+20 0 14 $pose.slide
+
+20 0 17 $pose.clear
+20 0 18 $pose = nil
+
+
+
+4 0 0 $hip = Hip.new("F","D01",0,0)
+4 0 1 $hip.pop
+
+15 0 0 $Ev020 = Ev020.new("A",1,1,1,1)
+15 0 1 $Ev020.pop
+
+15 0 3 $Ev020.clear
+15 0 4 $Ev020 = nil
+
+15 0 6 $Ev020 = Ev020.new("A",0,0,1,0)
+15 0 7 $Ev020.pop
+
+15 0 9 $Ev020.clear
+15 0 10 $Ev020 = nil
+15 0 11 $Ev019 = Ev019.new("A01","A",1,"A",1,1,"A",0,0)
+15 0 12 $Ev019.pop
+
+15 0 14 $Ev019.clear
+15 0 15 $Ev019 = nil
+15 0 16 $Ev019 = Ev019.new("B01","B",0,"B",1,1,"B",0,0)
+15 0 17 $Ev019.pop
+
+15 0 20 $Ev019.clear
+15 0 21 $Ev019 = nil
+
+15 0 23 $Ev018 = Ev018.new("A01",1,1,1,1,1,1,0,0)
+15 0 24 $Ev018.pop
+
+15 0 26 $Ev018.clear
+15 0 27 $Ev018 = nil
+15 0 28 $Ev018 = Ev018.new("B01",0,1,1,1,2,1,1,1)
+15 0 29 $Ev018.pop
+
+15 0 31 $Ev018.clear
+15 0 32 $Ev018 = nil
+15 0 33 $Ev017 = Ev017.new("A01",1,1,1,0,0)
+15 0 34 $Ev017.pop
+
+15 0 36 $Ev017.clear
+15 0 37 $Ev017 = nil
+15 0 38 $Ev017 = Ev017.new("F01",0,1,1,1,1)
+15 0 39 $Ev017.pop
+
+15 0 41 $Ev017.clear
+15 0 42 $Ev017 = nil
+15 0 43 $Ev016 = Ev016.new("A02",1,1,1,1,1,1,1)
+15 0 44 $Ev016.pop
+
+15 0 46 $Ev016.clear
+15 0 47 $Ev016 = nil
+15 0 48 $Ev016 = Ev016.new("A05",1,0,0,1,1,2,1)
+15 0 49 $Ev016.pop
+
+15 0 51 $Ev016.clear
+15 0 52 $Ev016 = nil
+
+26 0 2 $ev001 = Bust_Anime.new
+26 0 3 $ev001.p("A","A01","A01",0,"A",0,0)
+
+26 0 6 $ev001.Graphics_freeze
+26 0 7 $ev001.massage_on("A","B",5)
+26 0 8 $ev001.p("A","C04","B07",1,"I",2,0)
+
+26 0 10 $ev001.massage_on("B","B",5)
+26 0 11 $ev001.p("B","C04","B07",1,"I",2,0)
+
+26 0 13 $ev001.massage_on("C","B",5)
+26 0 14 $ev001.p("B","C04","B07",1,"I",2,0)
+
+26 0 17 $ev001.clear
+26 0 18 $ev001 = nil
+
+26 1 2 $ev001 = Bust_Anime.new
+26 1 3 $ev001.p("A","A01","A01",0,"A",0,0)
+
+26 1 6 $ev001.Graphics_freeze
+26 1 7 $ev001.massage_on("A","B",5)
+26 1 8 $ev001.p("A","C04","B07",1,"I",2,0)
+
+26 1 10 $ev001.massage_on("B","B",5)
+26 1 11 $ev001.p("B","C04","B07",1,"I",2,0)
+
+26 1 13 $ev001.massage_on("C","B",5)
+26 1 14 $ev001.p("B","C04","B07",1,"I",2,0)
+
+26 1 17 $ev001.clear
+26 1 18 $ev001 = nil
+
+
+
+

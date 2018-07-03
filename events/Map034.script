@@ -1,0 +1,45 @@
+5 0 6 $pose = Pose.new("A","A","E03",0,0)
+5 0 7 $pose.slide
+5 0 8 $pose.clear
+5 0 9 $pose = nil
+5 0 10 $pose = Pose.new("A","A","E03",0,0)
+5 0 11 $pose.shake
+
+5 0 17 $pose.clear
+5 0 18 $pose = nil
+5 0 19 $pose = Pose.new("A","A","E02",0,0)
+5 0 20 $pose.pop
+
+5 0 34 $pose.clear
+5 0 35 $pose = nil
+
+
+
+
+
+
+
+7 0 6 $pose = Pose.new("A","A","E03",0,0)
+7 0 7 $pose.slide
+
+7 0 11 $pose.clear
+7 0 12 $pose = nil
+
+
+
+
+
+3 1 0 $pose = Pose.new("A","A","A03",1,0)
+3 1 1 $pose.slide
+
+3 1 4 $pose.clear
+3 1 5 $pose = nil
+
+
+4 0 6 $pose = Pose.new("A","B","A03",1,0)
+4 0 7 $pose.slide
+
+4 0 11 $pose.clear
+4 0 12 $pose = nil
+
+

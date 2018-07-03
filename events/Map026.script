@@ -1,0 +1,119 @@
+
+
+
+
+
+
+1 0 0 $pose = Pose.new("A","B","A03",0,0)
+1 0 1 $pose.slide
+
+1 0 4 $pose.clear
+1 0 5 $pose = nil
+
+
+
+
+2 0 0 $pose = Pose.new("A","B","A03",0,0)
+2 0 1 $pose.slide
+
+2 0 4 $pose.clear
+2 0 5 $pose = nil
+
+
+
+3 0 0 $pose = Pose.new("A","B","A03",0,0)
+3 0 1 $pose.slide
+
+3 0 4 $pose.clear
+3 0 5 $pose = nil
+
+3 1 4 $game_screen.weather(5, 20, 10, 0)
+
+3 1 14 $pose = Pose.new("A","A","E02",0,0)
+3 1 15 $pose.slide
+
+3 1 18 $pose.clear
+3 1 19 $pose = nil
+
+3 2 0 $pose = Pose.new("A","B","A03",0,0)
+3 2 1 $pose.slide
+
+3 2 4 $pose.clear
+3 2 5 $pose = nil
+
+
+9 0 0 $pose = Pose.new("A","B","A03",0,0)
+9 0 1 $pose.slide
+
+9 0 4 $pose.clear
+9 0 5 $pose = nil
+
+9 1 1 $game_screen.weather(11, 15, 0, 5)
+
+9 1 15 $pose = Pose.new("A","A","A04",0,0)
+9 1 16 $pose.slide
+
+9 1 22 $pose.clear
+9 1 23 $pose = nil
+9 1 24 $pose = Pose.new("A","A","A03",0,0)
+9 1 25 $pose.pop
+
+9 1 28 $pose.clear
+9 1 29 $pose = nil
+
+
+9 3 0 $pose = Pose.new("A","B","A03",0,0)
+9 3 1 $pose.slide
+
+9 3 4 $pose.clear
+9 3 5 $pose = nil
+
+
+4 0 0 $pose = Pose.new("A","B","A03",0,0)
+4 0 1 $pose.slide
+
+4 0 4 $pose.clear
+4 0 5 $pose = nil
+
+4 1 4 $game_screen.weather(5, 20, 10, 0)
+
+4 1 14 $pose = Pose.new("A","A","E02",0,0)
+4 1 15 $pose.slide
+
+4 1 18 $pose.clear
+4 1 19 $pose = nil
+
+4 2 0 $pose = Pose.new("A","B","A03",0,0)
+4 2 1 $pose.slide
+
+4 2 4 $pose.clear
+4 2 5 $pose = nil
+
+
+10 0 0 $pose = Pose.new("A","B","A03",0,0)
+10 0 1 $pose.slide
+
+10 0 4 $pose.clear
+10 0 5 $pose = nil
+
+10 1 1 $game_screen.weather(11, 15, 0, 5)
+
+10 1 15 $pose = Pose.new("A","A","A04",0,0)
+10 1 16 $pose.slide
+
+10 1 22 $pose.clear
+10 1 23 $pose = nil
+10 1 24 $pose = Pose.new("A","A","A03",0,0)
+10 1 25 $pose.pop
+
+10 1 28 $pose.clear
+10 1 29 $pose = nil
+
+
+10 3 0 $pose = Pose.new("A","B","A03",0,0)
+10 3 1 $pose.slide
+
+10 3 4 $pose.clear
+10 3 5 $pose = nil
+
+

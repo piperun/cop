@@ -1,0 +1,26 @@
+
+
+
+
+
+1 0 18 display_title_menu
+1 0 19 $temp_title = true
+
+7 0 8 $crapcom_logo_displayed = true
+
+7 0 10 $title_pics_in = true
+
+7 0 18 $title_pics_in = true
+
+7 0 21 $game_screen.weather(13, 5, 40, 9)
+
+7 0 26 display_title_menu
+
+
+
+
+
+
+
+
+

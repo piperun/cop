@@ -1,0 +1,16 @@
+
+
+
+1 1 0 $pose = Pose.new("A","B","A03",0,0)
+1 1 1 $pose.slide
+
+1 1 4 $pose.clear
+1 1 5 $pose = nil
+
+
+
+
+
+
+
+
