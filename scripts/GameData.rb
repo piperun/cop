@@ -14,7 +14,7 @@ module GameData
   # This is also where we define the required switch for each clothing set.
   CLOTHING_VARIABLE = 12
   CLOTHING_SETS = {
-    1 => { "name" => "default", "switch" => 76 },
+    0 => { "name" => "default", "switch" => 76 },
   }
 
   # This is where we define switches controlling effects.

@@ -20,8 +20,8 @@ class Tween
       @frame += 1
       dx = (@to.x - @from.x) / @frames
       dy = (@to.y - @from.y) / @frames
-      @target.x = @from.x + (dx * @frame)
-      @target.y = @from.y + (dx * @frame)
+      @target.x = @from.x + dx * @frame
+      @target.y = @from.y + dy * @frame
       return @frame >= @frames
     end
   end
@@ -39,9 +39,7 @@ class Tween
 
   def start
     while !@operations.empty?
-      @operations.each_with_index { |operation, index|
-        @operations.delete_if { |operation| operation.done() }
-      }
+      @operations.delete_if { |operation| operation.done() }
       Graphics.update()
     end
   end

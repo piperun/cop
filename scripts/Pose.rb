@@ -4,7 +4,7 @@ class Pose
   def initialize(pose_name, face_name, clothing_name = nil)
     if clothing_name == nil
       index = $game_variables[CLOTHING_VARIABLE]
-      clothing_name = CLOTHING_SETS[index] || 'default'
+      clothing_name = CLOTHING_SETS[index]['name'] || 'default'
     end
 
     @position = Point.new(0,0)

@@ -5,15 +5,17 @@
 #==============================================================================
 
 class Scene_Menu
+  include GameData
+
   #--------------------------------------------------------------------------
-  # * Object Initialization
+  # ● Object Initialization
   #     menu_index : command cursor's initial position
   #--------------------------------------------------------------------------
   def initialize(menu_index = 0)
     @menu_index = menu_index
   end
   #--------------------------------------------------------------------------
-  # * Main Processing
+  # ● Main Processing
   #--------------------------------------------------------------------------
   def main
     # 画像の表示
@@ -32,43 +34,54 @@ class Scene_Menu
     s1 = "Title"
     s2 = "Item"
     s3 = "Equipment"
-    s4 = "Clothes"
-    s5 = "Save"
-    s6 = "Quit"
-    @command_window = Window_Command.new(180, [s1, s2, s3, s4, s5, s6,])
-    @command_window.y = 64
+    s4 = "Outfits"
+    s5 = "Clothes"
+    s6 = "Save"
+    s7 = "Quit"
+    @command_window = Window_Command.new(180, [s1, s2, s3, s4, s5, s6, s7])
+    @command_window.y = 32
     @command_window.index = @menu_index
+    # Outfits window
+    s1 = "Cancel"
+    @outfits_window = Window_Command.new(160, [s1])
+    @outfits_window.x = 480
+    @outfits_window.y = 32
+    @outfits_window.active = false
+    @outfits_window.visible = false
     # 着替えコマンドウィンドウを作成
     s1 = "Remove"
     s2 = "Wear"
     s3 = "Cancel"
     @change_window = Window_Command.new(160, [s1, s2, s3])
     @change_window.x = 480
-    @change_window.y = 64
+    @change_window.y = 32
     @change_window.active = false
     @change_window.visible = false
     # 脱ぐコマンドウィンドウを作成
-      s1 = "Jacket"
-      s2 = "Camisole"
-      s3 = "Skirt"
-      s4 = "Panties"
-      s5 = "Cancel"
+    s1 = "Jacket"
+    s2 = "Camisole"
+    s3 = "Skirt"
+    s4 = "Panties"
+    s5 = "Cancel"
     @put_off_window = Window_Command.new(160, [s1, s2, s3, s4, s5])
     @put_off_window.x = 480
-    @put_off_window.y = 64
+    @put_off_window.y = 32
     @put_off_window.active = false
     @put_off_window.visible = false
     # 着るコマンドウィンドウを作成
-      s1 = "Jacket"
-      s2 = "Camisole"
-      s3 = "Skirt"
-      s4 = "Panties"
-      s5 = "Cancel"
-      @put_on_window = Window_Command.new(160, [s1, s2, s3, s4, s5])
+    s1 = "Jacket"
+    s2 = "Camisole"
+    s3 = "Skirt"
+    s4 = "Panties"
+    s5 = "Cancel"
+    @put_on_window = Window_Command.new(160, [s1, s2, s3, s4, s5])
     @put_on_window.x = 480
-    @put_on_window.y = 64
+    @put_on_window.y = 32
     @put_on_window.active = false
     @put_on_window.visible = false
+
+    @page_limit = 5
+    @total_pages = (CLOTHING_SETS.size - 1) / @page_limit + 1
 
     @index_put_off_now = 0
     @index_put_on_now = 0
@@ -116,6 +129,7 @@ class Scene_Menu
     @status_window.dispose
     @info_window.dispose
     @command_window.dispose
+    @outfits_window.dispose
     @change_window.dispose
     @put_off_window.dispose
     @put_on_window.dispose
@@ -130,14 +144,12 @@ class Scene_Menu
     end
   end
   #--------------------------------------------------------------------------
-  # * Frame Update
+  # ● Frame Update
   #--------------------------------------------------------------------------
   def update
     # 情報ウィンドウの表示
     if @command_window.index == 0
-      if @title_window.active
-
-      else
+      unless @title_window.active
         @info_window.visible = true
       end
     else
@@ -145,6 +157,7 @@ class Scene_Menu
     end
     # Update windows
     @command_window.update
+    @outfits_window.update
     @change_window.update
     @put_off_window.update
     @put_on_window.update
@@ -157,6 +170,11 @@ class Scene_Menu
     # 称号ウィンドウがアクティブの場合: update_title を呼ぶ
     if @title_window.active
       update_title
+      return
+    end
+    # 
+    if @outfits_window.active
+      update_outfits
       return
     end
     # 着替えウィンドウがアクティブの場合: update_change を呼ぶ
@@ -176,7 +194,7 @@ class Scene_Menu
     end
   end
   #--------------------------------------------------------------------------
-  # * Frame Update (when command window is active)
+  # ● Frame Update (when command window is active)
   #--------------------------------------------------------------------------
   def update_command
     # If B button was pressed
@@ -185,10 +203,8 @@ class Scene_Menu
       $game_system.se_play($data_system.cancel_se)
       # Switch to map screen
       $scene = Scene_Map.new
-      return
-    end
-    # If C button was pressed
-    if Input.trigger?(Input::C)
+    # else if C button was pressed
+    elsif Input.trigger?(Input::C)
       # If command other than save or end game, and party members = 0
       if $game_party.actors.size == 0 and @command_window.index < 4
         # Play buzzer SE
@@ -215,21 +231,24 @@ class Scene_Menu
         $game_system.se_play($data_system.decision_se)
         # 装備画面に切り替え
         $scene = Scene_Equip.new
-      when 3  # 衣服
-        # 決定 SE を演奏
+      when 3  # Outfits
+        # Play decision SE
+        $game_system.se_play($data_system.decision_se)
+        mk_outfits_window
+        switch_windows(@command_window, @outfits_window)
+        @status_window.visible = false
+      when 4  # 衣服
+        # Play decision SE
         $game_system.se_play($data_system.decision_se)
         # 衣服ウィンドウをアクティブにする
-        @command_window.active = false
-        @command_window.visible = false
+        switch_windows(@command_window, @change_window)
         @status_window.visible = false
-        @change_window.visible = true
-        @change_window.active = true
 
         if $game_switches[2] == true  #着替えコマンドが禁止の場合
           @change_window.disable_item(0)
           @change_window.disable_item(1)
         end
-      when 4  # セーブ
+      when 5  # セーブ
         # セーブ禁止の場合
         if $game_system.save_disabled
           # Play buzzer SE
@@ -240,7 +259,7 @@ class Scene_Menu
         $game_system.se_play($data_system.decision_se)
         # Switch to save screen
         $scene = Scene_Save.new
-      when 5  # end game
+      when 6  # end game
         # Play decision SE
         $game_system.se_play($data_system.decision_se)
         # Switch to end game screen
@@ -250,61 +269,107 @@ class Scene_Menu
     end
   end
   #--------------------------------------------------------------------------
-  # * Frame Update (when status window is active)
+  # ● Frame Update (when outfits window is active)
   #--------------------------------------------------------------------------
-  def update_status
+  def update_outfits
+    # If B button was pressed
+    if Input.trigger?(Input::B)
+      $game_system.se_play($data_system.cancel_se)
+      switch_windows(@outfits_window, @command_window)
+      @status_window.visible = true
+    # else if C button was pressed
+    elsif Input.trigger?(Input::C)
+      cursor = (@page - 1) * @page_limit + @outfits_window.index
+      if @total_pages > 1
+        if @page == @total_pages
+          items_count = CLOTHING_SETS.size
+        else
+          items_count = @page * @page_limit
+        end
+
+        if cursor == items_count
+          # Play decision SE
+          $game_system.se_play($data_system.decision_se)
+          if @page == @total_pages
+            mk_outfits_window # show 1st page
+          else
+            mk_outfits_window(@page + 1) # show next page
+          end
+        elsif cursor == items_count + 1
+          # Play cancel SE
+          $game_system.se_play($data_system.cancel_se)
+          # Make command window activeindow
+          switch_windows(@outfits_window, @command_window)
+          @status_window.visible = true
+        elsif $game_switches[CLOTHING_SETS[cursor]['switch']]
+          # Play decision SE
+          $game_system.se_play($data_system.decision_se)
+          # Change current outfitt
+          $game_variables[CLOTHING_VARIABLE] = cursor
+          # Make command window active
+          switch_windows(@outfits_window, @command_window)
+          @status_window.visible = true
+        end
+      else
+        if cursor == CLOTHING_SETS.size
+          # Play cancel SE
+          $game_system.se_play($data_system.cancel_se)
+          # Make command window active
+          switch_windows(@outfits_window, @command_window)
+          @status_window.visible = true
+        elsif $game_switches[CLOTHING_SETS[cursor]['switch']]
+          # Play decision SE
+          $game_system.se_play($data_system.decision_se)
+          # Change current outfitt
+          $game_variables[CLOTHING_VARIABLE] = cursor
+          # Make command window active
+          switch_windows(@outfits_window, @command_window)
+          @status_window.visible = true
+        end
+      end
+    end
+  end
+  #--------------------------------------------------------------------------
+  # ● Frame Update (when change window is active)
+  #--------------------------------------------------------------------------
+  def update_change
     # If B button was pressed
     if Input.trigger?(Input::B)
       # Play cancel SE
       $game_system.se_play($data_system.cancel_se)
       # Make command window active
-      @change_window.active = false
-      @change_window.visible = false
-      @command_window.active = true
-      @command_window.visible = true
+      switch_windows(@change_window, @command_window)
       @status_window.visible = true
-    end
-    # C ボタンが押された場合
-    if Input.trigger?(Input::C)
+    # else if C button was pressed
+    elsif Input.trigger?(Input::C)
       # コマンドウィンドウのカーソル位置で分岐
       case @change_window.index
-        when 0  # 脱ぐ
-          if $game_switches[2] == true  #着替えコマンドが禁止の場合
+        when 0  # Put off
+          if $game_switches[2] == true  # When the change of clothes command is prohibited
             # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
             return
           end
           # Play decision SE
           $game_system.se_play($data_system.decision_se)
-          @change_window.active = false
-          @change_window.visible = false
-          @put_off_window.active = true
-          @put_off_window.visible = true
-
+          switch_windows(@change_window, @put_off_window)
           disable_put_off
 
-        when 1  # 着る
-          if $game_switches[2] == true  #着替えコマンドが禁止の場合
+        when 1  # Wear
+          if $game_switches[2] == true  # When the change of clothes command is prohibited
             # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
             return
           end
           # Play decision SE
           $game_system.se_play($data_system.decision_se)
-          @change_window.active = false
-          @change_window.visible = false
-          @put_on_window.active = true
-          @put_on_window.visible = true
-
+          switch_windows(@change_window, @put_on_window)
           disable_put_on
 
-        when 2  # キャンセル
+        when 2  # Cancel
           # Play cancel SE
           $game_system.se_play($data_system.cancel_se)
-          @change_window.active = false
-          @change_window.visible = false
-          @command_window.active = true
-          @command_window.visible = true
+          switch_windows(@change_window, @command_window)
           @status_window.visible = true
           # 乳が揺れる
           $menu_pose.shake
@@ -320,10 +385,7 @@ class Scene_Menu
     if Input.trigger?(Input::B)
       # Play cancel SE
       $game_system.se_play($data_system.cancel_se)
-      @put_off_window.active = false
-      @put_off_window.visible = false
-      @change_window.active = true
-      @change_window.visible = true
+      switch_windows(@put_off_window, @change_window)
       @index_put_off_now = 0
       @pose_num = "A"
       @pose_y = 280
@@ -333,7 +395,7 @@ class Scene_Menu
     if Input.trigger?(Input::C)
       # コマンドウィンドウのカーソル位置で分岐
       case @put_off_window.index
-      when 0  # 上衣
+      when 0  # Jacket
         # 変更禁止の場合
         if @index_put_off_disable0 == 1
           # Play buzzer SE
@@ -343,7 +405,7 @@ class Scene_Menu
         # Play decision SE
         $game_system.se_play($data_system.decision_se)
         change_put_off
-      when 1  # キャミソール
+      when 1  # Camisole
         # 変更禁止の場合
         if @index_put_off_disable1 == 1
           # Play buzzer SE
@@ -353,7 +415,7 @@ class Scene_Menu
         # Play decision SE
         $game_system.se_play($data_system.decision_se)
         change_put_off
-      when 2  # スカート
+      when 2  # Skirt
         # 変更禁止の場合
         if @index_put_off_disable2 == 1
           # Play buzzer SE
@@ -363,7 +425,7 @@ class Scene_Menu
         # Play decision SE
         $game_system.se_play($data_system.decision_se)
         change_put_off
-      when 3  # パンティ
+      when 3  # Panties
         # 変更禁止の場合
         if @index_put_off_disable3 == 1
           # Play buzzer SE
@@ -373,13 +435,10 @@ class Scene_Menu
         # Play decision SE
         $game_system.se_play($data_system.decision_se)
         change_put_off
-      when 4  # キャンセル
+      when 4  # Cancel
         # Play cancel SE
         $game_system.se_play($data_system.cancel_se)
-        @put_off_window.active = false
-        @put_off_window.visible = false
-        @change_window.active = true
-        @change_window.visible = true
+        switch_windows(@put_off_window, @change_window)
         @index_put_off_now = 0
         @pose_num = "A"
         @pose_y = 280
@@ -396,10 +455,7 @@ class Scene_Menu
     if Input.trigger?(Input::B)
       # Play cancel SE
       $game_system.se_play($data_system.cancel_se)
-      @put_on_window.active = false
-      @put_on_window.visible = false
-      @change_window.active = true
-      @change_window.visible = true
+      switch_windows(@put_on_window, @change_window)
       @index_put_on_now = 0
       @pose_num = "A"
       @pose_y = 280
@@ -410,8 +466,8 @@ class Scene_Menu
       if $game_switches[3] == true  #黒パンティ入手後
         # コマンドウィンドウのカーソル位置で分岐
         case @put_on_window.index
-        when 0  # 上衣
-          # 変更禁止の場合
+        when 0  # Jacket
+          # In case of change prohibition
           if @index_put_on_disable0 == 1
             # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
@@ -420,8 +476,8 @@ class Scene_Menu
           # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
-        when 1  # キャミソール
-          # 変更禁止の場合
+        when 1  # Camisole
+          # In case of change prohibition
           if @index_put_on_disable1 == 1
             # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
@@ -430,8 +486,8 @@ class Scene_Menu
           # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
-        when 2  # スカート
-          # 変更禁止の場合
+        when 2  # Skirt
+          # In case of change prohibition
           if @index_put_on_disable2 == 1
             # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
@@ -440,8 +496,8 @@ class Scene_Menu
           # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
-        when 3  # パンティ
-          # 変更禁止の場合
+        when 3  # Panties
+          # In case of change prohibition
           if @index_put_on_disable3 == 1
             # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
@@ -451,8 +507,8 @@ class Scene_Menu
           $game_system.se_play($data_system.decision_se)
           change_put_on
           put_off_window_refresh  #脱ぐコマンドウィンドウの更新
-        when 4  # 黒パンティ
-          # 変更禁止の場合
+        when 4  # Black panties
+          # In case of change prohibition
           if @index_put_on_disable4 == 1
             # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
@@ -463,13 +519,10 @@ class Scene_Menu
           $game_switches[4] = true  #黒パンティ着用
           change_put_on
           put_off_window_refresh  #脱ぐコマンドウィンドウの更新
-        when 5  # キャンセル
+        when 5  # Cancel
           # Play cancel SE
           $game_system.se_play($data_system.cancel_se)
-          @put_on_window.active = false
-          @put_on_window.visible = false
-          @change_window.active = true
-          @change_window.visible = true
+          switch_windows(@put_on_window, @change_window)
           @index_put_on_now = 0
           @pose_num = "A"
           @pose_y = 280
@@ -478,8 +531,8 @@ class Scene_Menu
       else
         # コマンドウィンドウのカーソル位置で分岐
         case @put_on_window.index
-        when 0  # 上衣
-          # 変更禁止の場合
+        when 0  # Jacket
+          # In case of change prohibition
           if @index_put_on_disable0 == 1
             # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
@@ -488,8 +541,8 @@ class Scene_Menu
           # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
-        when 1  # キャミソール
-          # 変更禁止の場合
+        when 1  # Camisole
+          # In case of change prohibition
           if @index_put_on_disable1 == 1
             # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
@@ -498,8 +551,8 @@ class Scene_Menu
           # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
-        when 2  # スカート
-          # 変更禁止の場合
+        when 2  # Skirt
+          # In case of change prohibition
           if @index_put_on_disable2 == 1
             # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
@@ -508,8 +561,8 @@ class Scene_Menu
           # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
-        when 3  # パンティ
-          # 変更禁止の場合
+        when 3  # Panties
+          # In case of change prohibition
           if @index_put_on_disable3 == 1
             # Play buzzer SE
             $game_system.se_play($data_system.buzzer_se)
@@ -518,13 +571,10 @@ class Scene_Menu
           # Play decision SE
           $game_system.se_play($data_system.decision_se)
           change_put_on
-        when 4  # キャンセル
+        when 4  # Cancel
           # Play cancel SE
           $game_system.se_play($data_system.cancel_se)
-          @put_on_window.active = false
-          @put_on_window.visible = false
-          @change_window.active = true
-          @change_window.visible = true
+          switch_windows(@put_on_window, @change_window)
           @index_put_on_now = 0
           @pose_num = "A"
           @pose_y = 280
@@ -540,7 +590,7 @@ class Scene_Menu
     @index_put_off_old = @index_put_off_now
     # コマンドウィンドウのカーソル位置で分岐
     case @put_off_window.index
-    when 0  # 上衣
+    when 0  # Jacket
       if $game_variables[5] == 0
         @pose_num = "A"
         @face_number = "14"
@@ -553,11 +603,11 @@ class Scene_Menu
       end
       @index_put_off_now = 1
       if @index_put_off_old != @index_put_off_now
-        @move_y = 320 - @pose_y
+        @move_y = 320
         change_pose
         @pose_y = 320
       end
-    when 1  # キャミソール
+    when 1  # Camisole
       if $game_variables[5] <= 1
         @pose_num = "A"
         @face_number = "14"
@@ -570,11 +620,11 @@ class Scene_Menu
       end
       @index_put_off_now = 2
       if @index_put_off_old != @index_put_off_now
-        @move_y = 280 - @pose_y
+        @move_y = 280
         change_pose
         @pose_y = 280
       end
-    when 2  # スカート
+    when 2  # Skirt
       if $game_variables[5] <= 4
         @pose_num = "A"
         @face_number = "014"
@@ -587,11 +637,11 @@ class Scene_Menu
       end
       @index_put_off_now = 3
       if @index_put_off_old != @index_put_off_now
-        @move_y = 200 - @pose_y
+        @move_y = 200
         change_pose
         @pose_y = 200
       end
-    when 3  # パンティ
+    when 3  # Panties
       if $game_variables[5] <= 2
         @pose_num = "A"
         @face_number = "14"
@@ -606,19 +656,19 @@ class Scene_Menu
       if @index_put_off_old != @index_put_off_now
         if @index_put_off_disable3 != 1
           @pose_y = 320
-          @move_y = 240 - @pose_y
+          @move_y = 240
         else
-          @move_y = 240 - @pose_y
+          @move_y = 240
         end
         change_pose
         @pose_y = 200
       end
-    when 4  # キャンセル
+    when 4  # Cancel
       @pose_num = "A"
       @face_number = "01"
       @index_put_off_now = 5
       if @index_put_off_old != @index_put_off_now
-        @move_y = 280 - @pose_y
+        @move_y = 280
         change_pose
         @pose_y = 280
       end
@@ -626,60 +676,65 @@ class Scene_Menu
   end
   def check_put_on #着衣の変更
     @index_put_on_old = @index_put_on_now
-      case @put_on_window.index
-      when 0  # 上衣
-        @pose_num = "A"
-        @face_number = "01"
-        @index_put_on_now = 1
-        if @index_put_on_old != @index_put_on_now
-          @move_y = 320 - @pose_y
-          change_pose
-          @pose_y = 320
-        end
-      when 1  # キャミソール
-        @pose_num = "A"
-        @face_number = "01"
-        @index_put_on_now = 2
-        if @index_put_on_old != @index_put_on_now
-          @move_y = 280 - @pose_y
-          change_pose
-          @pose_y = 280
-        end
-      when 2  # スカート
-        @pose_num = "A"
-        @face_number = "01"
-        @index_put_on_now = 3
-        if @index_put_on_old != @index_put_on_now
-          @move_y = 200 - @pose_y
-          change_pose
-          @pose_y = 200
-        end
-      when 3  # パンティ
-        @pose_num = "A"
-        @face_number = "02"
-        @index_put_on_now = 4
-        if @index_put_on_old != @index_put_on_now
-          @move_y = 200 - @pose_y
-          change_pose
-          @pose_y = 200
-        end
-      when 4  # キャンセル
-        @pose_num = "A"
-        @face_number = "01"
-        @index_put_on_now = 5
-        if @index_put_on_old != @index_put_on_now
-          @move_y = 280 - @pose_y
-          change_pose
-          @pose_y = 280
-        end
+    case @put_on_window.index
+    when 0  # Jacket
+      @pose_num = "A"
+      @face_number = "01"
+      @index_put_on_now = 1
+      if @index_put_on_old != @index_put_on_now
+        @move_y = 320
+        change_pose
+        @pose_y = 320
       end
+    when 1  # Camisole
+      @pose_num = "A"
+      @face_number = "01"
+      @index_put_on_now = 2
+      if @index_put_on_old != @index_put_on_now
+        @move_y = 280
+        change_pose
+        @pose_y = 280
+      end
+    when 2  # Skirt
+      @pose_num = "A"
+      @face_number = "01"
+      @index_put_on_now = 3
+      if @index_put_on_old != @index_put_on_now
+        @move_y = 200
+        change_pose
+        @pose_y = 200
+      end
+    when 3  # Panties
+      @pose_num = "A"
+      @face_number = "02"
+      @index_put_on_now = 4
+      if @index_put_on_old != @index_put_on_now
+        @move_y = 200
+        change_pose
+        @pose_y = 200
+      end
+    when 4  # Cancel
+      @pose_num = "A"
+      @face_number = "01"
+      @index_put_on_now = 5
+      if @index_put_on_old != @index_put_on_now
+        @move_y = 280
+        change_pose
+        @pose_y = 280
+      end
+    end
   end
   #--------------------------------------------------------------------------
-  # ● ポーズ変更
+  # ● Change pose
   #--------------------------------------------------------------------------
   def change_pose
-    $menu_pose.pose("Menu#{@pose_num}").face("#{@pose_num}#{@face_number}")
-    $menu_pose.slide(@pose_y,@move_y)
+    tween = Tween.new()
+    if ['F', 'G', 'H', 'D'].include?(@pose_num)
+      $menu_pose.pose("Menu#{@pose_num}").face("D#{@face_number}")
+    else
+      $menu_pose.pose("Menu#{@pose_num}").face("A#{@face_number}")
+    end
+    tween.position($menu_pose, [nil, @pose_y], [nil, @move_y], 5).start()
   end
   #--------------------------------------------------------------------------
   # ● 変数3
@@ -1011,7 +1066,7 @@ class Scene_Menu
         $game_variables[3] = 14
       end
       @pose_y = 320
-      @move_y = 0
+      @move_y = nil
     when 1  # キャミソール
       if $game_variables[3] == 2
         $game_variables[3] = 4
@@ -1023,7 +1078,7 @@ class Scene_Menu
         $game_variables[3] = 14
       end
       @pose_y = 280
-      @move_y = 0
+      @move_y = nil
     when 2  # スカート
       if $game_variables[3] == 2
         $game_variables[3] = 5
@@ -1035,7 +1090,7 @@ class Scene_Menu
         $game_variables[3] = 8
       end
       @pose_y = 200
-      @move_y = 0
+      @move_y = nil
     when 3  # パンティ
       if $game_variables[3] == 1
         $game_variables[3] = 11
@@ -1052,7 +1107,7 @@ class Scene_Menu
       end
       $game_switches[4] = false  #黒パンティ脱ぐ
       @pose_y = 200
-      @move_y = 0
+      @move_y = nil
     end
     check_shame
     @pose_num = "A"
@@ -1078,7 +1133,7 @@ class Scene_Menu
           $game_variables[3] = 13
         end
         @pose_y = 320
-        @move_y = 0
+        @move_y = nil
       when 1  # キャミソール
         if $game_variables[3] == 4
           $game_variables[3] = 2
@@ -1090,7 +1145,7 @@ class Scene_Menu
           $game_variables[3] = 12
         end
         @pose_y = 280
-        @move_y = 0
+        @move_y = nil
       when 2  # スカート
         if $game_variables[3] == 5
           $game_variables[3] = 2
@@ -1102,7 +1157,7 @@ class Scene_Menu
           $game_variables[3] = 14
         end
         @pose_y = 200
-        @move_y = 0
+        @move_y = nil
       when 3  # パンティ
         if $game_variables[3] == 7
           $game_variables[3] = 5
@@ -1118,7 +1173,7 @@ class Scene_Menu
           $game_variables[3] = 4
         end
         @pose_y = 200
-        @move_y = 0
+        @move_y = nil
       when 4  # 黒パンティ
         if $game_variables[3] == 7
           $game_variables[3] = 5
@@ -1135,7 +1190,7 @@ class Scene_Menu
         end
         $game_switches[4] = true  #黒パンティ着る
         @pose_y = 200
-        @move_y = 0
+        @move_y = nil
       end
     else
       case @put_on_window.index
@@ -1150,7 +1205,7 @@ class Scene_Menu
           $game_variables[3] = 13
         end
         @pose_y = 320
-        @move_y = 0
+        @move_y = nil
       when 1  # キャミソール
         if $game_variables[3] == 4
           $game_variables[3] = 2
@@ -1162,7 +1217,7 @@ class Scene_Menu
           $game_variables[3] = 12
         end
         @pose_y = 280
-        @move_y = 0
+        @move_y = nil
       when 2  # スカート
         if $game_variables[3] == 5
           $game_variables[3] = 2
@@ -1174,7 +1229,7 @@ class Scene_Menu
           $game_variables[3] = 14
         end
         @pose_y = 200
-        @move_y = 0
+        @move_y = nil
       when 3  # パンティ
         if $game_variables[3] == 7
           $game_variables[3] = 5
@@ -1190,7 +1245,7 @@ class Scene_Menu
           $game_variables[3] = 4
         end
         @pose_y = 200
-        @move_y = 0
+        @move_y = nil
       end
     end
     check_shame
@@ -1305,11 +1360,46 @@ class Scene_Menu
     @put_off_window.visible = false
   end
   #--------------------------------------------------------------------------
-  # ● 背景画像の表示
+  # ● Switch active windows
+  #--------------------------------------------------------------------------
+  def switch_windows(old_window, new_window)
+    old_window.active = false
+    old_window.visible = false
+    new_window.active = true
+    new_window.visible = true
+  end
+  #--------------------------------------------------------------------------
+  # ● Create outfits window
+  #--------------------------------------------------------------------------
+  def mk_outfits_window(page = 1)
+    items = []
+    @page = page
+
+    @outfits_window.dispose unless @outfits_window.nil?
+    ((@page - 1) * @page_limit ... (@page) * @page_limit).each do |i|
+      unless CLOTHING_SETS[i].nil?
+        items << ($game_switches[CLOTHING_SETS[i]['switch']] ? CLOTHING_SETS[i]['name'] : '???')
+      end
+    end
+
+    if @total_pages > 1
+      if @page != @total_pages
+        items << 'Next page'
+      else
+        items << 'Go to 1st page'
+      end
+    end
+    items << 'Cancel'
+
+    @outfits_window = Window_Command.new(160, items)
+    @outfits_window.x = 480
+    @outfits_window.y = 32
+  end
+  #--------------------------------------------------------------------------
+  # ● Set background image
   #--------------------------------------------------------------------------
   def menuback
     @menuback = Sprite.new
     @menuback.bitmap = RPG::Cache.picture("Menu_back")
   end
-
 end
