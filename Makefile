@@ -1,21 +1,23 @@
 SCRIPTS_SRC:=$(shell find scripts -name '*.rb' -print0 | sed 's/ /\\ /g;s/\x0/ /g')
-TARGETS=Scripts.rxdata CommonEvents.rxdata Map024.rxdata
+TARGETS:=$(patsubst Data.editor/%.rxdata,Data/%.rxdata,$(wildcard Data.editor/*.rxdata))
 
 all: $(TARGETS)
 
 clean:
 	$(RM) $(TARGETS)
 
-Scripts.rxdata: $(SCRIPTS_SRC) scripts.txt
+Data/Scripts.rxdata: $(SCRIPTS_SRC) scripts.txt | Data
 #~ 	echo "$(RUBY_SRC)" | xargs -n1 ruby -c
 	tools/build_scripts scripts.txt $@
 
-CommonEvents.rxdata: events/CommonEvents.script
-	tools/smod -c rxdata/CommonEvents.rxdata events/CommonEvents.script > $@
+Data/CommonEvents.rxdata: Data.editor/CommonEvents.rxdata events/CommonEvents.script | Data
+	tools/smod -c $(word 1,$^) $(word 2,$^) > $@
 
-Map024.rxdata: events/Map024.script
-	tools/smod -c rxdata/Map024.rxdata events/Map024.script > $@
+Data/Map%.rxdata: Data.editor/Map%.rxdata events/Map%.script | Data
+	tools/smod -c $(word 1,$^) $(word 2,$^) > $@
 
-events: $(wildcard rxdata/*.rxdata)
-	mkdir events
-	$(foreach f,$^,tools/smod -e $f > events/$(patsubst %.rxdata,%.script,$(notdir $f));)
+Data/%.rxdata: Data.editor/%.rxdata | Data
+	cp $^ $@
+
+Data:
+	mkdir $@

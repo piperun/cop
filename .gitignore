@@ -1,1 +1,7 @@
+Audio
+Data
+Graphics
 *.rxdata
+*.exe
+Game.ini
+*.dll
