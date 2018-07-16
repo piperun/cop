@@ -1,27 +1,27 @@
-1 0 9 $yuuki = Pose.new("AA","D01")
-1 0 10 $yuuki.slide.shake
-1 0 11 $yuuki.pose("AB", "D02")
-1 0 12
-1 0 13
-1 0 14
-1 0 15
-1 0 16
-1 0 17
-1 0 18
+1 0 9 $pose = Pose.new("A","A","D01",0)
+1 0 10 $pose.slide
+1 0 11 $pose.clear
+1 0 12 $pose = nil
+1 0 13 $pose = Pose.new("A","A","D01",0)
+1 0 14 $pose.shake
+1 0 15 $pose.clear
+1 0 16 $pose = nil
+1 0 17 $pose = Pose.new("A","B","D02",0)
+1 0 18 $pose.pop
 
-1 0 22 $yuuki.dispose
-1 0 23
+1 0 22 $pose.clear
+1 0 23 $pose = nil
 
-1 0 34 $yuuki = Pose.new("AA","D01")
-1 0 35 $yuuki.slide.shake
-1 0 36 $yuuki.pose("AC", "D02")
-1 0 37
-1 0 38
-1 0 39
-1 0 40
-1 0 41
-1 0 42
-1 0 43
+1 0 34 $pose = Pose.new("A","A","D01",0)
+1 0 35 $pose.slide
+1 0 36 $pose.clear
+1 0 37 $pose = nil
+1 0 38 $pose = Pose.new("A","A","D01",0)
+1 0 39 $pose.shake
+1 0 40 $pose.clear
+1 0 41 $pose = nil
+1 0 42 $pose = Pose.new("A","C","D02",0)
+1 0 43 $pose.pop
 
-1 0 47 $yuuki.dispose
-1 0 48
+1 0 47 $pose.clear
+1 0 48 $pose = nil

@@ -1,4 +1,3 @@
-GameData|scripts/GameData.rb
 Game_Temp|scripts/Game_Temp.rb
 Game_System|scripts/Game_System.rb
 Game_Switches|scripts/Game_Switches.rb
@@ -111,8 +110,6 @@ XRXS 9C. メッセージ表示|plugins/XRXS 9C - Cinema.rb
 XRXS25. ダッシュ機能 ver.2|plugins/XRXS 25 - Dash Function.rb
 XRXS71. 立ち止まり仕草|plugins/XRXS 71 - Stopped Gesture.rb
 Caterpillar|plugins/Fukuyama - Caterpillar.rb
-Point|scripts/Point.rb
-Tween|scripts/Tween.rb
 Pose|scripts/Pose.rb
 Menu_Pose|scripts/Menu_Pose.rb
 Hip_Pose|scripts/Hip_Pose.rb

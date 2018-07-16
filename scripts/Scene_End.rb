@@ -11,7 +11,8 @@ class Scene_End
   def main
     # 画像の表示
     menuback
-    $menu_pose = Pose.new("MenuA", "A02")
+    $menu_pose = Menu_Pose.new("A", "02", 0)
+    $menu_pose.pop
     # ウィンドウスキンの変更
     $game_system.windowskin_name = "skin04"
     # Make command window
@@ -42,7 +43,7 @@ class Scene_End
     @command_window.dispose
     # 画像を開放
     @menuback.dispose
-    $menu_pose.dispose
+    $menu_pose.clear
     # ウィンドウスキンの変更
     $game_system.windowskin_name = "skin01"
 
