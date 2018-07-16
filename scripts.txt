@@ -1,3 +1,4 @@
+Debug|scripts/Debug.rb
 Keyboard|scripts/Keyboard.rb
 Game_Temp|scripts/Game_Temp.rb
 Game_System|scripts/Game_System.rb
