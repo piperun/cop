@@ -4,6 +4,7 @@ module Keyboard
   @@state = nil
   @@prev_state = nil
 
+  VK_BACK = 0x08
   VK_SPACE = 0x20
   VK_0 = 0x30
   VK_1 = 0x31
@@ -15,15 +16,22 @@ module Keyboard
   VK_7 = 0x37
   VK_8 = 0x38
   VK_9 = 0x39
+  VK_R = 0x52
+
+  def self.press?(which)
+    return false if @@state.nil?
+    return (@@state[which] & 0x80) > 0
+  end
 
   def self.trigger?(which)
-    unless @@state.nil?
-      unless @@prev_state.nil?
-        return (@@state[which] & 0x80) > 0 && (@@prev_state[which] & 0x80) == 0
-      end
-      return @@state[which] > 0
-    end
-    return false
+    return false if @@state.nil?
+    return (@@state[which] & 0x80) > 0 if @@prev_state.nil?
+    return (@@state[which] & 0x80) > 0 && (@@prev_state[which] & 0x80) == 0
+  end
+
+  def self.repeat?(which)
+    return false if @@state.nil? || @@prev_state.nil?
+    return (@@state[which] & 0x80) > 0 && (@@prev_state[which] & 0x80) > 0
   end
 
   def self.update
