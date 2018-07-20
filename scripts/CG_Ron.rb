@@ -1,4 +1,4 @@
-class CG
+module CG
 
   RON_1 = [
     { # The man immediately grabs...

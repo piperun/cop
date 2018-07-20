@@ -24,6 +24,8 @@ Game_Character 3|scripts/Game_Character 3.rb
 Game_Event|scripts/Game_Event.rb
 Game_Player|scripts/Game_Player.rb
 CG|scripts/CG.rb
+CG Animation|scripts/CG_Animation.rb
+CG Tween|scripts/CG_Tween.rb
 Sprite_Character|scripts/Sprite_Character.rb
 Sprite_Battler|scripts/Sprite_Battler.rb
 Sprite_Picture|scripts/Sprite_Picture.rb

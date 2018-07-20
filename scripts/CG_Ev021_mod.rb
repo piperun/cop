@@ -1,6 +1,4 @@
-class CG
-
-  PRISON = 5
+module CG
 
   EV021 = [
     { # touch
