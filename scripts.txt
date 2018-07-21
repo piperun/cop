@@ -26,6 +26,7 @@ Game_Player|scripts/Game_Player.rb
 CG|scripts/CG.rb
 CG Animation|scripts/CG_Animation.rb
 CG Tween|scripts/CG_Tween.rb
+CG Item Shop|scripts/CG_Item_Shop.rb
 Sprite_Character|scripts/Sprite_Character.rb
 Sprite_Battler|scripts/Sprite_Battler.rb
 Sprite_Picture|scripts/Sprite_Picture.rb
@@ -137,7 +138,6 @@ Ev015|scripts/Ev015.rb
 Ev016|scripts/Ev016.rb
 Ev017|scripts/Ev017.rb
 Ev018|scripts/Ev018.rb
-Ev019|scripts/Ev019.rb
 Ev020|scripts/Ev020.rb
 Ev021|scripts/Ev021.rb
 Ev_back|scripts/Ev_back.rb
