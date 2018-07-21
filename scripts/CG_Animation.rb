@@ -2,6 +2,8 @@ module CG
 
   class Animation
 
+    @@fade = 0
+
     def initialize(name, x = nil, y = nil)
       @name = name
       @x = x || 320
@@ -63,8 +65,10 @@ module CG
         return
       end
       seek_to = nil
+      fade_for = nil
       unless (frame = @frames[@current_frame]).nil?
         frame.each do |layer,props|
+          fade_for = props[:fade] unless props[:fade].nil?
           set_sprite(layer, props[:file], props[:x], props[:y],
             props[:z], props[:switch]) unless props[:file].nil?
           @playing = props[:playing] unless props[:playing].nil?
@@ -75,6 +79,15 @@ module CG
           tween(layer, props[:tween]) unless props[:tween].nil?
           play_sfx(props[:sfx]) unless props[:sfx].nil?
         end
+      end
+      if fade_for.nil?
+        if @@fade > 0
+          Graphics.transition(@@fade)
+          @@fade = 0
+        end
+      else
+        @@fade = fade_for
+        Graphics.freeze
       end
       while !@tweens.empty?
         @tweens.delete_if { |tween| tween.done? }
