@@ -221,6 +221,7 @@ $sfx_params = [
   'Audio/SE/091-Attack03' => [100,100],
   'Audio/SE/097-Attack09' => [100,100],
   'Audio/SE/098-Attack10' => [100,100],
+  'Audio/SE/006-System06' => [100,100],
 ];
 
 $layer_switches = [
