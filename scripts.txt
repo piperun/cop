@@ -100,6 +100,7 @@ Scene_Battle 8|scripts/Scene_Battle 8.rb
 Scene_Battle 9|scripts/Scene_Battle 9.rb
 Scene_Battle 10|scripts/Scene_Battle 10.rb
 Scene_Battle 11|scripts/Scene_Battle 11.rb
+BattleData|scripts/BattleData.rb
 Battle_Help|scripts/Battle_Help.rb
 Scene_Shop|scripts/Scene_Shop.rb
 Scene_Name|scripts/Scene_Name.rb
