@@ -6,16 +6,13 @@ class Armor
       1 => 55
     }
     @armor_table = {
-      :helmet => {
+      :necklace => {
 
       },
-      :shield => {
+      :ring => {
 
       },
-      :bodyarmor => {
-
-      },
-      :accessory => {
+      :earring => {
 
       }
     }
@@ -44,25 +41,20 @@ class Armor
         if(armor.name != "")
           case armor.kind
           when 0
-            @armor_table[:shield].merge!(armor.id => {
-                "name" => armor.name,
-                "ap" => @ap_table[armor.id]
-              })
+            @armor_table[:ring].merge!(armor.id => {
+                                         "name" => armor.name,
+                                         "ap" => @ap_table[armor.id]
+            })
           when 1
-            @armor_table[:helmet].merge!(armor.id => {
-                "name" => armor.name,
-                "ap" => @ap_table[armor.id]
-              })
+            @armor_table[:necklace].merge!(armor.id => {
+                                             "name" => armor.name,
+                                             "ap" => @ap_table[armor.id]
+            })
           when 2
-            @armor_table[:bodyarmor].merge!(armor.id => {
-                "name" => armor.name,
-                "ap" => @ap_table[armor.id]
-              })
-          when 3
-            @armor_table[:accessory].merge!(armor.id => {
-                "name" => armor.name,
-                "ap" => @ap_table[armor.id]
-              })
+            @armor_table[:earring].merge!(armor.id => {
+                                            "name" => armor.name,
+                                            "ap" => @ap_table[armor.id]
+            })
           end
         end
       end
@@ -92,6 +84,27 @@ module Characters
       obj.send(method, *args)
     end
   end
+end
+
+class PlayerInfo
+  @last_earring = nil
+  @ap = nil
+  @necklace_ap = nil
+
+  def self.check_earring(player)
+    if @last_earring != player.earring
+      @necklace_ap = Armor.instance.get(:earring, player.earring).to_i
+      @last_earring = player.earring
+    end
+  end
+
+  def ap
+
+  end
+
+  def self.ap=(val)
+    @ap = val
+  end
 
   def self.vit
     return
@@ -100,6 +113,7 @@ module Characters
   def self.vit=(value)
 
   end
+
 end
 
 class Player
@@ -119,25 +133,32 @@ class Player
   end
 
   def ap
-    return PlayerInfo
+    return PlayerInfo.ap
   end
 
   # Aliases
-  def shield
+
+  #Shield
+  def necklace
     armor1_id
   end
 
-  def helmet
+  #Helmet
+  def ring
     armor2_id
   end
 
-  def bodyarmor
+  #bodyarmor
+  def earring
     armor3_id
   end
 
   attr_reader :character
   attr_accessor :ap_recovery_turn
 end
+
+
+
 
 class Enemy
   @enemy_info = {
@@ -153,32 +174,14 @@ class Enemy
   end
 
   def method_missing(method, *args)
-      Characters.rpgmethods(@enemy, method, *args)
+    Characters.rpgmethods(@enemy, method, *args)
   end
 
 
 
 end
 
-class PlayerInfo
-  @last_bodyarmor = nil
-  @ap = nil
 
-  def initialize(yuuki)
-    @yuuki = yuuki
-  end
-
-  def self.check_bodyarmor(player)
-    p @last_bodyarmor, player.bodyarmor
-    if @last_bodyarmor != player.bodyarmor
-      @ap = Armor.instance.get(:bodyarmor, player.bodyarmor)
-      @last_bodyarmor = player.bodyarmor
-    end
-  end
-
-
-  attr_reader :ap
-end
 
 module Skills
 
