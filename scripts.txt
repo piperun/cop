@@ -28,6 +28,8 @@ CG Animation|scripts/CG_Animation.rb
 CG Tween|scripts/CG_Tween.rb
 CG Item Shop|scripts/CG_Item_Shop.rb
 CG Mayor|scripts/CG_Mayor.rb
+CG BattlePoses|scripts/CG_BattlePoses.rb
+CG_BattleUI|scripts/CG_BattleUI.rb
 Sprite_Character|scripts/Sprite_Character.rb
 Sprite_Battler|scripts/Sprite_Battler.rb
 Sprite_Picture|scripts/Sprite_Picture.rb
