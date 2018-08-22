@@ -31,6 +31,7 @@ class Game_Switches
   def []=(switch_id, value)
     if switch_id <= 5000
       @data[switch_id] = value
+      Yuuki.update
     end
   end
 end

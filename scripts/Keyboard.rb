@@ -6,6 +6,10 @@ module Keyboard
 
   VK_BACK = 0x08
   VK_SPACE = 0x20
+  VK_LEFT = 0x25
+  VK_UP = 0x26
+  VK_RIGHT = 0x27
+  VK_DOWN = 0x28
   VK_0 = 0x30
   VK_1 = 0x31
   VK_2 = 0x32
@@ -16,6 +20,7 @@ module Keyboard
   VK_7 = 0x37
   VK_8 = 0x38
   VK_9 = 0x39
+  VK_C = 0x43
   VK_R = 0x52
 
   def self.press?(which)

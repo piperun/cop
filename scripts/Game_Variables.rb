@@ -31,6 +31,7 @@ class Game_Variables
   def []=(variable_id, value)
     if variable_id <= 5000
       @data[variable_id] = value
+      Yuuki.update
     end
   end
 end

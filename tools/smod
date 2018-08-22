@@ -1,10 +1,20 @@
 #!/usr/bin/ruby
 module RPG
 
+  class SE end # VX ACE
+  class ME end # VX ACE
+  class BGM end # VX ACE
+  class BGS end # VX ACE
+
   class AudioFile end
   class MoveRoute end
   class MoveCommand end
-  class MapInfo end
+
+  class MapInfo
+    def export(id)
+      puts "{ :id => #{id}, :name => '#{@name}', :parent => #{@parent_id} },"
+    end
+  end
 
   class CommonEvent
 
@@ -49,6 +59,8 @@ module RPG
             puts "" if last_index != i - 1 && last_index > 0
             puts "#{event_id} #{page_index} #{i} #{v.parameters.join(";")}"
             last_index = i
+          elsif v.code == 401
+            puts v.parameters
           end
         end
         puts ""
@@ -139,9 +151,19 @@ class Exporter
       if input.instance_of?(RPG::Map)
         input.export()
       elsif input.instance_of?(Array)
-        input.each{ |v| v.export() if v.instance_of?(RPG::CommonEvent) }
+        input.each { |v|
+          v.export() if v.instance_of?(RPG::CommonEvent)
+          export_script(v) if v.instance_of?(Array)
+        }
+      elsif input.instance_of?(Hash)
+        input.each { |k,v| v.export(k) }
       end
     end
+  end
+
+  def self.export_script(params)
+    id, name, data = params
+    puts name
   end
 end
 

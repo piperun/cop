@@ -1,47 +1,44 @@
-1 0 6 $pose = Pose.new("A","B","A04",1,0)
-1 0 7 $pose.slide
-1 0 8 $pose.clear
-1 0 9 $pose = nil
-1 0 10 $pose = Pose.new("A","B","A04",1,0)
-1 0 11 $pose.shake
+1 0 6 Yuuki.pose("AB").face("AA04").sweat(1).blush(0)
+1 0 7 Yuuki.slide.shake
+1 0 8
+1 0 9
+1 0 10
+1 0 11
 
-1 0 22 $pose.clear
-1 0 23 $pose = nil
-1 0 24 $pose = Pose.new("A","B","A03",1,0)
-1 0 25 $pose.pop
+1 0 22 Yuuki.pose("AB").face("AA03").sweat(1).blush(0)
+1 0 23
+1 0 24
+1 0 25
 
-1 0 33 $pose.clear
-1 0 34 $pose = nil
-1 0 35 $pose = Pose.new("A","B","A05",0,0)
-1 0 36 $pose.pop
+1 0 33 Yuuki.pose("AB").face("AA05").sweat(0).blush(0)
+1 0 34
+1 0 35
+1 0 36
 
-1 0 50 $pose.clear
-1 0 51 $pose = nil
-1 0 52 $pose = Pose.new("A","B","D04",1,0)
-1 0 53 $pose.pop
+1 0 50 Yuuki.pose("AB").face("AD04").sweat(1).blush(0)
+1 0 51
+1 0 52
+1 0 53
 
-1 0 77 $pose.clear
-1 0 78 $pose = nil
-1 0 79 $pose = Pose.new("A","B","D03",0,0)
-1 0 80 $pose.pop
+1 0 77 Yuuki.pose("AB").face("AD03").sweat(0).blush(0)
+1 0 78
+1 0 79
+1 0 80
 
-1 0 88 $pose.clear
-1 0 89 $pose = nil
-1 0 90 $pose = Pose.new("A","B","C02",1,0)
-1 0 91 $pose.pop
+1 0 88 Yuuki.pose("AB").face("AC02").sweat(1).blush(0)
+1 0 89
+1 0 90
+1 0 91
 
-1 0 111 $pose.clear
-1 0 112 $pose = nil
-1 0 113 $pose = Pose.new("A","B","D03",1,0)
-1 0 114 $pose.pop
+1 0 111 Yuuki.pose("AB").face("AD03").sweat(1).blush(0)
+1 0 112
+1 0 113
+1 0 114
 
-1 0 123 $pose.clear
-1 0 124 $pose = nil
-1 0 125 $pose = Pose.new("A","B","D07",0,0)
-1 0 126 $pose.pop
+1 0 123 Yuuki.pose("AB").face("AD07").sweat(0).blush(0)
+1 0 124
+1 0 125
+1 0 126
 
-1 0 130 $pose.clear
-1 0 131 $pose = nil
-
-
-
+1 0 130 Yuuki.clear
+1 0 131

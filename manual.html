@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8" />
+<title>CoP Scripting Manual</title>
+</head>
+<body>
+<h1>Poses</h1>
+<p>All of Yuuki's poses are controlled via the "Yuuki" prefix.
+All pose attributes are persistent (body, face, etc), there is therefore no need to repeatedly run the same commands.
+She will remain visible on the screen until <code>Yuuki.clear</code> is performed.
+Her pose and visuals can be controlled in two ways:
+<ul>
+	<li>Using map event script commands (eg: <code>Yuuki.pose("AB")</code>)
+		<p>This method is what was used originally and is still supported.</p>
+	</li>
+	<li>Using message text (eg: <code><i>{Yuuki.pose(AB)}</i>[Mayor] Glad to see you!</code>)
+		<p>This method is new, and hopefully makes scripting easier because no special command is needed.
+		The script fragment can be located anywhere in the message text, it does not need to be at the start.
+		Because this method parses the message text itself, double quotes <i>"</i> are not to be used (saves some typing!)</p>
+	</li>
+</ul>
+</p>
+<p>Available pose commands are:
+<ul>
+	<li><code>.pose(arg)</code>
+		<p>Sets Yuuki's pose, <i>arg</i> must match a defined pose.</p>
+	</li>
+	<li><code>.face(arg)</code>
+		<p>Sets Yuuki's face, <i>arg</i> must match a defined face.</p>
+	</li>
+	<li><code>.sweat(0/1)</code>
+		<p>Toggles Yuuki's "sweat" attribute, changing visibility of any layer that depends this attribute.</p>
+	</li>
+	<li><code>.blush(0/1)</code>
+		<p>Toggles Yuuki's "red" attribute, changing visibility of any layer that depends this attribute.</p>
+	</li>
+	<li><code>.slide(arg)</code> or <code>.slide</code>
+		<p>Causes Yuuki to perform a "slide", a predefined motion effect for the current pose.
+		It is possible to use any arbitrary slide motion via the <i>arg</i> parameter.</p>
+	</li>
+	<li><code>.shake(arg)</code> or <code>.shake</code>
+		<p>Causes Yuuki to perform a "shake", generally involves making her boobs bounce.
+		It is possible to use any arbitrary shake via the <i>arg</i> parameter.</p>
+	</li>
+	<li><code>.clear</code>
+		<p>Removes Yuuki from the screen.</p>
+	</li>
+</ul>
+</p>
+<h1>Pose Definitions</h1>
+<p>Poses are defined in <code>scripts/CG_Poses.rb</code> (CG Poses in the editor) in the <code>POSES</code> constant.
+This constant holds a map of command lists. The index of this map is the pose name. Names are arbitrary and can be anything.</p>
+<p>Each pose consists of a list of commands. The first command usually is the <code>control</code> command,
+setting the default X and Y coordinate for the pose. Following the <code>control</code> command are one or more <code>layer</code> commands.
+These layer commands define the layer name, sprite filename and any conditions or attributes that layers require.</p>
+<p>Layer order will match defined order exactly. It is possible to pre-allocate a layer by only defining the
+layer name and leaving all other properties blank. This way it is possible to assign a specific Z-level to any layer.
+This Z-level (as well as other properties) can be overridden later by setting <code>:z => N</code>.</p>
+</p>
+<h1>Face Definitions</h1>
+<p>Faces are defined in <code>scripts/CG_Faces.rb</code> (CG Faces in the editor) in the <code>FACES</code> constant.</p>
+This constant holds a map of commands. The index of this map is the face name. Names are arbitrary and can be anything.</p>
+<p>Each face consists of a single <code>layer</code> command. This command sets the layer name that this face will occupy,
+the sprite filename and any conditions or attributes that this layer requires.</p>
+<h1>Shake Definitions</h1>
+<p>Shakes are defined in <code>scripts/CG_Shakes.rb</code> (CG Shakes in the editor) in the <code>SHAKES</code> constant.</p>
+This constant holds a map of command lists. The index of this map is the shake name. Names are arbitrary and can be anything.</p>
+<p>Each shake consists of a list of commands. Most shakes tend to perform sprite overrides of existing layers via the
+<code>layer</code> command. Performing <code>wait</code>s and playing <code>sfx</code> are also possibilities.</p>
+<h1>Slide Definitions</h1>
+<p>Slides are defined in <code>scripts/CG_Slides.rb</code> (CG Slides in the editor) in the <code>SLIDES</code> constant.</p>
+This constant holds a map of command lists. The index of this map is the slide name. Names are arbitrary and can be anything.</p>
+<p>Each slide consists of a list of commands. Most slides tend to perform tweens on existing layers via the
+<code>tween</code> command.</p>
+<h1>Layer Commands</h1>
+<p>The following layer commands are implemented:
+<ul>
+<li><code>control({...})</code>
+	<p>This command allows setting attributes on the sprite object as a whole.
+	Most commonly this is used to define the X and Y origins of the sprite object.</p>
+</li>
+<li><code>layer(name, filename, {...})</code>
+	<p>This command defines a sprite layer. The layer Z-level is automatically assigned using definition order.
+	The name is mandatory but the filename and attributes are optional. Layer attributes are commonly used to define
+	conditionals using the <code>:if</code> directive. This directive allows for complex logic and hooks directly into
+	attributes (<code>attr(...)</code>), switches (<code>switch(...)</code>) and variables (<code>var(...)</code>.</p>
+</li>
+<li><code>sfx(filename, volume, pitch)</code>
+	<p>This command allows playback of arbitrary sound effects.
+	The filename is mandatory but volume and pitch are option and will default to 100.</p>
+</li>
+<li><code>wait(duration)</code>
+	<p>This command pauses command execution for a specified duration, in frames.</p>
+</li>
+<li><code>wait_for(condition)</code>
+	<p>This command pauses command execution until a condition is met.
+	The only supported condition at this time is <code>tween</code>, thus waiting until tweening is completed.</p>
+</li>
+<li><code>tween({...})</code>
+	<p>This command allows arbitrary tweening of various sprite parameters. See existing slides for examples.</p>
+</li>
+<li><code>clear()</code>
+	<p>This command erases all existing layers.</p>
+</li>
+</ul>
+</p>
+</body>
+</html>

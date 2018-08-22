@@ -1,23 +1,11 @@
+12 0 0 Yuuki.pose("AB").face("AC01").sweat(0).blush(0)
+12 0 1 Yuuki.slide
 
+12 0 4 Yuuki.clear
+12 0 5
 
-12 0 0 $pose = Pose.new("A","B","C01",0,0)
-12 0 1 $pose.slide
+13 0 0 Yuuki.pose("AB").face("AC01").sweat(0).blush(0)
+13 0 1 Yuuki.slide
 
-12 0 4 $pose.clear
-12 0 5 $pose = nil
-
-
-
-
-
-13 0 0 $pose = Pose.new("A","B","C01",0,0)
-13 0 1 $pose.slide
-
-13 0 4 $pose.clear
-13 0 5 $pose = nil
-
-
-
-
-
-
+13 0 4 Yuuki.clear
+13 0 5

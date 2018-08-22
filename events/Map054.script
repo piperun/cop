@@ -1,362 +1,363 @@
-5 0 7 CG.play('ITEM_SHOP_ACCESS_DENIED')
-5 0 8
+5 0 7 Yuuki.pose("AB").face("AB02").sweat(0).blush(1)
+5 0 8 Yuuki.slide
 5 0 9
 5 0 10
-5 0 11
-5 0 12
+5 0 11 Yuuki.pose("AB").face("AB02").sweat(0).blush(1)
+5 0 12 Yuuki.shake
 
-5 0 15 CG.stop
+5 0 15 Yuuki.clear
 5 0 16
 
-4 1 13 CG.play('ITEM_SHOP_MEASURING')
-4 1 14
+4 1 13 Yuuki.pose("AA").face("AD03").sweat(0).blush(0)
+4 1 14 Yuuki.slide.shake
 4 1 15
 4 1 16
 4 1 17
 4 1 18
 
-4 1 25 CG.continue
+4 1 25 Yuuki.pose("AA").face("AD07").sweat(0).blush(0)
 4 1 26
 4 1 27
 4 1 28
 
-4 1 38 CG.continue
+4 1 38 Yuuki.pose("AA").face("AD04").sweat(0).blush(0)
 4 1 39
 4 1 40
 4 1 41
 
-4 1 54 CG.continue
-4 1 55
+4 1 54 Yuuki.pose("AA").face("AB01").sweat(0).blush(1)
+4 1 55 Yuuki.shake
 4 1 56
 4 1 57
 
-4 1 70 CG.continue
+4 1 70 Yuuki.pose("AA").face("AD07").sweat(0).blush(1)
 4 1 71
 4 1 72
 4 1 73
 
-4 1 78 CG.continue
+4 1 78 Yuuki.pose("AA").face("AD03").sweat(0).blush(1)
 4 1 79
 4 1 80
 4 1 81
 
-4 1 93 CG.continue
+4 1 93 Yuuki.clear
 4 1 94
 
-4 1 98 CG.continue
-4 1 99
+4 1 98 $ev001 = Bust_Anime.new
+4 1 99 $ev001.p("A","A01","A01",1,"A",0,0)
 
-4 1 105 CG.continue
-4 1 106
-4 1 107
+4 1 105 $ev001.Graphics_freeze
+4 1 106 $ev001.massage_on("A","B",5)
+4 1 107 $ev001.p("A","A05","A04",1,"B",1,0)
 
-4 1 115 CG.continue
+4 1 115 $ev001.p("A","C04","A02",1,"B",1,0)
 
-4 1 124 CG.continue
-4 1 125
+4 1 124 $ev001.Graphics_freeze
+4 1 125 $ev001.p("B","A01","A04",1,"B",1,0)
 
-4 1 133 CG.continue
-4 1 134
+4 1 133 $ev001.massage_on("A","B",5)
+4 1 134 $ev001.p("B","C04","A06",1,"B",1,0)
 
-4 1 146 CG.continue
+4 1 146 $ev001.p("B","C04","A02",1,"B",1,0)
 
-4 1 149 CG.continue
+4 1 149 $ev001.massage_on("B","B",5)
 
-4 1 152 CG.continue
+4 1 152 $ev001.p("B","C05","A02",1,"B",1,0)
 
-4 1 160 CG.continue
+4 1 160 $ev001.p("B","C02","A06",1,"B",1,0)
 
-4 1 165 CG.continue
-4 1 166
+4 1 165 $ev001.clear
+4 1 166 $ev001 = nil
 
-4 1 217 CG.continue
-4 1 218
+4 1 217 Yuuki.pose("AB").face("AE06").sweat(0).blush(1)
+4 1 218 Yuuki.slide.shake
 4 1 219
 4 1 220
 4 1 221
 4 1 222
 
-4 1 230 CG.stop
+4 1 230 Yuuki.clear
 4 1 231
 
-4 3 4 CG.play('ITEM_SHOP_CURSED')
-4 3 5
+
+4 3 4 Yuuki.pose("AA").face("AB02").sweat(1).blush(0)
+4 3 5 Yuuki.slide
 4 3 6
 4 3 7
 4 3 8
 4 3 9
 
-4 3 23 CG.continue
+4 3 23 Yuuki.pose("AA").face("AE02").sweat(0).blush(0)
 4 3 24
 4 3 25
 4 3 26
 
-4 3 31 CG.stop
+4 3 31 Yuuki.clear
 4 3 32
 
-4 4 6 CG.play('ITEM_SHOP_ONLY_APPLES')
-4 4 7
+4 4 6 Yuuki.pose("AB").face("AB01").sweat(0).blush(0)
+4 4 7 Yuuki.slide
 
-4 4 16 CG.continue
+4 4 16 Yuuki.pose("AB").face("AD07").sweat(1).blush(0)
 4 4 17
 4 4 18
 4 4 19
 
-4 4 22 CG.stop
+4 4 22 Yuuki.clear
 4 4 23
 
-4 5 2 CG.play('ITEM_SHOP_HELP_WANTED')
-4 5 3
+4 5 2 Yuuki.pose("AB").face("AB01").sweat(0).blush(0)
+4 5 3 Yuuki.slide
 
-4 5 6 CG.stop
+4 5 6 Yuuki.clear
 4 5 7
 
-4 5 14 CG.play('ITEM_SHOP_ONLY_APPLES')
-4 5 15
+4 5 14 Yuuki.pose("AB").face("AB01").sweat(0).blush(0)
+4 5 15 Yuuki.slide
 
-4 5 24 CG.continue
+4 5 24 Yuuki.pose("AB").face("AD07").sweat(1).blush(0)
 4 5 25
 4 5 26
 4 5 27
 
-4 5 30 CG.stop
+4 5 30 Yuuki.clear
 4 5 31
 
-4 6 5 CG.play('ITEM_SHOP_ONLY_APPLES')
-4 6 6
+4 6 5 Yuuki.pose("AB").face("AB01").sweat(0).blush(0)
+4 6 6 Yuuki.slide
 
-4 6 15 CG.continue
+4 6 15 Yuuki.pose("AB").face("AD07").sweat(1).blush(0)
 4 6 16
 4 6 17
 4 6 18
 
-4 6 21 CG.stop
+4 6 21 Yuuki.clear
 4 6 22
 
-4 6 31 CG.play('ITEM_SHOP_RICH_GIRL')
-4 6 32
+4 6 31 Yuuki.pose("AA").face("AA03").sweat(0).blush(0)
+4 6 32 Yuuki.slide
 
-4 6 41 CG.continue
-4 6 42
+4 6 41 Yuuki.pose("AA").face("AA05").sweat(0).blush(0)
+4 6 42 Yuuki.shake
 4 6 43
 4 6 44
 
-4 6 60 CG.continue
+4 6 60 Yuuki.pose("AA").face("AA04").sweat(0).blush(0)
 4 6 61
 4 6 62
 4 6 63
 
-4 6 66 CG.continue
+4 6 66 Yuuki.clear
 4 6 67
 
-4 6 105 CG.continue
-4 6 106
+4 6 105 Yuuki.pose("AB").face("AA05").sweat(0).blush(0)
+4 6 106 Yuuki.slide
 
-4 6 117 CG.continue
-4 6 118
+4 6 117 Yuuki.pose("AB").face("AB02").sweat(0).blush(0)
+4 6 118 Yuuki.shake
 4 6 119
 4 6 120
 
-4 6 125 CG.continue
-4 6 126
+4 6 125 Yuuki.pose("AB").face("AA06").sweat(0).blush(0)
+4 6 126 Yuuki.shake
 4 6 127
 4 6 128
 
-4 6 131 CG.continue
+4 6 131 Yuuki.clear
 4 6 132
 
-4 6 135 CG.continue
-4 6 136
+4 6 135 Yuuki.pose("AA").face("AA01").sweat(0).blush(0)
+4 6 136 Yuuki.slide
 
-4 6 143 CG.stop
+4 6 143 Yuuki.clear
 4 6 144
 
-4 6 161 CG.play('ITEM_SHOP_WORKING')
-4 6 162
+4 6 161 Yuuki.pose("AA").face("AA03").sweat(0).blush(0)
+4 6 162 Yuuki.slide
 
-4 6 171 CG.continue
-4 6 172
+4 6 171 Yuuki.pose("AA").face("AB01").sweat(1).blush(0)
+4 6 172 Yuuki.shake
 4 6 173
 4 6 174
 
-4 6 190 CG.continue
+4 6 190 Yuuki.pose("AA").face("AE06").sweat(1).blush(1)
 4 6 191
 4 6 192
 4 6 193
 
-4 6 205 CG.continue
+4 6 205 Yuuki.pose("AA").face("AD07").sweat(0).blush(1)
 4 6 206
 4 6 207
 4 6 208
 
-4 6 217 CG.continue
-4 6 218
+4 6 217 Yuuki.pose("AA").face("AB02").sweat(0).blush(0)
+4 6 218 Yuuki.shake
 4 6 219
 4 6 220
 
-4 6 240 CG.continue
+4 6 240 Yuuki.pose("AA").face("AD06").sweat(1).blush(0)
 4 6 241
 4 6 242
 4 6 243
 
-4 6 246 CG.continue
+4 6 246 Yuuki.pose("AA").face("AA01").sweat(0).blush(0)
 4 6 247
 4 6 248
 4 6 249
 
-4 6 252 CG.continue
-4 6 253
+4 6 252 Yuuki.pose("AA").face("AA06").sweat(0).blush(0)
+4 6 253 Yuuki.shake
 4 6 254
 4 6 255
 
-4 6 258 CG.continue
+4 6 258 Yuuki.clear
 4 6 259
 
-4 6 296 CG.continue
-4 6 297
+4 6 296 Yuuki.pose("AB").face("AA05").sweat(0).blush(0)
+4 6 297 Yuuki.slide.shake
 4 6 298
 4 6 299
 4 6 300
 4 6 301
 
-4 6 311 CG.continue
+4 6 311 Yuuki.pose("AB").face("AA05").sweat(1).blush(0)
 4 6 312
 4 6 313
 4 6 314
 
-4 6 329 CG.continue
+4 6 329 Yuuki.pose("AB").face("AA06").sweat(1).blush(1)
 4 6 330
 4 6 331
 4 6 332
 
-4 6 343 CG.continue
+4 6 343 Yuuki.pose("AB").face("AA05").sweat(0).blush(0)
 4 6 344
 4 6 345
 4 6 346
 
-4 6 359 CG.continue
+4 6 359 Yuuki.pose("AB").face("AA06").sweat(1).blush(0)
 4 6 360
 4 6 361
 4 6 362
 
-4 6 366 CG.continue
+4 6 366 Yuuki.pose("AB").face("AA05").sweat(1).blush(0)
 4 6 367
 4 6 368
 4 6 369
 
-4 6 382 CG.continue
+4 6 382 Yuuki.pose("AB").face("AA06").sweat(0).blush(0)
 4 6 383
 4 6 384
 4 6 385
 
-4 6 401 CG.continue
+4 6 401 Yuuki.pose("AB").face("AA01").sweat(0).blush(0)
 4 6 402
 4 6 403
 4 6 404
 
-4 6 417 CG.continue
-4 6 418
+4 6 417 Yuuki.pose("AB").face("AA05").sweat(0).blush(0)
+4 6 418 Yuuki.shake
 4 6 419
 4 6 420
 
-4 6 437 CG.continue
-4 6 438
+4 6 437 Yuuki.pose("AB").face("AB02").sweat(0).blush(0)
+4 6 438 Yuuki.shake
 4 6 439
 4 6 440
 
-4 6 443 CG.continue
+4 6 443 Yuuki.pose("AB").face("AA06").sweat(0).blush(0)
 4 6 444
 4 6 445
 4 6 446
 
-4 6 469 CG.continue
+4 6 469 Yuuki.pose("AB").face("AA05").sweat(1).blush(0)
 4 6 470
 4 6 471
 4 6 472
 
-4 6 476 CG.continue
+4 6 476 Yuuki.clear
 4 6 477
 
-4 6 491 CG.continue
-4 6 492
+4 6 491 $Ev019 = Ev019.new("B01","B",1,"A","A",1,0,0,0)
+4 6 492 $Ev019.pop
 
-4 6 510 CG.continue
-4 6 511
-4 6 512
-4 6 513
+4 6 510 $Ev019.clear
+4 6 511 $Ev019 = nil
+4 6 512 $Ev019 = Ev019.new("B01","B",1,"A","A",1,"B",0,0)
+4 6 513 $Ev019.pop
 
-4 6 517 CG.continue
-4 6 518
-4 6 519
-4 6 520
+4 6 517 $Ev019.clear
+4 6 518 $Ev019 = nil
+4 6 519 $Ev019 = Ev019.new("B04","B",1,"A","A",1,"B",0,0)
+4 6 520 $Ev019.pop
 
-4 6 528 CG.continue
-4 6 529
-4 6 530
-4 6 531
+4 6 528 $Ev019.clear
+4 6 529 $Ev019 = nil
+4 6 530 $Ev019 = Ev019.new("B22","B",1,"B","B",1,"B",0,1)
+4 6 531 $Ev019.pop
 
-4 6 549 CG.continue
-4 6 550
-4 6 551
-4 6 552
+4 6 549 $Ev019.clear
+4 6 550 $Ev019 = nil
+4 6 551 $Ev019 = Ev019.new("B17","B",1,"B","B",1,"B",1,0)
+4 6 552 $Ev019.pop
 
-4 6 556 CG.continue
-4 6 557
-4 6 558
-4 6 559
+4 6 556 $Ev019.clear
+4 6 557 $Ev019 = nil
+4 6 558 $Ev019 = Ev019.new("B03","B",1,"B","B",1,"B",0,0)
+4 6 559 $Ev019.pop
 
-4 6 562 CG.continue
-4 6 563
-4 6 564
-4 6 565
+4 6 562 $Ev019.clear
+4 6 563 $Ev019 = nil
+4 6 564 $Ev019 = Ev019.new("A03","A",1,"B","B",1,"B",0,0)
+4 6 565 $Ev019.pop
 
-4 6 573 CG.continue
-4 6 574
+4 6 573 $Ev019.clear
+4 6 574 $Ev019 = nil
 
-4 6 588 CG.continue
-4 6 589
+4 6 588 Yuuki.pose("AB").face("AA04").sweat(0).blush(0)
+4 6 589 Yuuki.slide
 
-4 6 599 CG.continue
-4 6 600
+4 6 599 Yuuki.pose("AB").face("AA06").sweat(0).blush(0)
+4 6 600 Yuuki.shake
 4 6 601
 4 6 602
 
-4 6 605 CG.continue
+4 6 605 Yuuki.clear
 4 6 606
 
-4 6 684 CG.continue
-4 6 685
+4 6 684 Yuuki.pose("AB").face("AA06").sweat(0).blush(0)
+4 6 685 Yuuki.slide.shake
 4 6 686
 4 6 687
 4 6 688
 4 6 689
 
-4 6 698 CG.continue
-4 6 699
+4 6 698 Yuuki.pose("AB").face("AA01").sweat(0).blush(0)
+4 6 699 Yuuki.shake
 4 6 700
 4 6 701
 
-4 6 711 CG.continue
-4 6 712
+4 6 711 Yuuki.pose("AB").face("AB02").sweat(0).blush(0)
+4 6 712 Yuuki.shake
 4 6 713
 4 6 714
 
-4 6 719 CG.continue
-4 6 720
+4 6 719 Yuuki.pose("AB").face("AA06").sweat(0).blush(0)
+4 6 720 Yuuki.shake
 4 6 721
 4 6 722
 
-4 6 725 CG.continue
+4 6 725 Yuuki.clear
 4 6 726
 
-4 6 729 CG.continue
-4 6 730
+4 6 729 Yuuki.pose("AA").face("AA01").sweat(0).blush(0)
+4 6 730 Yuuki.slide
 
-4 6 737 CG.stop
+4 6 737 Yuuki.clear
 4 6 738
 
-4 7 4 CG.play('ITEM_SHOP_SHE_GOT_IT')
-4 7 5
+4 7 4 Yuuki.pose("AA").face("AA01").sweat(0).blush(0)
+4 7 5 Yuuki.slide
 
-4 7 10 CG.stop
+4 7 10 Yuuki.clear
 4 7 11

@@ -10,7 +10,7 @@ class Game_Temp
   # * Public Instance Variables
   #--------------------------------------------------------------------------
   attr_accessor :map_bgm                  # map music (for battle memory)
-  attr_accessor :message_text             # message text
+  attr_reader   :message_text             # message text
   attr_accessor :message_proc             # message callback (Proc)
   attr_accessor :choice_start             # show choices: opening line
   attr_accessor :choice_max               # show choices: number of items
@@ -103,5 +103,40 @@ class Game_Temp
     @last_file_index = 0
     @debug_top_row = 0
     @debug_index = 0
+  end
+
+  def message_text=(text)
+    while text =~ /\{Yuuki([^}]*)\}/
+      cmd = $1
+      text.sub!($&, '')
+      loop do
+        case cmd
+        when /^\.pose\(([^)]+)\)/
+          Yuuki.pose($1)
+          cmd = cmd[$&.length..-1]
+        when /^\.face\(([^)]+)\)/
+          Yuuki.face($1)
+          cmd = cmd[$&.length..-1]
+        when /^\.sweat\(([^)]+)\)/
+          Yuuki.sweat($1)
+          cmd = cmd[$&.length..-1]
+        when /^\.blush\(([^)]+)\)/
+          Yuuki.blush($1)
+          cmd = cmd[$&.length..-1]
+        when /^\.slide(?:\(([^)]+)\)|)/
+          Yuuki.slide($1)
+          cmd = cmd[$&.length..-1]
+        when /^\.shake(?:\(([^)]+)\)|)/
+          Yuuki.shake($1)
+          cmd = cmd[$&.length..-1]
+        when /^\.clear/
+          Yuuki.clear
+          cmd = cmd[$&.length..-1]
+        else
+          break
+        end
+      end
+    end
+    @message_text = text
   end
 end

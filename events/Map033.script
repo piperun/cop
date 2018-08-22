@@ -1,30 +1,25 @@
+4 0 7 Yuuki.pose("BA").face("BA01").sweat(0).blush(0)
+4 0 8
 
+4 0 10 Yuuki.pose("BB").face("BA01").sweat(0).blush(0)
+4 0 11
+4 0 12
+4 0 13
 
+4 0 17 Yuuki.pose("AB").face("AC01").sweat(0).blush(1)
+4 0 18 Yuuki.shake
+4 0 19
+4 0 20
 
-4 0 7 $pose = Pose.new("B","A","A01",0,0)
-4 0 8 $pose.pop
+4 0 23 Yuuki.pose("AB").face("AD07").sweat(0).blush(1)
+4 0 24
+4 0 25
+4 0 26
 
-4 0 10 $pose.clear
-4 0 11 $pose = nil
-4 0 12 $pose = Pose.new("B","B","A01",0,0)
-4 0 13 $pose.pop
+4 0 31 Yuuki.pose("AB").face("AD03").sweat(0).blush(1)
+4 0 32
+4 0 33
+4 0 34
 
-4 0 17 $pose.clear
-4 0 18 $pose = nil
-4 0 19 $pose = Pose.new("A","B","C01",0,1)
-4 0 20 $pose.shake
-
-4 0 23 $pose.clear
-4 0 24 $pose = nil
-4 0 25 $pose = Pose.new("A","B","D07",0,1)
-4 0 26 $pose.pop
-
-4 0 31 $pose.clear
-4 0 32 $pose = nil
-4 0 33 $pose = Pose.new("A","B","D03",0,1)
-4 0 34 $pose.pop
-
-4 0 38 $pose.clear
-4 0 39 $pose = nil
-
-
+4 0 38 Yuuki.clear
+4 0 39

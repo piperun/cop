@@ -1,8 +1,3 @@
-
-
-
-
-
 3 0 2 $ev001 = Bust_Anime.new
 3 0 3 $ev001.p("A","A05","A04",0,"A",0,0)
 
@@ -22,11 +17,11 @@
 3 0 29 $ev001.clear
 3 0 30 $ev001 = nil
 
-3 0 38 $pose = Pose.new("A","A","E06",0,1)
-3 0 39 $pose.slide
+3 0 38 Yuuki.pose("AA").face("AE06").sweat(0).blush(1)
+3 0 39 Yuuki.slide
 
-3 0 42 $pose.clear
-3 0 43 $pose = nil
+3 0 42 Yuuki.clear
+3 0 43
 
 3 1 0 $ev001 = Bust_Anime.new
 3 1 1 $ev001.p("A","A05","A04",0,"A",0,0)
@@ -38,7 +33,6 @@
 
 3 1 12 $ev001.clear
 3 1 13 $ev001 = nil
-
 
 3 3 0 $ev001 = Bust_Anime.new
 3 3 1 $ev001.p("A","A01","A02",0,"A",0,0)
@@ -58,58 +52,54 @@
 3 3 39 $ev001.clear
 3 3 40 $ev001 = nil
 
+3 5 3 Yuuki.pose("AA").face("AE07").sweat(1).blush(1)
+3 5 4 Yuuki.slide
 
-3 5 3 $pose = Pose.new("A","A","E07",1,1)
-3 5 4 $pose.slide
-
-3 5 7 $pose.clear
-3 5 8 $pose = nil
-3 5 9 $pose = Pose.new("A","A","E05",1,1)
-3 5 10 $pose.pop
-3 5 11 $ev011 = Ev011.new
-3 5 12 $ev011.pop("A")
+3 5 7 Yuuki.pose("AA").face("AE05").sweat(1).blush(1)
+3 5 8 $ev011 = Ev011.new
+3 5 9  $ev011.pop("A")
+3 5 10
+3 5 11
+3 5 12
 
 3 5 14 $ev011.massage_on(10)
 
-3 5 19 $pose.clear
-3 5 20 $pose = nil
-3 5 21 $pose = Pose.new("A","A","E07",1,1)
-3 5 22 $pose.pop
+3 5 19 Yuuki.pose("AA").face("AE07").sweat(1).blush(1)
+3 5 20
+3 5 21
+3 5 22
 
-3 5 33 $pose.clear
-3 5 34 $pose = nil
-3 5 35 $pose = Pose.new("A","A","E05",1,1)
-3 5 36 $pose.pop
+3 5 33 Yuuki.pose("AA").face("AE05").sweat(1).blush(1)
+3 5 34
+3 5 35
+3 5 36
 
-3 5 39 $pose.clear
-3 5 40 $pose = nil
-3 5 41 $pose = Pose.new("A","A","E04",1,1)
-3 5 42 $pose.pop
+3 5 39 Yuuki.pose("AA").face("AE04").sweat(1).blush(1)
+3 5 40
+3 5 41
+3 5 42
 
 3 5 44 $ev011.massage_off
 
 3 5 47 $ev011.clear
 3 5 48 $ev011 = nil
-3 5 49 $pose.clear
-3 5 50 $pose = nil
+3 5 49
+3 5 50
 
-3 6 2 $pose = Pose.new("A","A","B01",0,1)
-3 6 3 $pose.slide
+3 6 2 Yuuki.pose("AA").face("AB01").sweat(0).blush(1)
+3 6 3 Yuuki.slide
 3 6 4 $ev011 = Ev011.new
 3 6 5 $ev011.pop("E")
 
 3 6 7 $ev011.massage_on(10)
 
-3 6 14 $pose.clear
-3 6 15 $pose = nil
-3 6 16 $pose = Pose.new("A","A","E07",0,1)
-3 6 17 $pose.pop
+3 6 14 Yuuki.pose("AA").face("AE07").sweat(0).blush(1)
+3 6 15
+3 6 16
+3 6 17
 
 3 6 21 $ev011.massage_off
 3 6 22 $ev011.clear
 3 6 23 $ev011 = nil
-3 6 24 $pose.clear
-3 6 25 $pose = nil
-
-
-
+3 6 24 Yuuki.clear
+3 6 25

@@ -1,65 +1,23 @@
 module CG
 
-  JACKET = 1
-  CAMISOLE = 2
-  SKIRT = 3
-  PANTY = 4
-  PRISON = 5
-  HANDS_A = 6
-  HANDS_B = 7
-
-  @@animations = {}
-
-  def self.update
-    @@animations.each{ |k,animation| animation.update }
+  def self.control(attribs)
+    return lambda { |target| target.control(attribs) }
   end
 
-  def self.play(name, x = nil, y = nil)
-    unless (animation = @@animations[name]).nil?
-      animation.dispose
-    end
-    @@animations[name] = Animation.new(name, x, y)
+  def self.layer(name, file = nil, attribs = {})
+    return lambda { |target| target.layer(name, file, attribs) }
   end
 
-  def self.stop(name = nil)
-    if name.nil?
-      @@animations.each{ |k,animation| animation.dispose }
-      @@animations = {}
-    else
-      unless (animation = @@animations[name]).nil?
-        animation.dispose
-      end
-      @@animations.delete(name)
-    end
+  def self.sfx(file, volume = 100, pitch = 100)
+    return lambda { |target| target.sfx(file, volume, pitch) }
   end
 
-  def self.continue(name = nil)
-    if name.nil?
-      @@animations.each{ |k,animation| animation.continue }
-    else
-      unless (animation = @@animations[name]).nil?
-        animation.continue
-      end
-    end
+  def self.wait(duration)
+    return lambda { |target| target.wait(duration) }
   end
 
-  def self.pause(name = nil)
-    if name.nil?
-      @@animations.each{ |k,animation| animation.pause }
-    else
-      unless (animation = @@animations[name]).nil?
-        animation.pause
-      end
-    end
+  def self.tween(attribs)
+    return lambda { |target| target.tween(attribs) }
   end
-end
 
-module Graphics
-  class << self
-    alias_method :cg_update, :update
-    def update
-      CG.update
-      cg_update
-    end
-  end
 end
