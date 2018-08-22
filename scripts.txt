@@ -7,8 +7,8 @@ CG Faces|scripts/CG_Faces.rb
 CG Poses|scripts/CG_Poses.rb
 CG Shakes|scripts/CG_Shakes.rb
 CG Slides|scripts/CG_Slides.rb
-BattleUI|scripts/CG_BattleUI.rb
-BattlePoses|scripts/CG_BattlePoses.rb
+BattleUI|scripts/BattleUI.rb
+BattlePoses|scripts/BattlePoses.rb
 Game_Temp|scripts/Game_Temp.rb
 Game_System|scripts/Game_System.rb
 Game_Switches|scripts/Game_Switches.rb
