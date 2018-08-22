@@ -1,4 +1,7 @@
 #!/usr/bin/ruby
+
+require 'zlib'
+
 module RPG
 
   class SE end # VX ACE
@@ -164,6 +167,7 @@ class Exporter
   def self.export_script(params)
     id, name, data = params
     puts name
+    puts Zlib::Inflate.inflate(params[2])
   end
 end
 
