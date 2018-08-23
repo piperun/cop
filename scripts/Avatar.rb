@@ -55,9 +55,9 @@ class Avatar
   end
 
   def control(attribs)
-    self.x = attribs[:x] unless attribs[:x].nil?
-    self.y = attribs[:y] unless attribs[:y].nil?
-    self.z = attribs[:z] unless attribs[:z].nil?
+    @x = attribs[:x] unless attribs[:x].nil?
+    @y = attribs[:y] unless attribs[:y].nil?
+    @z = attribs[:z] unless attribs[:z].nil?
   end
 
   def layer(name, file, attribs)
