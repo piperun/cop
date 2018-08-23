@@ -43,28 +43,32 @@ class Avatar
 
   attr_reader :x
   attr_reader :y
+  attr_reader :z
 
-  def initialize(x = 0, y = 0)
+  def initialize(x = 0, y = 0, z = 0)
     @layers = {}
     @tweens = []
     @attribs = {}
     @x = x
     @y = y
+    @z = z
   end
 
   def control(attribs)
     self.x = attribs[:x] unless attribs[:x].nil?
     self.y = attribs[:y] unless attribs[:y].nil?
+    self.z = attribs[:z] unless attribs[:z].nil?
   end
 
   def layer(name, file, attribs)
-    @layers[name] = Layer.new(@x, @y, @layers.size) if @layers[name].nil?
+    @layers[name] = Layer.new(@x, @y, @z + @layers.size) if @layers[name].nil?
     layer = @layers[name]
     layer.condition = "switch(#{attribs[:switch]})" unless attribs[:switch].nil?
     layer.condition = attribs[:if] unless attribs[:if].nil?
     layer.set_sprite(file)
     layer.x = attribs[:x] unless attribs[:x].nil?
     layer.y = attribs[:y] unless attribs[:y].nil?
+    layer.z = attribs[:z] unless attribs[:z].nil?
     layer.visible = evaluate(layer.condition) unless layer.condition.nil?
   end
 
@@ -113,6 +117,12 @@ class Avatar
     delta = @y - value
     @y = value
     @layers.each { |name,layer| layer.y -= delta }
+  end
+
+  def z=(value)
+    delta = @z - value
+    @z = value
+    @layers.each { |name,layer| layer.z -= delta }
   end
 
   def clear
