@@ -1,7 +1,8 @@
 module CG
   POSES = {
+    #Idle
     'BattleAA' => [
-      control({ :x => 500, :y => 250 , :z => 100}),
+      control({ :x => 300, :y => 250 , :z => 100}),
       layer(:sword, 'Battle_PoseA_sword'),
       layer(:hairback, 'Battle_PoseA_hair'),
       layer(:jacketback, 'Battle_PoseA_jacketback', { :if => 'switch(jacket)' }),
@@ -14,8 +15,9 @@ module CG
       #layer(:sweat, 'Battle_PoseA_sweat', { :if => 'attr(sweat)' }),
       layer(:red, 'Battle_PoseA_red', { :if => 'attr(red)' }),
     ],
+    #Dodge
     'BattleBA' => [
-      control({ :x => 500, :y => 250 , :z => 2050}),
+      control({ :x => 300, :y => 250 , :z => 2050}),
       layer(:sword, 'Battle_PoseB_sword'),
       layer(:hairback, 'Battle_PoseB_hair'),
       #layer(:jacketback, 'Battle_PoseB_jacketback', { :if => 'switch(jacket)' }),
@@ -28,8 +30,9 @@ module CG
       #layer(:sweat, 'Battle_PoseB_sweat', { :if => 'attr(sweat)' }),
       layer(:red, 'Battle_PoseB_red', { :if => 'attr(red)' }),
     ],
+    #Attack
     'BattleCA' => [
-      control({ :x => 500, :y => 250 , :z => 2050}),
+      control({ :x => 300, :y => 250 , :z => 2050}),
       layer(:sword, 'Battle_PoseC_sword'),
       #layer(:hairback, 'Battle_PoseC_hair'),
       layer(:jacketback, 'Battle_PoseC_jacket', { :if => 'switch(jacket)' }),
@@ -42,8 +45,9 @@ module CG
       #layer(:sweat, 'Battle_PoseC_sweat', { :if => 'attr(sweat)' }),
       layer(:red, 'Battle_PoseC_red', { :if => 'attr(red)' }),
     ],
+    #Ultra
     'BattleDA' => [
-      control({ :x => 500, :y => 250 , :z => 2050}),
+      control({ :x => 300, :y => 250 , :z => 2050}),
       layer(:sword, 'Battle_PoseD_sword'),
       layer(:hairback, 'Battle_PoseD_hair'),
       layer(:jacketback, 'Battle_PoseD_jacketback', { :if => 'switch(jacket)' }),
@@ -57,5 +61,12 @@ module CG
       #layer(:sweat, 'Battle_PoseD_sweat', { :if => 'attr(sweat)' }),
       #layer(:red, 'Battle_PoseD_red', { :if => 'attr(red)' }),
     ],
+  }
+  
+  
+  SLIDES = {
+    'BattleAA' => [ tween({ :from_y => 250, :to_y => 255, :duration => 20 }) ],
     }
+
+  
 end
