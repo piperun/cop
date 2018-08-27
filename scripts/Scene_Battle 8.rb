@@ -23,114 +23,14 @@ class Scene_Battle
     end
   end
   def kamae #構え
-    player_count
-    case @player_count
-    when 0
-      @pose.kamae("y", 0)
-    when 5
-      @pose.kamae("y", -1)
-    when 6
-      @pose.kamae("y", -1)
-    when 10
-      @pose.kamae("y", -2)
-    when 14
-      @pose.kamae("y", -2)
-    when 16
-      @pose.kamae("y", -2)
-    when 18
-      @pose.kamae("y", -2)
-    when 20
-      @pose.kamae("y", -2)
-    when 25
-      @pose.kamae("y", -1)
-    when 26
-      @pose.kamae("y", 0)
-    when 30
-      @pose.kamae("y", 0)
-    when 34
-      @pose.kamae("y", 0)
-    when 36
-      @pose.kamae("y", 0)
-    when 38
-      @pose.kamae("y", 0)
-    when 40
-      @pose.kamae("y", 0)
-    when 41
-      @pose.kamae("y", 0)
-    when 42
-      @pose.kamae("y", 0)
-    when 60
-
-      @player_count_change = 0
-    end
   end
   def kogeki #攻撃
-    player_count
-    case @player_count
-    when 0
-      @pose.kogeki("y", 2)
-    when 5
-      @pose.kogeki("x", 2)
-    when 8
-      @pose.kogeki("x", 2)
-    when 11
-      @pose.kogeki("x", 2)
-    when 14
-      @pose.kogeki("x", 2)
-    when 19
-      @pose.kogeki("x", 2)
-    end
   end
   def senko #閃光斬り
-    player_count
-    case @player_count
-    when 0
-      @pose.senko("y", 0)
-    when 5
-      @pose.senko("y", -3)
-    when 10
-      @pose.senko("y", -5)
-    when 13
-      @pose.senko("y", -5)
-    when 16
-      @pose.senko("y", -5)
-    when 19
-      @pose.senko("y", -5)
-    when 22
-      @pose.senko("y", -5)
-    end
   end
   def kaihi #回避
-    player_count
-    case @player_count
-    when 0
-      @pose.kaihi("x", 0)
-    when 5
-      @pose.kaihi("x", 2)
-    when 10
-      @pose.kaihi("x", 4)
-    when 13
-      @pose.kaihi("x", 4)
-    when 16
-      @pose.kaihi("x", 4)
-    when 19
-      @pose.kaihi("x", 4)
-    end
   end
   def bogyo #防御
-    player_count
-    case @player_count
-    when 0
-      @pose.bogyo("y", -3)
-    when 5
-      @pose.bogyo("x", -3)
-    when 10
-      @pose.bogyo("x", -3)
-    when 13
-      @pose.bogyo("x", -3)
-    when 16
-      @pose.bogyo("x", -3)
-    end
   end
   #--------------------------------------------------------------------------
   # ● 表情の決定
@@ -190,10 +90,5 @@ class Scene_Battle
   # ● ウェイトカウント
   #--------------------------------------------------------------------------
   def player_count
-    if @player_count_change == 0
-      @player_count_old = Graphics.frame_count
-      @player_count_change = 1
-    end
-    @player_count = Graphics.frame_count - @player_count_old
   end
 end
