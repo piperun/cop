@@ -11,15 +11,15 @@ class Scene_Battle
   def update_player_anime
     case @player_action #プレイヤーの行動
     when "kamae"
-        kamae
+      kamae
     when "kogeki"
-        kogeki
+      kogeki
     when "senko"
-        senko
+      senko
     when "kaihi"
-        kaihi
+      kaihi
     when "bogyo"
-        bogyo
+      bogyo
     end
   end
   def kamae #構え
@@ -51,39 +51,25 @@ class Scene_Battle
 
     case @player_action #プレイヤーの行動
     when "kamae"
-        if @player.hp < a
-          return "A04"
-        elsif title == 2
-          return "A05"
-        else
-          return "A01"
-        end
+      if @player.hp < a
+        return "A03"
+      else
+        return "A01"
+      end
     when "kogeki"
-        if title == 2
-          return "A02"
-        else
-          return "B02"
-        end
+      return "C01"
     when "senko"
-        if title == 2
-          return "C01"
-        else
-          return "A01"
-        end
+      return "D01"
     when "kaihi"
-        if title == 2
-          return "D01"
-        else
-          return "A01"
-        end
+      return "B01"
     when "bogyo"
-        if @player.hp < a
-          return "A03"
-        elsif title == 2
-          return "A06"
-        else
-          return "A04"
-        end
+      if @player.hp < a
+        return "B02"
+      elsif title == 2
+        return "B01"
+      else
+        return "B01"
+      end
     end
   end
   #--------------------------------------------------------------------------
