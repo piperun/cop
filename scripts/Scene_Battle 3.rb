@@ -230,7 +230,7 @@ class Scene_Battle
 
       #プレイヤー画像の更新
       @player_action = "bogyo" #プレイヤーの行動
-      @pose.pop("BattleAA", face)
+      @pose.pop("BattleBA", face)
       @player_count_change = 0
     end
 
