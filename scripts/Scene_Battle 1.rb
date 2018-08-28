@@ -158,7 +158,7 @@ class Scene_Battle
     #プレイヤー画像
     @player_action = "kamae"  #プレイヤーの行動
     @pose = Battle_Pose.new
-    @pose.pop("A",face)
+    @pose.pop("BattleAA",face)
 
     # Execute transition
     if $data_system.battle_transition == ""

@@ -63,6 +63,15 @@ module CG
     ],
   }
   
+  FACES = {
+    'BattleAA01' => layer(:head, 'Battle_PoseA_headA01'),
+    'BattleAA02' => layer(:head, 'Battle_PoseA_headA02'),
+    'BattleAA03' => layer(:head, 'Battle_PoseA_headA03'),
+    'BattleBA01' => layer(:head, 'Battle_PoseB_headA01'),
+    'BattleBA02' => layer(:head, 'Battle_PoseB_headA02'),
+    'BattleCA01' => layer(:head, 'Battle_PoseC_headA01'),
+    'BattleDA01' => layer(:head, 'Battle_PoseD_headA01'),
+  }
   
   SLIDES = {
     'BattleAA' => [ tween({ :from_y => 250, :to_y => 255, :duration => 20 }) ],

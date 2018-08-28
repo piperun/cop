@@ -126,11 +126,11 @@ class Scene_Battle
     #プレイヤー画像の更新
     if @commandB_index == 2  #閃光斬り
       @player_action = "senko" #プレイヤーの行動
-      @pose.pop("D",face)
+      @pose.pop("BattleDA", face)
       @player_count_change = 0
     else
       @player_action = "kogeki" #プレイヤーの行動
-      @pose.pop("C",face)
+      @pose.pop("BattleCA", face)
       @player_count_change = 0
     end
 
@@ -217,7 +217,7 @@ class Scene_Battle
 
       #プレイヤー画像の更新
       @player_action = "kaihi" #プレイヤーの行動
-      @pose.pop("B",face)
+      @pose.pop("BattleBA", face)
       @player_count_change = 0
     else  #回避失敗
       @player.hp -= @player_damage  #被ダメージ
@@ -230,7 +230,7 @@ class Scene_Battle
 
       #プレイヤー画像の更新
       @player_action = "bogyo" #プレイヤーの行動
-      @pose.pop("A",face)
+      @pose.pop("BattleAA", face)
       @player_count_change = 0
     end
 
@@ -285,7 +285,7 @@ class Scene_Battle
   def start_phase8
 
     @player_action = "kamae" #プレイヤーの行動
-    @pose.pop("A",face)
+    @pose.pop("BattleAA", face)
     @player_count_change = 0
 
     @command_count_change = 0
@@ -330,7 +330,7 @@ class Scene_Battle
   #--------------------------------------------------------------------------
   def start_phase9
     @player_action = "kamae" #プレイヤーの行動
-    @pose.pop("A",face)
+    @pose.pop("BattleAA", face)
     @player_count_change = 0
 
     # バトル終了 ME を演奏

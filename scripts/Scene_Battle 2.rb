@@ -658,7 +658,7 @@ class Scene_Battle
             a = 1
 
             $game_switches[24] = true #黄金の輝き
-            @pose.pop("A",face)
+            @pose.pop("BattleAA", face)
           else                  #解除
             # 決定 SE を演奏
             $game_system.se_play($data_system.decision_se)
@@ -666,7 +666,7 @@ class Scene_Battle
             a = 1
 
             $game_switches[24] = false #黄金の輝き
-            @pose.pop("A",face)
+            @pose.pop("BattleAA", face)
           end
         else                  #使用出来ない
           # ブザー SE を演奏
